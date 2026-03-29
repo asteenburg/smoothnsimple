@@ -24,7 +24,7 @@ export default function Home() {
 
       <main className='flex flex-col items-center justify-center flex-1 p-10 bg-black'>
         {/* HERO VIDEO */}
-        <div className='relative w-full max-w-full h-[400px] overflow-hidden rounded-lg'>
+        <div className='relative w-full max-w-full h-[400px] rounded-lg'>
           <video
             autoPlay
             muted
@@ -71,37 +71,40 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* IMAGE SECTION WITH AOS */}
-        <div className='mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-full w-full'>
+        {/* IMAGE SECTION WITH WRAPPERS */}
+        <div className='mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 w-full px-4'>
           {/* LEFT */}
-          <Image
-            src='/images/jump1987-botox-10084507.jpg'
-            alt='Cosmetic Treatment'
-            width={400}
-            height={250}
-            className='rounded-lg shadow-lg w-full h-auto'
-            data-aos='fade-right'
-          />
+          <div data-aos='fade-right'>
+            <Image
+              src='/images/jump1987-botox-10084507.jpg'
+              alt='Cosmetic Treatment'
+              width={400}
+              height={250}
+              className='rounded-lg shadow-lg w-full h-auto'
+            />
+          </div>
 
           {/* CENTER */}
-          <Image
-            src='/images/pexels-ron-lach-8626078.jpg'
-            alt='Cosmetic Treatment'
-            width={400}
-            height={250}
-            className='rounded-lg shadow-lg w-full h-auto'
-            data-aos='fade-up'
-          />
+          <div data-aos='fade-up'>
+            <Image
+              src='/images/pexels-ron-lach-8626078.jpg'
+              alt='Cosmetic Treatment'
+              width={400}
+              height={250}
+              className='rounded-lg shadow-lg w-full h-auto'
+            />
+          </div>
 
           {/* RIGHT */}
-          <Image
-            src='/images/pexels-itslauravillela-29478909.jpg'
-            alt='Cosmetic Treatment'
-            width={400}
-            height={250}
-            className='rounded-lg shadow-lg w-full h-auto'
-            data-aos='fade-left'
-          />
+          <div data-aos='fade-left'>
+            <Image
+              src='/images/pexels-itslauravillela-29478909.jpg'
+              alt='Cosmetic Treatment'
+              width={400}
+              height={250}
+              className='rounded-lg shadow-lg w-full h-auto'
+            />
+          </div>
         </div>
       </main>
 
