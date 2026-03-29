@@ -15,10 +15,11 @@ export default function Home() {
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
 
-    // Force autoplay on mobile if the attribute fails
     if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
-        console.log("Autoplay prevented by browser:", error);
+      // Force the mute and play via JavaScript for mobile compatibility
+      videoRef.current.muted = true;
+      videoRef.current.play().catch((err) => {
+        console.log("Autoplay waiting for user interaction:", err);
       });
     }
   }, []);
@@ -27,7 +28,7 @@ export default function Home() {
     <div className='relative w-full bg-black'>
       <Header />
 
-      {/* SECTION 1: HERO - Mobile Adjusted Height */}
+      {/* SECTION 1: HERO */}
       <section className='relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center overflow-hidden'>
         <video
           ref={videoRef}
@@ -35,8 +36,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          /* pre-load metadata helps mobile browsers prepare the video */
-          preload='metadata'
+          preload='auto'
           className='absolute z-0 w-full h-full object-cover opacity-50'
         >
           <source
@@ -49,15 +49,13 @@ export default function Home() {
           className='relative z-10 text-center px-6'
           data-aos='zoom-in'
         >
-          {/* Mobile Fix: smaller text on mobile (text-4xl), larger on desktop (md:text-7xl) */}
-          <h1 className='text-4xl md:text-7xl font-extrabold tracking-tighter mb-4 leading-tight'>
+          <h1 className='text-4xl md:text-7xl font-extrabold tracking-tighter mb-4 leading-tight text-white'>
             SMOOTH <span className='text-pink-500'>&</span> SIMPLE
           </h1>
           <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed'>
             Elevating your natural beauty with precision and care.
           </p>
 
-          {/* Mobile Fix: Stack buttons on small screens, row on medium+ */}
           <div className='flex flex-col md:flex-row gap-4 justify-center items-center'>
             <Link
               href='https://smoothnsimple.janeapp.com'
