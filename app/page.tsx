@@ -20,7 +20,7 @@ export default function Home() {
       subtitle: "Elevating your natural beauty with precision and care.",
     },
     {
-      src: "/videos/another-video.mp4", 
+      src: "/videos/mixkit-adult-woman-in-the-mirror-frustrated-by-her-wrinkles-4515-hd-ready.mp4", 
       title: "EXPERT AESTHETICS",
       subtitle: "Professional Botox & filler treatments tailored for you.",
     },
