@@ -26,32 +26,59 @@ export default function Home() {
     },
   ];
 
-  // 1. INITIAL MOUNT: Setup AOS and Force initial autoplay
   useEffect(() => {
+    // 1. Initialize AOS Animations
     AOS.init({ duration: 800, once: true });
 
-    // Force play on first load
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.play().catch((err) => console.log("Initial autoplay blocked:", err));
-    }
+    // 2. THE NUCLEAR AUTOPLAY GUARD
+    const forceVisualPlay = () => {
+      const video = videoRef.current;
+      if (!video) return;
 
+      // Hard-set volume and muted states for cross-browser compliance
+      video.muted = true;
+      video.volume = 0;
+      
+      const playPromise = video.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // If the browser blocks it, we wait for the first click/touch anywhere
+          const playOnGesture = () => {
+            if (videoRef.current) {
+              videoRef.current.play();
+              console.log("Video unlocked by user interaction.");
+            }
+            document.removeEventListener("click", playOnGesture);
+            document.removeEventListener("touchstart", playOnGesture);
+          };
+          document.addEventListener("click", playOnGesture);
+          document.addEventListener("touchstart", playOnGesture);
+        });
+      }
+    };
+
+    // Run on initial mount
+    forceVisualPlay();
+
+    // 3. Slide transition interval
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % slides.length);
     }, 10000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      // Cleanup any stray listeners
+      document.removeEventListener("click", () => {});
+      document.removeEventListener("touchstart", () => {});
+    };
   }, [slides.length]);
 
-  // 2. SLIDE CHANGE: Re-trigger play whenever the source changes
+  // Re-trigger play specifically when the currentIndex changes
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.muted = true;
-      // Small timeout ensures the DOM has swapped the source before calling play
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => console.log("Slide transition play blocked:", err));
-      }
+      videoRef.current.load(); // Forces the browser to recognize the new <source>
+      videoRef.current.play().catch(() => {});
     }
   }, [currentIndex]);
 
@@ -60,7 +87,7 @@ export default function Home() {
       <Header />
 
       {/* SECTION 1: HERO SLIDESHOW */}
-      <section className='relative h-[75vh] md:h-[85vh] w-full flex items-center justify-center overflow-hidden bg-zinc-900'>
+      <section className='relative h-[75vh] md:h-[85vh] w-full flex items-center justify-center overflow-hidden bg-zinc-950'>
         <video
           ref={videoRef}
           key={slides[currentIndex].src} 
@@ -68,8 +95,10 @@ export default function Home() {
           muted
           loop
           playsInline
+          /* @ts-ignore - webkit attributes for Safari */
+          webkit-playsinline="true"
           preload="auto"
-          className='absolute z-0 w-full h-full object-cover opacity-50 transition-opacity duration-1000'
+          className='absolute z-0 w-full h-full object-cover opacity-50 transition-opacity duration-1000 pointer-events-none'
         >
           <source src={slides[currentIndex].src} type='video/mp4' />
         </video>
@@ -117,44 +146,44 @@ export default function Home() {
       <section className='py-20 bg-zinc-950 px-6'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-12' data-aos='fade-up'>
-            <h2 className='text-3xl md:text-5xl font-bold mb-4 text-white'>Expert Aesthetics</h2>
+            <h2 className='text-3xl md:text-5xl font-bold mb-4 text-white uppercase tracking-tight'>Expert Aesthetics</h2>
             <div className='w-20 h-1 bg-pink-500 mx-auto'></div>
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
             <div className='group' data-aos='fade-up' data-aos-delay='100'>
-              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-2xl'>
-                <Image src='/images/jump1987-botox-10084507.jpg' alt='Botox' fill className='object-cover transition-transform duration-500 group-hover:scale-105' />
+              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                <Image src='/images/jump1987-botox-10084507.jpg' alt='Botox' fill className='object-cover transition-transform duration-700 group-hover:scale-110' />
               </div>
               <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Botox & Fillers</h3>
-              <p className='text-gray-400 text-sm md:text-base'>Smooth fine lines and restore volume with precision.</p>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>Precision treatments to enhance your natural beauty.</p>
             </div>
 
             <div className='group' data-aos='fade-up' data-aos-delay='200'>
-              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-2xl'>
-                <Image src='/images/pexels-ron-lach-8626078.jpg' alt='Consultation' fill className='object-cover transition-transform duration-500 group-hover:scale-105' />
+              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                <Image src='/images/pexels-ron-lach-8626078.jpg' alt='Consultation' fill className='object-cover transition-transform duration-700 group-hover:scale-110' />
               </div>
               <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Skin Rejuvenation</h3>
-              <p className='text-gray-400 text-sm md:text-base'>Tailored facials and treatments for a natural glow.</p>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>Advanced facials designed for a flawless glow.</p>
             </div>
 
             <div className='group' data-aos='fade-up' data-aos-delay='300'>
-              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-2xl'>
-                <Image src='/images/pexels-itslauravillela-29478909.jpg' alt='Aftercare' fill className='object-cover transition-transform duration-500 group-hover:scale-105' />
+              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                <Image src='/images/pexels-itslauravillela-29478909.jpg' alt='Aftercare' fill className='object-cover transition-transform duration-700 group-hover:scale-110' />
               </div>
               <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Professional Care</h3>
-              <p className='text-gray-400 text-sm md:text-base'>Licensed experts in a luxury, comfortable environment.</p>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>Experience aesthetic excellence in a luxury setting.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* SECTION 3: CTA */}
-      <section className='py-20 bg-pink-600 text-white text-center px-6'>
-        <div data-aos="fade-up">
-          <h2 className='text-3xl md:text-5xl font-black mb-6 italic tracking-tight uppercase'>Ready for your transformation?</h2>
-          <Link href='/booking' className='inline-block bg-black text-white px-12 py-5 rounded-full font-black text-xl hover:bg-zinc-900 transition-all active:scale-95 shadow-2xl'>
-            RESERVE NOW
+      <section className='py-24 bg-pink-600 text-white text-center px-6 relative overflow-hidden'>
+        <div data-aos="fade-up" className="relative z-10">
+          <h2 className='text-4xl md:text-6xl font-black mb-8 italic tracking-tighter uppercase'>Your transformation awaits</h2>
+          <Link href='/booking' className='inline-block bg-black text-white px-14 py-5 rounded-full font-black text-xl hover:bg-zinc-900 transition-all active:scale-95 shadow-2xl uppercase tracking-widest'>
+            Reserve Now
           </Link>
         </div>
       </section>
