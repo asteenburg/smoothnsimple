@@ -22,7 +22,7 @@ export default function Header() {
           {/* LOGO SECTION */}
           <div className='flex flex-col'>
             <h1 className='text-xl md:text-2xl font-bold text-pink-600 leading-none'>
-              Smooth n Simple
+              Smooth N Simple
             </h1>
             <span className='text-[10px] md:text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-1'>
               by Nurse Shelby
