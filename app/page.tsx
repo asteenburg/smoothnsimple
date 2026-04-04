@@ -113,14 +113,12 @@ export default function Home() {
           
           <div className='flex flex-col md:flex-row gap-4 justify-center items-center'>
             <Link
-              href='/booking'
-              className='w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center'
+              href='/booking' className='w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center'
             >
               Book Appointment
             </Link>
             <Link
-              href='/shop'
-              className='w-full md:w-auto bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-10 py-4 rounded-full font-bold transition-all text-center'
+              href='/shop' className='w-full md:w-auto bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-10 py-4 rounded-full font-bold transition-all text-center'
             >
               Shop & Gift Cards
             </Link>
@@ -156,15 +154,15 @@ export default function Home() {
                 <Image src='/images/jump1987-botox-10084507.jpg' alt='Botox' fill className='object-cover transition-transform duration-700 group-hover:scale-110' />
               </div>
               <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Botox & Fillers</h3>
-              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>Precision treatments to enhance your natural beauty.</p>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>Precision treatments to enhance your natural beauty</p>
             </div>
 
             <div className='group' data-aos='fade-up' data-aos-delay='200'>
               <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                <Image src='/images/pexels-ron-lach-8626078.jpg' alt='Consultation' fill className='object-cover transition-transform duration-700 group-hover:scale-110' />
+                <Image src='/images/pexels-farhadirani-34775440.jpg' alt='Lip Filler' fill className='object-cover transition-transform duration-700 group-hover:scale-110' />
               </div>
-              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Skin Rejuvenation</h3>
-              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>Advanced facials designed for a flawless glow.</p>
+              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Lip Flip</h3>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>Create a fuller, natural-looking upper lip</p>
             </div>
 
             <div className='group' data-aos='fade-up' data-aos-delay='300'>
@@ -172,7 +170,7 @@ export default function Home() {
                 <Image src='/images/pexels-itslauravillela-29478909.jpg' alt='Aftercare' fill className='object-cover transition-transform duration-700 group-hover:scale-110' />
               </div>
               <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Professional Care</h3>
-              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>Experience aesthetic excellence in a luxury setting.</p>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>Experience aesthetic excellence in a luxury setting</p>
             </div>
           </div>
         </div>
