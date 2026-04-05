@@ -10,15 +10,46 @@ import Footer from "../../components/Footer";
 export default function Shop() {
   const [status, setStatus] = useState("");
   const [amount, setAmount] = useState(100);
-  const [purchaseType, setPurchaseType] = useState("gift_card"); // 'gift_card' or 'prepay'
-  const [recipientEmail, setRecipientEmail] = useState("");
+  const [purchaseType, setPurchaseType] = useState("gift_card");
+
+  // Form State
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    address: "",
+    province: "ON",
+    postalCode: "",
+    phone: "",
+    recipientEmail: "", // Only for gift cards
+  });
+
+  const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID || "";
+  const locId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID || "";
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
   }, []);
 
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handlePayment = async (token: any) => {
-    if (purchaseType === "gift_card" && !recipientEmail) {
+    // Basic Validation
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.email ||
+      !formData.address
+    ) {
+      setStatus("Please fill in all required billing fields.");
+      return;
+    }
+
+    if (purchaseType === "gift_card" && !formData.recipientEmail) {
       setStatus("Please enter a recipient email address.");
       return;
     }
@@ -33,16 +64,14 @@ export default function Shop() {
           sourceId: token.token,
           amount: amount,
           type: purchaseType,
-          recipient: recipientEmail, // This sends the email to your backend
+          billing: formData, // Sending all the new fields to your backend
         }),
       });
 
       const data = await response.json();
       if (data.success) {
-        setStatus(
-          `Success! Your ${purchaseType === "gift_card" ? "Gift Card" : "Prepayment"} has been processed.`,
-        );
-        setRecipientEmail(""); // Clear form on success
+        setStatus(`Success! Transaction complete.`);
+        // Reset form logic here if desired
       } else {
         setStatus("Payment failed. Please check your card details.");
       }
@@ -51,164 +80,245 @@ export default function Shop() {
     }
   };
 
+  const inputStyle =
+    "w-full bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-4 text-white focus:border-pink-600 outline-none transition-all placeholder:text-zinc-600";
+  const labelStyle =
+    "block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 ml-2";
+
   return (
     <div className='min-h-screen bg-black text-white selection:bg-pink-500/30'>
       <Header />
 
-      <main className='max-w-5xl mx-auto py-12 px-6'>
+      <main className='max-w-6xl mx-auto py-12 px-6'>
+        {/* Header Section */}
         <div
-          className='text-center mb-12'
+          className='text-center mb-16'
           data-aos='fade-down'
         >
-          <h1 className='text-4xl md:text-6xl font-black tracking-tighter uppercase mb-4'>
-            Shop <span className='text-pink-600'>Smooth N Simple</span>
+          <h1 className='text-5xl md:text-7xl font-black tracking-tighter uppercase mb-4 italic'>
+            Checkout <span className='text-pink-600'>Center</span>
           </h1>
-          <p className='text-zinc-500 uppercase tracking-widest text-xs font-bold'>
-            Secure Square Checkout
-          </p>
+          <div className='h-1 w-24 bg-pink-600 mx-auto rounded-full'></div>
         </div>
 
-        {/* 1. SELECTION TABS */}
-        <div
-          className='flex flex-col md:flex-row gap-4 mb-12'
-          data-aos='fade-up'
-        >
-          <button
-            onClick={() => setPurchaseType("gift_card")}
-            className={`flex-1 p-6 rounded-3xl border-2 transition-all text-left group ${
-              purchaseType === "gift_card"
-                ? "border-pink-600 bg-pink-600/10 shadow-[0_0_30px_rgba(219,39,119,0.1)]"
-                : "border-zinc-800 bg-zinc-900"
-            }`}
-          >
-            <h3
-              className={`text-xl font-bold mb-1 ${purchaseType === "gift_card" ? "text-pink-500" : "text-white"}`}
-            >
-              Digital Gift Card
-            </h3>
-            <p className='text-sm text-gray-400'>
-              Perfect for birthdays or special surprises.
-            </p>
-          </button>
-
-          <button
-            onClick={() => setPurchaseType("prepay")}
-            className={`flex-1 p-6 rounded-3xl border-2 transition-all text-left ${
-              purchaseType === "prepay"
-                ? "border-pink-600 bg-pink-600/10 shadow-[0_0_30px_rgba(219,39,119,0.1)]"
-                : "border-zinc-800 bg-zinc-900"
-            }`}
-          >
-            <h3
-              className={`text-xl font-bold mb-1 ${purchaseType === "prepay" ? "text-pink-500" : "text-white"}`}
-            >
-              Prepay Service
-            </h3>
-            <p className='text-sm text-gray-400'>
-              Apply credit directly to your patient profile.
-            </p>
-          </button>
-        </div>
-
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 items-start'>
-          {/* 2. CONFIGURATION COLUMN */}
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-12'>
+          {/* LEFT COLUMN: Configuration & Billing (8 Cols) */}
           <div
-            className='space-y-8'
+            className='lg:col-span-7 space-y-12'
             data-aos='fade-right'
           >
-            <div>
-              <h2 className='text-2xl font-bold mb-6 italic uppercase tracking-tight'>
-                1. Choose Amount
+            {/* 1. Selection */}
+            <section>
+              <h2 className='text-2xl font-black uppercase italic mb-6'>
+                01. Select Service
               </h2>
-              <div className='grid grid-cols-2 gap-4'>
-                {[50, 100, 200, 500].map((val) => (
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                {["gift_card", "prepay"].map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setPurchaseType(type)}
+                    className={`p-6 rounded-3xl border-2 transition-all text-left ${
+                      purchaseType === type
+                        ? "border-pink-600 bg-pink-600/5 shadow-lg"
+                        : "border-zinc-900 bg-zinc-900/50 hover:border-zinc-800"
+                    }`}
+                  >
+                    <span
+                      className={`text-lg font-bold uppercase ${purchaseType === type ? "text-pink-500" : "text-white"}`}
+                    >
+                      {type.replace("_", " ")}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </section>
+
+            {/* 2. Amount */}
+            <section>
+              <h2 className='text-2xl font-black uppercase italic mb-6'>
+                02. Select Amount
+              </h2>
+              <div className='grid grid-cols-4 gap-3'>
+                {[1, 100, 200, 500].map((val) => (
                   <button
                     key={val}
                     onClick={() => setAmount(val)}
-                    className={`py-5 rounded-2xl font-black text-xl transition-all border-2 ${
+                    className={`py-4 rounded-xl font-black transition-all border-2 ${
                       amount === val
-                        ? "bg-pink-600 border-pink-600 text-white"
-                        : "bg-zinc-900 border-zinc-800 text-gray-500 hover:border-zinc-700"
+                        ? "bg-pink-600 border-pink-600"
+                        : "bg-zinc-900 border-zinc-800 text-zinc-500"
                     }`}
                   >
                     ${val}
                   </button>
                 ))}
               </div>
-            </div>
+            </section>
 
-            {/* CONDITIONAL RECIPIENT FIELD */}
-            {purchaseType === "gift_card" && (
-              <div className='animate-in fade-in slide-in-from-left-4'>
-                <h2 className='text-2xl font-bold mb-4 italic uppercase tracking-tight'>
-                  2. Recipient Details
-                </h2>
-                <input
-                  type='email'
-                  placeholder='Recipient Email Address'
-                  value={recipientEmail}
-                  onChange={(e) => setRecipientEmail(e.target.value)}
-                  className='w-full bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-4 text-white focus:border-pink-600 outline-none transition-all'
-                  required
-                />
+            {/* 3. Billing Details */}
+            <section className='bg-zinc-900/30 p-8 rounded-[2rem] border border-zinc-900'>
+              <h2 className='text-2xl font-black uppercase italic mb-8'>
+                03. Billing Details
+              </h2>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                <div>
+                  <label className={labelStyle}>First Name *</label>
+                  <input
+                    name='firstName'
+                    placeholder='Jane'
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className={labelStyle}>Last Name *</label>
+                  <input
+                    name='lastName'
+                    placeholder='Doe'
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                    required
+                  />
+                </div>
+                <div className='md:col-span-2'>
+                  <label className={labelStyle}>Email Address *</label>
+                  <input
+                    name='email'
+                    type='email'
+                    placeholder='jane@example.com'
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                    required
+                  />
+                </div>
+                <div className='md:col-span-2'>
+                  <label className={labelStyle}>Street Address *</label>
+                  <input
+                    name='address'
+                    placeholder='123 Smooth St'
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className={labelStyle}>Province</label>
+                  <select
+                    name='province'
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                  >
+                    <option value='ON'>Ontario</option>
+                    <option value='QC'>Quebec</option>
+                    <option value='BC'>British Columbia</option>
+                    <option value='AB'>Alberta</option>
+                    {/* Add others as needed */}
+                  </select>
+                </div>
+                <div>
+                  <label className={labelStyle}>Postal Code</label>
+                  <input
+                    name='postalCode'
+                    placeholder='A1B 2C3'
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                  />
+                </div>
+                <div className='md:col-span-2'>
+                  <label className={labelStyle}>Phone Number (Optional)</label>
+                  <input
+                    name='phone'
+                    placeholder='(555) 000-0000'
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                  />
+                </div>
+
+                {purchaseType === "gift_card" && (
+                  <div className='md:col-span-2 mt-4 p-6 bg-pink-600/10 border border-pink-600/20 rounded-2xl animate-in fade-in'>
+                    <label className={labelStyle}>Recipient Email *</label>
+                    <input
+                      name='recipientEmail'
+                      type='email'
+                      placeholder='who is this for?'
+                      onChange={handleInputChange}
+                      className={inputStyle}
+                    />
+                  </div>
+                )}
               </div>
-            )}
+            </section>
           </div>
 
-          {/* 3. SQUARE PAYMENT COLUMN */}
-          <div
-            className='bg-white p-8 md:p-10 rounded-[2.5rem] shadow-2xl'
-            data-aos='fade-left'
-          >
-            <div className='mb-8'>
-              <h2 className='text-black text-2xl font-black uppercase tracking-tight'>
-                Checkout
-              </h2>
-              <p className='text-gray-500 font-medium'>
-                Total:{" "}
-                <span className='text-black font-bold'>${amount}.00 CAD</span>
+          {/* RIGHT COLUMN: Summary & Payment (4 Cols) */}
+          <div className='lg:col-span-5'>
+            <div
+              className='sticky top-8 space-y-6'
+              data-aos='fade-left'
+            >
+              <div className='bg-white p-8 md:p-10 rounded-[3rem] shadow-2xl text-black'>
+                <div className='mb-8 border-b border-zinc-100 pb-6'>
+                  <h2 className='text-3xl font-black uppercase tracking-tight italic'>
+                    Summary
+                  </h2>
+                  <div className='flex justify-between mt-4 font-bold text-lg'>
+                    <span className='text-zinc-400'>Total Due:</span>
+                    <span>${amount}.00 CAD</span>
+                  </div>
+                </div>
+
+                {appId && locId ? (
+                  <PaymentForm
+                    applicationId={appId}
+                    locationId={locId}
+                    cardTokenizeResponseReceived={handlePayment}
+                  >
+                    <CreditCard
+                      buttonProps={{
+                        css: {
+                          backgroundColor: "#db2777",
+                          color: "#fff",
+                          borderRadius: "1.5rem",
+                          padding: "20px",
+                          fontWeight: "900",
+                          width: "100%",
+                          cursor: "pointer",
+                          border: "none",
+                          fontSize: "1rem",
+                          textTransform: "uppercase",
+                          boxShadow: "0 10px 20px -5px rgba(219, 39, 119, 0.5)",
+                          "&:hover": { backgroundColor: "#be185d" },
+                        },
+                      }}
+                    />
+                  </PaymentForm>
+                ) : (
+                  <div className='text-center p-4 bg-zinc-100 rounded-2xl text-zinc-400 text-xs font-bold animate-pulse'>
+                    LOAD CONFIGURATION...
+                  </div>
+                )}
+
+                {status && (
+                  <div
+                    className={`mt-6 text-center text-xs font-black p-4 rounded-xl uppercase tracking-widest ${
+                      status.includes("Success")
+                        ? "bg-green-100 text-green-700"
+                        : "bg-zinc-100 text-zinc-900"
+                    }`}
+                  >
+                    {status}
+                  </div>
+                )}
+              </div>
+
+              <p className='text-center text-[10px] text-zinc-600 uppercase tracking-widest'>
+                Secure SSL Encrypted Production Checkout
               </p>
             </div>
-
-            <PaymentForm
-              applicationId='YOUR_APP_ID'
-              locationId='YOUR_LOCATION_ID'
-              cardTokenizeResponseReceived={handlePayment}
-            >
-              <CreditCard
-                buttonProps={{
-                  css: {
-                    backgroundColor: "#db2777",
-                    color: "#fff",
-                    borderRadius: "9999px",
-                    padding: "18px",
-                    fontWeight: "900",
-                    width: "100%",
-                    cursor: "pointer",
-                    border: "none",
-                    marginTop: "20px",
-                    boxShadow: "0 10px 15px -3px rgba(219, 39, 119, 0.4)",
-                    "&:hover": { backgroundColor: "#be185d" },
-                  },
-                }}
-              />
-            </PaymentForm>
-
-            {status && (
-              <div
-                className={`mt-6 text-center text-sm font-bold p-4 rounded-xl ${
-                  status.includes("Success")
-                    ? "bg-green-50 text-green-700 border border-green-100"
-                    : "bg-zinc-100 text-zinc-800"
-                }`}
-              >
-                {status}
-              </div>
-            )}
           </div>
         </div>
       </main>
-
       <Footer />
     </div>
   );

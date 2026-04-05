@@ -15,7 +15,7 @@ export default function ServiceCard({
   image,
 }: ServiceCardProps) {
   return (
-    <div className='bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden'>
+    <div className='bg-white text-gray-500 dark:bg-gray-800 dark:text-gray-400 rounded-xl shadow-md overflow-hidden'>
       <Image
         src={image}
         alt={title}
@@ -24,9 +24,11 @@ export default function ServiceCard({
         className='object-cover'
       />
       <div className='p-4'>
-        <h3 className='text-xl font-semibold'>{title}</h3>
+        <h3 className='text-xl text-gray-500 dark:text-gray-400 font-semibold'>
+          {title}
+        </h3>
         <p className='text-sm text-gray-500 dark:text-gray-400 mb-2'>{price}</p>
-        <p className='text-gray-600 dark:text-gray-300'>{description}</p>
+        <p className='text-gray-500 dark:text-gray-300'>{description}</p>
       </div>
     </div>
   );

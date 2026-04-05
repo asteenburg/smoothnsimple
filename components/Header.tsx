@@ -82,7 +82,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Nav */}
-          <nav className='hidden md:flex gap-8'>
+          <nav className='hidden text-gray-500 dark:text-gray-400 md:flex gap-8'>
             {navLinks.map((link) => renderLink(link))}
           </nav>
 
