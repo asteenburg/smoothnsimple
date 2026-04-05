@@ -1,325 +1,159 @@
+// app/shop/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
-import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import React, { useState } from "react";
+import Image from "next/image";
+import { useCart } from "./../context/CartContext";
+import { ShoppingCart, ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import ProductModal from "@/components/ProductModal";
 
-export default function Shop() {
-  const [status, setStatus] = useState("");
-  const [amount, setAmount] = useState(100);
-  const [purchaseType, setPurchaseType] = useState("gift_card");
+// FIXED: Defined Interface to remove 'any' errors
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image: any;
+}
 
-  // Form State
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    address: "",
-    province: "ON",
-    postalCode: "",
-    phone: "",
-    recipientEmail: "", // Only for gift cards
-  });
+// Asset Imports
+import HoseDraggerHelmet from "../../public/images/hose-dragger-helmet.png";
+import DiaDeMuertos from "../../public/images/dia-de-muertos.png";
+import DiaDeMuertosCigar from "../../public/images/dia-de-muertos-cigar.png";
+import DiaDeMuertosNozzle from "../../public/images/dia-de-muertos-nozzle.png";
+import DiaDeMuertosChariot from "../../public/images/chariot-white-bg.png";
+import DiaDeMuertosAxe from "../../public/images/dia-de-muertos-axe.png";
+import DiaDeMuertosAxeW from "../../public/images/dia-de-muertos-axe-white.png";
+import DiaDeMuertosPoint from "../../public/images/dia-de-muertos-point.png";
 
-  const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID || "";
-  const locId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID || "";
+// FIXED: Defined products array inside the file so it's found
+const products: Product[] = [
+  {
+    id: "hose-dragger-helmet",
+    name: "Hose Dragger Helmet",
+    price: 900,
+    image: HoseDraggerHelmet,
+  },
+  {
+    id: "ddlmuertos",
+    name: "Dia De Los Muertos",
+    price: 900,
+    image: DiaDeMuertos,
+  },
+  {
+    id: "ddlmuertos-cigar",
+    name: "Dia De Los Muertos (Cigar)",
+    price: 900,
+    image: DiaDeMuertosCigar,
+  },
+  {
+    id: "ddlmuertos-nozzle",
+    name: "Dia De Los Muertos (Nozzle)",
+    price: 900,
+    image: DiaDeMuertosNozzle,
+  },
+  {
+    id: "ddlmuertos-chariot",
+    name: "Dia De Los Muertos (Mahalo)",
+    price: 900,
+    image: DiaDeMuertosChariot,
+  },
+  {
+    id: "ddlmuertos-axe",
+    name: "Dia De Los Muertos (Axe)",
+    price: 900,
+    image: DiaDeMuertosAxe,
+  },
+  {
+    id: "ddlmuertos-axe-white",
+    name: "Dia De Los Muertos (Axe)",
+    price: 900,
+    image: DiaDeMuertosAxeW,
+  },
+  {
+    id: "ddlmuertos-pointing",
+    name: "Dia De Los Muertos (There)",
+    price: 900,
+    image: DiaDeMuertosPoint,
+  },
+];
 
-  useEffect(() => {
-    AOS.init({ duration: 800, once: true });
-  }, []);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handlePayment = async (token: any) => {
-    // Basic Validation
-    if (
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.email ||
-      !formData.address
-    ) {
-      setStatus("Please fill in all required billing fields.");
-      return;
-    }
-
-    if (purchaseType === "gift_card" && !formData.recipientEmail) {
-      setStatus("Please enter a recipient email address.");
-      return;
-    }
-
-    setStatus("Processing secure payment...");
-
-    try {
-      const response = await fetch("/api/pay", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sourceId: token.token,
-          amount: amount,
-          type: purchaseType,
-          billing: formData, // Sending all the new fields to your backend
-        }),
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setStatus(`Success! Transaction complete.`);
-        // Reset form logic here if desired
-      } else {
-        setStatus("Payment failed. Please check your card details.");
-      }
-    } catch (error) {
-      setStatus("Error connecting to Square. Please try again.");
-    }
-  };
-
-  const inputStyle =
-    "w-full bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-4 text-white focus:border-pink-600 outline-none transition-all placeholder:text-zinc-600";
-  const labelStyle =
-    "block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 ml-2";
+export default function ShopPage() {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const { addToCart, toggleCart } = useCart();
 
   return (
-    <div className='min-h-screen bg-black text-white selection:bg-pink-500/30'>
-      <Header />
-
-      <main className='max-w-6xl mx-auto py-12 px-6'>
-        {/* Header Section */}
-        <div
-          className='text-center mb-16'
-          data-aos='fade-down'
-        >
-          <h1 className='text-5xl md:text-7xl font-black tracking-tighter uppercase mb-4 italic'>
-            Checkout <span className='text-pink-600'>Center</span>
-          </h1>
-          <div className='h-1 w-24 bg-pink-600 mx-auto rounded-full'></div>
-        </div>
-
-        <div className='grid grid-cols-1 lg:grid-cols-12 gap-12'>
-          {/* LEFT COLUMN: Configuration & Billing (8 Cols) */}
-          <div
-            className='lg:col-span-7 space-y-12'
-            data-aos='fade-right'
+    <div className='min-h-screen bg-white pb-20'>
+      <div className='bg-black text-white py-16 px-6'>
+        <div className='max-w-7xl mx-auto'>
+          <Link
+            href='/'
+            className='mt-5.5 inline-flex items-center gap-2 text-orange-500 font-bold uppercase text-xs mb-8'
           >
-            {/* 1. Selection */}
-            <section>
-              <h2 className='text-2xl font-black uppercase italic mb-6'>
-                01. Select Service
-              </h2>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                {["gift_card", "prepay"].map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => setPurchaseType(type)}
-                    className={`p-6 rounded-3xl border-2 transition-all text-left ${
-                      purchaseType === type
-                        ? "border-pink-600 bg-pink-600/5 shadow-lg"
-                        : "border-zinc-900 bg-zinc-900/50 hover:border-zinc-800"
-                    }`}
-                  >
-                    <span
-                      className={`text-lg font-bold uppercase ${purchaseType === type ? "text-pink-500" : "text-white"}`}
-                    >
-                      {type.replace("_", " ")}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </section>
+            <ArrowLeft
+              size={16}
+              className='transition-transform group-hover:scale-110'
+            />
+            <span>Back to Home</span>
+          </Link>
 
-            {/* 2. Amount */}
-            <section>
-              <h2 className='text-2xl font-black uppercase italic mb-6'>
-                02. Select Amount
-              </h2>
-              <div className='grid grid-cols-4 gap-3'>
-                {[1, 100, 200, 500].map((val) => (
-                  <button
-                    key={val}
-                    onClick={() => setAmount(val)}
-                    className={`py-4 rounded-xl font-black transition-all border-2 ${
-                      amount === val
-                        ? "bg-pink-600 border-pink-600"
-                        : "bg-zinc-900 border-zinc-800 text-zinc-500"
-                    }`}
-                  >
-                    ${val}
-                  </button>
-                ))}
-              </div>
-            </section>
-
-            {/* 3. Billing Details */}
-            <section className='bg-zinc-900/30 p-8 rounded-[2rem] border border-zinc-900'>
-              <h2 className='text-2xl font-black uppercase italic mb-8'>
-                03. Billing Details
-              </h2>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                <div>
-                  <label className={labelStyle}>First Name *</label>
-                  <input
-                    name='firstName'
-                    placeholder='Jane'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className={labelStyle}>Last Name *</label>
-                  <input
-                    name='lastName'
-                    placeholder='Doe'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                    required
-                  />
-                </div>
-                <div className='md:col-span-2'>
-                  <label className={labelStyle}>Email Address *</label>
-                  <input
-                    name='email'
-                    type='email'
-                    placeholder='jane@example.com'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                    required
-                  />
-                </div>
-                <div className='md:col-span-2'>
-                  <label className={labelStyle}>Street Address *</label>
-                  <input
-                    name='address'
-                    placeholder='123 Smooth St'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className={labelStyle}>Province</label>
-                  <select
-                    name='province'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                  >
-                    <option value='ON'>Ontario</option>
-                    <option value='QC'>Quebec</option>
-                    <option value='BC'>British Columbia</option>
-                    <option value='AB'>Alberta</option>
-                    {/* Add others as needed */}
-                  </select>
-                </div>
-                <div>
-                  <label className={labelStyle}>Postal Code</label>
-                  <input
-                    name='postalCode'
-                    placeholder='A1B 2C3'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                  />
-                </div>
-                <div className='md:col-span-2'>
-                  <label className={labelStyle}>Phone Number (Optional)</label>
-                  <input
-                    name='phone'
-                    placeholder='(555) 000-0000'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                  />
-                </div>
-
-                {purchaseType === "gift_card" && (
-                  <div className='md:col-span-2 mt-4 p-6 bg-pink-600/10 border border-pink-600/20 rounded-2xl animate-in fade-in'>
-                    <label className={labelStyle}>Recipient Email *</label>
-                    <input
-                      name='recipientEmail'
-                      type='email'
-                      placeholder='who is this for?'
-                      onChange={handleInputChange}
-                      className={inputStyle}
-                    />
-                  </div>
-                )}
-              </div>
-            </section>
-          </div>
-
-          {/* RIGHT COLUMN: Summary & Payment (4 Cols) */}
-          <div className='lg:col-span-5'>
-            <div
-              className='sticky top-8 space-y-6'
-              data-aos='fade-left'
-            >
-              <div className='bg-white p-8 md:p-10 rounded-[3rem] shadow-2xl text-black'>
-                <div className='mb-8 border-b border-zinc-100 pb-6'>
-                  <h2 className='text-3xl font-black uppercase tracking-tight italic'>
-                    Summary
-                  </h2>
-                  <div className='flex justify-between mt-4 font-bold text-lg'>
-                    <span className='text-zinc-400'>Total Due:</span>
-                    <span>${amount}.00 CAD</span>
-                  </div>
-                </div>
-
-                {appId && locId ? (
-                  <PaymentForm
-                    applicationId={appId}
-                    locationId={locId}
-                    cardTokenizeResponseReceived={handlePayment}
-                  >
-                    <CreditCard
-                      buttonProps={{
-                        css: {
-                          backgroundColor: "#db2777",
-                          color: "#fff",
-                          borderRadius: "1.5rem",
-                          padding: "20px",
-                          fontWeight: "900",
-                          width: "100%",
-                          cursor: "pointer",
-                          border: "none",
-                          fontSize: "1rem",
-                          textTransform: "uppercase",
-                          boxShadow: "0 10px 20px -5px rgba(219, 39, 119, 0.5)",
-                          "&:hover": { backgroundColor: "#be185d" },
-                        },
-                      }}
-                    />
-                  </PaymentForm>
-                ) : (
-                  <div className='text-center p-4 bg-zinc-100 rounded-2xl text-zinc-400 text-xs font-bold animate-pulse'>
-                    LOAD CONFIGURATION...
-                  </div>
-                )}
-
-                {status && (
-                  <div
-                    className={`mt-6 text-center text-xs font-black p-4 rounded-xl uppercase tracking-widest ${
-                      status.includes("Success")
-                        ? "bg-green-100 text-green-700"
-                        : "bg-zinc-100 text-zinc-900"
-                    }`}
-                  >
-                    {status}
-                  </div>
-                )}
-              </div>
-
-              <p className='text-center text-[10px] text-zinc-600 uppercase tracking-widest'>
-                Secure SSL Encrypted Production Checkout
-              </p>
-            </div>
+          <div className='flex flex-col md:flex-row md:items-end justify-between gap-4'>
+            <h1 className='text-6xl lg:text-8xl font-black uppercase tracking-tighter leading-none'>
+              The <span className='text-orange-600'>Lineup</span>
+            </h1>
+            <p className='text-gray-500 font-bold uppercase tracking-widest text-sm pb-2'>
+              Premium High-Heat Decals
+            </p>
           </div>
         </div>
-      </main>
-      <Footer />
+      </div>
+
+      <div className='max-w-7xl mx-auto px-6 mt-12'>
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
+          {products.map((product: Product) => (
+            <div
+              key={product.id}
+              className='group flex flex-col'
+            >
+              <button
+                onClick={() => setSelectedProduct(product)}
+                className='relative aspect-square bg-gray-50 rounded-[2rem] overflow-hidden border border-gray-100 mb-4 transition-all hover:shadow-2xl'
+              >
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className='object-contain p-6'
+                />
+              </button>
+              <div className='flex justify-between items-center px-2'>
+                <div>
+                  <p className='font-black uppercase text-sm text-gray-900'>
+                    {product.name}
+                  </p>
+                  <p className='text-orange-600 font-black'>
+                    ${(product.price / 100).toFixed(2)}
+                  </p>
+                </div>
+                <button
+                  onClick={() => addToCart({ ...product, quantity: 1 })}
+                  className='bg-black text-white p-3 rounded-2xl hover:bg-orange-600'
+                >
+                  <ShoppingCart size={20} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onOpenCart={toggleCart}
+        />
+      )}
     </div>
   );
 }
