@@ -7,7 +7,6 @@ import "aos/dist/aos.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
-// 1. Define strict types for your billing data
 type FormData = {
   firstName: string;
   lastName: string;
@@ -38,7 +37,6 @@ export default function Shop() {
     recipientEmail: "",
   });
 
-  // Environment Variables
   const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID || "";
   const locId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID || "";
 
@@ -54,23 +52,18 @@ export default function Shop() {
   };
 
   const validateForm = () => {
-    const required = [
-      "firstName",
-      "lastName",
-      "email",
-      "address",
-      "postalCode",
-    ];
-    const isMissingFields = required.some(
-      (field) => !formData[field as keyof FormData].trim(),
-    );
-
-    if (isMissingFields) {
+    if (
+      !formData.firstName.trim() ||
+      !formData.lastName.trim() ||
+      !formData.email.trim() ||
+      !formData.address.trim() ||
+      !formData.postalCode.trim()
+    ) {
       setStatus("Please fill in all required billing fields.");
       return false;
     }
     if (purchaseType === "gift_card" && !formData.recipientEmail.trim()) {
-      setStatus("Recipient email is required for Gift Cards.");
+      setStatus("Please enter a recipient email.");
       return false;
     }
     return true;
@@ -80,7 +73,7 @@ export default function Shop() {
     if (!validateForm()) return;
 
     if (tokenResult.status !== "OK") {
-      setStatus("Payment validation failed. Please check your card.");
+      setStatus("Card validation failed. Please check your details.");
       return;
     }
 
@@ -94,22 +87,19 @@ export default function Shop() {
           sourceId: tokenResult.token,
           amount,
           type: purchaseType,
-          billing: {
-            ...formData,
-            postalCode: formData.postalCode.toUpperCase().replace(/\s/g, ""),
-          },
+          billing: formData,
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setStatus("SUCCESS! Your payment has been processed.");
+        setStatus("Success! Transaction complete.");
       } else {
-        setStatus(data.error || "Payment failed. Please try again.");
+        setStatus(data.error || "Payment failed.");
       }
     } catch (error) {
-      setStatus("Server error. Please check your connection.");
+      setStatus("Error connecting to payment server.");
     }
   };
 
@@ -118,45 +108,39 @@ export default function Shop() {
   const labelStyle =
     "block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 ml-2";
 
-  return (
-    <div className='min-h-screen bg-black text-white selection:bg-pink-500/30'>
-      <Header />
+  if (!isMounted) return null;
 
+  return (
+    <div className='min-h-screen bg-black text-white'>
+      <Header />
       <main className='max-w-6xl mx-auto py-12 px-6'>
         <div
           className='text-center mb-16'
           data-aos='fade-down'
         >
-          <h1 className='text-5xl md:text-7xl font-black tracking-tighter uppercase mb-4 italic'>
+          <h1 className='text-5xl md:text-7xl font-black uppercase italic italic'>
             Checkout <span className='text-pink-600'>Center</span>
           </h1>
-          <div className='h-1 w-24 bg-pink-600 mx-auto rounded-full'></div>
         </div>
 
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-12'>
-          {/* LEFT: Configuration & Billing */}
           <div
             className='lg:col-span-7 space-y-12'
             data-aos='fade-right'
           >
+            {/* Service Selection */}
             <section>
-              <h2 className='text-2xl font-black uppercase italic mb-6'>
-                01. Service Type
+              <h2 className='text-2xl font-black uppercase italic mb-6 text-pink-600'>
+                01. Service
               </h2>
               <div className='grid grid-cols-2 gap-4'>
-                {(["gift_card", "prepay"] as const).map((type) => (
+                {["gift_card", "prepay"].map((type) => (
                   <button
                     key={type}
-                    onClick={() => setPurchaseType(type)}
-                    className={`p-6 rounded-3xl border-2 transition-all text-left ${
-                      purchaseType === type
-                        ? "border-pink-600 bg-pink-600/5"
-                        : "border-zinc-900 bg-zinc-900/50 hover:border-zinc-800"
-                    }`}
+                    onClick={() => setPurchaseType(type as any)}
+                    className={`p-6 rounded-3xl border-2 transition-all ${purchaseType === type ? "border-pink-600 bg-pink-600/10" : "border-zinc-900 bg-zinc-900"}`}
                   >
-                    <span
-                      className={`text-lg font-bold uppercase ${purchaseType === type ? "text-pink-500" : "text-zinc-500"}`}
-                    >
+                    <span className='font-bold uppercase'>
                       {type.replace("_", " ")}
                     </span>
                   </button>
@@ -164,20 +148,17 @@ export default function Shop() {
               </div>
             </section>
 
+            {/* Amount Selection */}
             <section>
-              <h2 className='text-2xl font-black uppercase italic mb-6'>
-                02. Select Amount
+              <h2 className='text-2xl font-black uppercase italic mb-6 text-pink-600'>
+                02. Amount
               </h2>
               <div className='grid grid-cols-4 gap-3'>
                 {[50, 100, 200, 500].map((val) => (
                   <button
                     key={val}
                     onClick={() => setAmount(val)}
-                    className={`py-4 rounded-xl font-black border-2 transition-all ${
-                      amount === val
-                        ? "bg-pink-600 border-pink-600"
-                        : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-700"
-                    }`}
+                    className={`py-4 rounded-xl font-black border-2 ${amount === val ? "bg-pink-600 border-pink-600" : "bg-zinc-900 border-zinc-800 text-zinc-500"}`}
                   >
                     ${val}
                   </button>
@@ -185,174 +166,116 @@ export default function Shop() {
               </div>
             </section>
 
+            {/* Billing Form */}
             <section className='bg-zinc-900/30 p-8 rounded-[2rem] border border-zinc-900'>
               <h2 className='text-2xl font-black uppercase italic mb-8'>
-                03. Billing Details
+                03. Details
               </h2>
               <div className='grid md:grid-cols-2 gap-6'>
-                <div>
-                  <label className={labelStyle}>First Name *</label>
-                  <input
-                    name='firstName'
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    placeholder='Jane'
-                    className={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label className={labelStyle}>Last Name *</label>
-                  <input
-                    name='lastName'
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    placeholder='Doe'
-                    className={inputStyle}
-                  />
-                </div>
-                <div className='md:col-span-2'>
-                  <label className={labelStyle}>Email Address *</label>
-                  <input
-                    name='email'
-                    type='email'
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder='jane@example.com'
-                    className={inputStyle}
-                  />
-                </div>
-                <div className='md:col-span-2'>
-                  <label className={labelStyle}>Street Address *</label>
-                  <input
-                    name='address'
-                    value={formData.address}
-                    onChange={handleInputChange}
-                    placeholder='123 Smooth Ave'
-                    className={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label className={labelStyle}>Province</label>
-                  <select
-                    name='province'
-                    value={formData.province}
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                  >
-                    <option value='ON'>Ontario</option>
-                    <option value='QC'>Quebec</option>
-                    <option value='BC'>British Columbia</option>
-                    <option value='AB'>Alberta</option>
-                  </select>
-                </div>
-                <div>
-                  <label className={labelStyle}>Postal Code *</label>
-                  <input
-                    name='postalCode'
-                    value={formData.postalCode}
-                    onChange={handleInputChange}
-                    placeholder='A1B 2C3'
-                    className={inputStyle}
-                  />
-                </div>
-
+                <input
+                  name='firstName'
+                  onChange={handleInputChange}
+                  placeholder='First Name *'
+                  className={inputStyle}
+                />
+                <input
+                  name='lastName'
+                  onChange={handleInputChange}
+                  placeholder='Last Name *'
+                  className={inputStyle}
+                />
+                <input
+                  name='email'
+                  onChange={handleInputChange}
+                  placeholder='Email *'
+                  className={`${inputStyle} md:col-span-2`}
+                />
+                <input
+                  name='address'
+                  onChange={handleInputChange}
+                  placeholder='Address *'
+                  className={`${inputStyle} md:col-span-2`}
+                />
+                <input
+                  name='postalCode'
+                  onChange={handleInputChange}
+                  placeholder='Postal Code *'
+                  className={inputStyle}
+                />
+                <select
+                  name='province'
+                  onChange={handleInputChange}
+                  className={inputStyle}
+                >
+                  <option value='ON'>Ontario</option>
+                  <option value='QC'>Quebec</option>
+                  <option value='BC'>British Columbia</option>
+                  <option value='AB'>Alberta</option>
+                </select>
                 {purchaseType === "gift_card" && (
-                  <div className='md:col-span-2 p-6 bg-pink-600/10 rounded-2xl border border-pink-600/20'>
-                    <label className={labelStyle}>
-                      Recipient Email Address *
-                    </label>
-                    <input
-                      name='recipientEmail'
-                      type='email'
-                      value={formData.recipientEmail}
-                      onChange={handleInputChange}
-                      placeholder='Who receives the card?'
-                      className={inputStyle}
-                    />
-                  </div>
+                  <input
+                    name='recipientEmail'
+                    onChange={handleInputChange}
+                    placeholder='Recipient Email *'
+                    className={`${inputStyle} md:col-span-2 border-pink-600/30`}
+                  />
                 )}
               </div>
             </section>
           </div>
 
-          {/* RIGHT: Summary & Square */}
+          {/* Checkout Column */}
           <div className='lg:col-span-5'>
-            <div
-              className='sticky top-8 space-y-6'
-              data-aos='fade-left'
-            >
-              <div className='bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl text-black'>
-                <h2 className='text-3xl font-black uppercase italic mb-2'>
-                  Summary
-                </h2>
-                <p className='text-zinc-400 font-bold text-xs tracking-widest uppercase mb-8'>
-                  Production Checkout
-                </p>
-
-                <div className='flex justify-between mb-8 pb-6 border-b border-zinc-100'>
-                  <span className='font-bold text-zinc-500'>Amount Due:</span>
-                  <span className='font-black text-2xl'>
-                    ${amount}.00 <span className='text-sm'>CAD</span>
-                  </span>
-                </div>
-
-                {/* The "isMounted" check prevents the SDK from crashing before IDs load */}
-                {isMounted && appId && locId ? (
-                  <PaymentForm
-                    applicationId={appId}
-                    locationId={locId}
-                    cardTokenizeResponseReceived={handlePayment}
-                  >
-                    <CreditCard
-                      buttonProps={{
-                        css: {
-                          backgroundColor: "#db2777",
-                          color: "#fff",
-                          borderRadius: "1.25rem",
-                          padding: "20px",
-                          fontWeight: "900",
-                          width: "100%",
-                          cursor: "pointer",
-                          border: "none",
-                          fontSize: "1rem",
-                          textTransform: "uppercase",
-                          transition: "all 0.2s ease",
-                          "&:hover": {
-                            backgroundColor: "#be185d",
-                            transform: "translateY(-2px)",
-                          },
-                        },
-                      }}
-                    />
-                  </PaymentForm>
-                ) : (
-                  <div className='p-8 text-center bg-zinc-50 rounded-3xl border-2 border-dashed border-zinc-200'>
-                    <p className='text-zinc-400 font-bold text-xs animate-pulse uppercase'>
-                      Initializing Square...
-                    </p>
-                  </div>
-                )}
-
-                {status && (
-                  <div
-                    className={`mt-8 p-4 rounded-2xl text-center text-xs font-black uppercase tracking-tighter ${
-                      status.includes("SUCCESS")
-                        ? "bg-green-100 text-green-700"
-                        : "bg-zinc-100 text-zinc-800"
-                    }`}
-                  >
-                    {status}
-                  </div>
-                )}
+            <div className='sticky top-8 bg-white p-8 md:p-10 rounded-[3rem] shadow-2xl text-black'>
+              <h2 className='text-3xl font-black mb-6 italic uppercase'>
+                Summary
+              </h2>
+              <div className='flex justify-between mb-8 border-b pb-4'>
+                <span className='font-bold text-zinc-400 uppercase text-sm'>
+                  Total Due
+                </span>
+                <span className='font-black text-xl'>${amount}.00 CAD</span>
               </div>
-              <p className='text-center text-[10px] text-zinc-600 uppercase tracking-widest font-bold'>
-                100% Secure &bull; Encrypted &bull; Smooth N Simple
-              </p>
+
+              {appId && locId ? (
+                <PaymentForm
+                  applicationId={appId}
+                  locationId={locId}
+                  cardTokenizeResponseReceived={handlePayment}
+                >
+                  <CreditCard
+                    buttonProps={{
+                      css: {
+                        backgroundColor: "#db2777",
+                        color: "#fff",
+                        borderRadius: "1rem",
+                        padding: "18px",
+                        fontWeight: "900",
+                        width: "100%",
+                        cursor: "pointer",
+                        border: "none",
+                        marginTop: "10px",
+                      },
+                    }}
+                  />
+                </PaymentForm>
+              ) : (
+                <div className='text-red-500 font-bold text-center'>
+                  Missing Credentials
+                </div>
+              )}
+
+              {status && (
+                <div
+                  className={`mt-6 p-4 rounded-xl text-center text-xs font-bold uppercase ${status.includes("Success") ? "bg-green-100 text-green-700" : "bg-zinc-100 text-zinc-900"}`}
+                >
+                  {status}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </main>
-
       <Footer />
     </div>
   );
