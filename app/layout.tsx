@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import CookieBanner from "../components/cookies/CookieBanner";
+import { CartProvider } from "./context/CartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-black text-white min-h-screen flow-root`}
       >
-        {children}
+        <CartProvider>{children}</CartProvider>
         <CookieBanner />
       </body>
     </html>

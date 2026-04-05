@@ -181,27 +181,6 @@ export default function Home() {
                 Precision treatments to enhance your natural beauty
               </p>
             </div>
-
-            <div
-              className='group'
-              data-aos='fade-up'
-              data-aos-delay='300'
-            >
-              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                <Image
-                  src='/images/1000020715.jpg'
-                  alt='Aftercare'
-                  fill
-                  className='object-cover transition-transform duration-700 group-hover:scale-110'
-                />
-              </div>
-              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>
-                Professional Care
-              </h3>
-              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
-                Experience aesthetic excellence in a luxury setting
-              </p>
-            </div>
             <div
               className='group'
               data-aos='fade-up'
@@ -220,6 +199,26 @@ export default function Home() {
               </h3>
               <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
                 Create a fuller, natural-looking upper lip
+              </p>
+            </div>
+            <div
+              className='group'
+              data-aos='fade-up'
+              data-aos-delay='300'
+            >
+              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                <Image
+                  src='/images/1000020715.jpg'
+                  alt='Aftercare'
+                  fill
+                  className='object-cover transition-transform duration-700 group-hover:scale-110'
+                />
+              </div>
+              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>
+                Professional Care
+              </h3>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
+                Experience aesthetic excellence in a luxury setting
               </p>
             </div>
           </div>
