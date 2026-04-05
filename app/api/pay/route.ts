@@ -42,7 +42,6 @@ export async function POST(request: Request) {
         typeof value === "bigint" ? value.toString() : value,
       ),
     );
-
     return NextResponse.json({ success: true, payment: safePayment });
   } catch (error: any) {
     // This logs the SPECIFIC Square error code (e.g., 'INVALID_VALUE') to your Vercel/Terminal logs
