@@ -16,7 +16,6 @@ export default function Home() {
   const slides = [
     {
       src: "/videos/293081.mp4",
-      title: "SMOOTH N SIMPLE",
       subtitle: "Elevating your natural beauty with precision and care.",
     },
     {
@@ -110,9 +109,9 @@ export default function Home() {
           className='relative z-10 text-center px-6'
           data-aos='zoom-in'
         >
-          <h1 className='text-4xl md:text-7xl font-extrabold tracking-tighter mb-4 text-white uppercase'>
-            {slides[currentIndex].title}
-          </h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white">
+  SMOOTH <span className="text-pink-500">N</span> SIMPLE
+</h1>
           <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed'>
             {slides[currentIndex].subtitle}
           </p>
