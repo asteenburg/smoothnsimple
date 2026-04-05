@@ -61,7 +61,7 @@ export default function Shop() {
           data-aos='fade-down'
         >
           <h1 className='text-4xl md:text-6xl font-black tracking-tighter uppercase mb-4'>
-            Shop <span className='text-pink-600'>Smooth & Simple</span>
+            Shop <span className='text-pink-600'>Smooth N Simple</span>
           </h1>
           <p className='text-zinc-500 uppercase tracking-widest text-xs font-bold'>
             Secure Square Checkout
