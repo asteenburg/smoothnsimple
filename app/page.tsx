@@ -16,7 +16,7 @@ export default function Home() {
   const slides = [
     {
       src: "/videos/293081.mp4",
-      title: "SMOOTH & SIMPLE",
+      title: "SMOOTH N SIMPLE",
       subtitle: "Elevating your natural beauty with precision and care.",
     },
     {
