@@ -70,19 +70,17 @@ export default function Shop() {
   };
 
   const handlePayment = async (tokenResult: any) => {
-    const data = await response.json();
+    if (!validateForm()) return;
 
-    if (data.success) {
-      setStatus("Success! Transaction complete.");
-    } else {
-      // ⚠️ This will change "Payment failed" to the SPECIFIC reason (e.g., "Invalid Postal Code")
-      setStatus(data.error || "Payment failed.");
-      console.error("SQUARE_ERROR_DETAILS:", data.error);
+    if (tokenResult.status !== "OK") {
+      setStatus("Card validation failed. Please check your details.");
+      return;
     }
 
     setStatus("Processing secure payment...");
 
     try {
+      // 1. Define 'response' here
       const response = await fetch("/api/pay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -98,10 +96,14 @@ export default function Shop() {
 
       if (data.success) {
         setStatus("Success! Transaction complete.");
+        // Optional: clear form or redirect here
       } else {
+        // Show the SPECIFIC error from Square (e.g., "GENERIC_DECLINE")
         setStatus(data.error || "Payment failed.");
+        console.error("Square Error:", data.error);
       }
     } catch (error) {
+      console.error("Fetch Error:", error);
       setStatus("Error connecting to payment server.");
     }
   };
