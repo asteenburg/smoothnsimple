@@ -176,7 +176,7 @@ export default function Home() {
                 />
               </div>
               <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>
-                Botox & Fillers
+                Botox
               </h3>
               <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
                 Precision treatments to enhance your natural beauty
@@ -191,7 +191,7 @@ export default function Home() {
               <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
                 <Image
                   src='/images/pexels-farhadirani-34775440.jpg'
-                  alt='Lip Filler'
+                  alt='Lip Flip'
                   fill
                   className='object-cover transition-transform duration-700 group-hover:scale-110'
                 />
