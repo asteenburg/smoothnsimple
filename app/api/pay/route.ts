@@ -1,53 +1,63 @@
-import { SquareClient, SquareEnvironment } from "square";
+import {
+  SquareClient as Client,
+  SquareEnvironment as Environment,
+} from "square";
 import { NextResponse } from "next/server";
 
-const client = new SquareClient({
+const client = new Client({
   token: process.env.SQUARE_ACCESS_TOKEN,
-  environment: SquareEnvironment.Production,
+  environment: Environment.Production,
 });
 
 export async function POST(request: Request) {
   try {
     const { sourceId, amount, type, billing } = await request.json();
 
-    console.log("Billing received:", billing);
-
-    const response = await client.payments.create({
+    // In v34+, the method returns a direct response object.
+    // We destructure 'payment' (the actual transaction data) from it.
+    const { payment } = await client.payments.create({
       sourceId,
       idempotencyKey: crypto.randomUUID(),
-
       amountMoney: {
-        amount: BigInt(amount * 100),
+        amount: BigInt(Math.round(amount * 100)),
         currency: "CAD",
       },
-
-      // ✅ REQUIRED FOR AVS / CARD APPROVAL
       billingAddress: {
         addressLine1: billing.address,
         administrativeDistrictLevel1: billing.province,
-        postalCode: billing.postalCode.replace(/\s/g, ""),
+        postalCode: billing.postalCode.toUpperCase().replace(/\s/g, ""),
         country: "CA",
+        firstName: billing.firstName,
+        lastName: billing.lastName,
       },
-
-      // ✅ Helps approval rates
       buyerEmailAddress: billing.email,
-
       note:
         type === "gift_card"
           ? `Gift Card for ${billing.recipientEmail}`
-          : "Service Prepayment",
+          : `Service Prepay: ${billing.firstName} ${billing.lastName}`,
     });
 
-    return NextResponse.json({ success: true, result: response });
+    // Square objects contain BigInts (like 'amountMoney.amount').
+    // Next.js 'NextResponse.json' will throw an error if we don't stringify them first.
+    const safeResponse = JSON.parse(
+      JSON.stringify(payment, (key, value) =>
+        typeof value === "bigint" ? value.toString() : value,
+      ),
+    );
+
+    return NextResponse.json({ success: true, payment: safeResponse });
   } catch (error: any) {
-    console.error("🔥 FULL SQUARE ERROR:", error);
+    // Standard Square SDK error handling for v34+
+    console.error("Square API Error:", error);
+
+    // If Square returns a validation/auth error, it's in the 'errors' array
+    const detail = error.errors
+      ? error.errors[0].detail
+      : "Payment processing failed";
 
     return NextResponse.json(
-      {
-        success: false,
-        error: error?.errors?.[0]?.detail || error?.message || "Payment Failed",
-      },
-      { status: 500 },
+      { success: false, error: detail },
+      { status: 400 },
     );
   }
 }
