@@ -9,7 +9,7 @@ export default function About() {
       <main className='flex-1 px-6 py-12 bg-gray-50 text-black dark:bg-black dark:text-white flex flex-col items-center'>
         <div className='max-w-4xl w-full text-center'>
           {/* Heading */}
-          <h1 className='text-4xl font-bold mb-6'><h1>About</h1><h2>Smooth <span className='text-pink-500'>N</span> Simple</h2>
+          <h1 className='text-4xl font-bold mb-6'>About</h1><h2>Smooth <span className='text-pink-500'>N</span> Simple</h2>
 
           <p className='text-lg text-gray-600 dark:text-gray-300 mb-10'>
             Personalized, natural-looking results in a safe and professional
