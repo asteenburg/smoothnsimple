@@ -17,7 +17,7 @@ export default function Booking() {
         <div className='max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-zinc-900 p-8 md:p-12 rounded-3xl border border-zinc-800 shadow-2xl'>
           <div className='relative h-64 md:h-96 w-full rounded-2xl overflow-hidden order-2 md:order-1'>
             <Image
-              src='/../images/headshot.jpeg'
+              src='/images/headshot.jpeg'
               alt='Booking Consultation'
               fill
               className='object-cover opacity-80'
