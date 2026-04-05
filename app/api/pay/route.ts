@@ -1,62 +1,64 @@
-import { SquareClient, SquareEnvironment } from "square";
+// app/api/pay/route.tsx
 import { NextResponse } from "next/server";
+import { SquareClient, SquareEnvironment } from "square";
 
 const client = new SquareClient({
+  environment: SquareEnvironment.Production, // Use Sandbox for testing
   token: process.env.SQUARE_ACCESS_TOKEN!,
-  environment: SquareEnvironment.Production,
 });
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { sourceId, amount, type, billing } = body;
+    const { sourceId, amount, type, billing } = await request.json();
 
-    // Server-side console log to see what exactly arrived from the frontend
-    console.log("Processing Payment for:", billing?.email);
+    // Validate billing info
+    if (!billing?.email || !billing?.address || !billing?.postalCode) {
+      return NextResponse.json(
+        { success: false, error: "Missing required billing information." },
+        { status: 400 }
+      );
+    }
 
+    // Create payment
     const { payment } = await client.payments.create({
       sourceId,
       idempotencyKey: crypto.randomUUID(),
       amountMoney: {
-        amount: BigInt(Math.round(amount * 100)), // Convert dollars to cents
+        amount: BigInt(Math.round(amount * 100)), // dollars → cents
         currency: "CAD",
       },
+      buyerEmailAddress: billing.email,
       billingAddress: {
         addressLine1: billing.address || "",
         administrativeDistrictLevel1: billing.province || "ON",
-        postalCode: (billing.postalCode || "").toUpperCase().replace(/\s/g, ""),
+        postalCode: billing.postalCode.replace(/\s/g, "").toUpperCase(),
         country: "CA",
-        firstName: billing.firstName || "",
-        lastName: billing.lastName || "",
       },
-      buyerEmailAddress: billing.email,
       note:
         type === "gift_card"
-          ? `Gift Card for ${billing.recipientEmail}`
-          : `Prepay: ${billing.firstName} ${billing.lastName}`,
+          ? `Gift Card for ${billing.recipientEmail || ""}`
+          : `Service Prepay: ${billing.firstName} ${billing.lastName}`,
     });
 
-    // BigInt Fix: Convert BigInts to strings before sending to Next.js
+    // Convert BigInt to string for JSON
     const safePayment = JSON.parse(
       JSON.stringify(payment, (key, value) =>
-        typeof value === "bigint" ? value.toString() : value,
-      ),
+        typeof value === "bigint" ? value.toString() : value
+      )
     );
-    return NextResponse.json({ success: true, payment: safePayment });
-  } catch (error: any) {
-    // This logs the SPECIFIC Square error code (e.g., 'INVALID_VALUE') to your Vercel/Terminal logs
-    console.error("❌ FULL SQUARE ERROR:", JSON.stringify(error, null, 2));
-    let errorMessage = "Payment Failed";
 
-    if (error.errors && error.errors.length > 0) {
-      errorMessage = error.errors[0].detail; // e.g., "Authorization error: 'GENERIC_DECLINE'"
-    } else if (error.message) {
-      errorMessage = error.message;
+    return NextResponse.json({ success: true, payment: safePayment });
+  } catch (err: any) {
+    console.error("❌ Square Payment Error:", err);
+
+    // Extract meaningful Square error
+    let message = "Payment Failed";
+    if (err?.errors && err.errors.length > 0) {
+      message = err.errors.map((e: any) => e.detail || e.category).join(", ");
+    } else if (err?.message) {
+      message = err.message;
     }
 
-    return NextResponse.json(
-      { success: false, error: errorMessage },
-      { status: 400 },
-    );
+    return NextResponse.json({ success: false, error: message }, { status: 400 });
   }
 }
