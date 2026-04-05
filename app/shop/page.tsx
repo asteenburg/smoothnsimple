@@ -154,7 +154,7 @@ export default function Shop() {
                 02. Amount
               </h2>
               <div className='grid grid-cols-4 gap-3'>
-                {[50, 100, 200, 500].map((val) => (
+                {[1, 100, 200, 500].map((val) => (
                   <button
                     key={val}
                     onClick={() => setAmount(val)}
