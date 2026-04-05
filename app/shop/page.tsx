@@ -70,11 +70,14 @@ export default function Shop() {
   };
 
   const handlePayment = async (tokenResult: any) => {
-    if (!validateForm()) return;
+    const data = await response.json();
 
-    if (tokenResult.status !== "OK") {
-      setStatus("Card validation failed. Please check your details.");
-      return;
+    if (data.success) {
+      setStatus("Success! Transaction complete.");
+    } else {
+      // ⚠️ This will change "Payment failed" to the SPECIFIC reason (e.g., "Invalid Postal Code")
+      setStatus(data.error || "Payment failed.");
+      console.error("SQUARE_ERROR_DETAILS:", data.error);
     }
 
     setStatus("Processing secure payment...");
