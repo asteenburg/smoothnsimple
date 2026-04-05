@@ -1,7 +1,11 @@
+// shop/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
-import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
+import {
+  CreditCard,
+  PaymentForm as SquareProvider,
+} from "react-square-web-payments-sdk";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Header from "../../components/Header";
@@ -51,7 +55,7 @@ export default function Shop() {
       return;
     }
 
-    setStatus("Processing...");
+    setStatus("Processing payment...");
 
     try {
       const response = await fetch("/api/pay", {
@@ -61,16 +65,15 @@ export default function Shop() {
           sourceId: tokenResult.token,
           amount,
           type: purchaseType,
-          billing: formData,
+          billing: formData, // your backend handles this
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setStatus("SUCCESS! Transaction complete.");
+        setStatus("✅ Payment SUCCESS!");
       } else {
-        // Displays exact Square error (e.g. 'GENERIC_DECLINE' or 'INVALID_POSTAL_CODE')
         setStatus(data.error || "Payment failed.");
       }
     } catch (err) {
@@ -78,12 +81,12 @@ export default function Shop() {
     }
   };
 
+  if (!isMounted) return null;
+
   const inputStyle =
     "w-full bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-4 text-white focus:border-pink-600 outline-none transition-all placeholder:text-zinc-600";
   const labelStyle =
     "block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 ml-2";
-
-  if (!isMounted) return null;
 
   return (
     <div className='min-h-screen bg-black text-white selection:bg-pink-500/30'>
@@ -124,7 +127,9 @@ export default function Shop() {
                     }`}
                   >
                     <span
-                      className={`text-lg font-bold uppercase ${purchaseType === type ? "text-pink-500" : "text-white"}`}
+                      className={`text-lg font-bold uppercase ${
+                        purchaseType === type ? "text-pink-500" : "text-white"
+                      }`}
                     >
                       {type.replace("_", " ")}
                     </span>
@@ -227,7 +232,7 @@ export default function Shop() {
                     <input
                       name='recipientEmail'
                       type='email'
-                      placeholder='who is this for?'
+                      placeholder='Who is this for?'
                       onChange={handleInputChange}
                       className={inputStyle}
                     />
@@ -254,7 +259,7 @@ export default function Shop() {
               </div>
 
               {appId && locId ? (
-                <PaymentForm
+                <SquareProvider
                   applicationId={appId}
                   locationId={locId}
                   cardTokenizeResponseReceived={handlePayment}
@@ -274,9 +279,10 @@ export default function Shop() {
                         textTransform: "uppercase",
                         "&:hover": { backgroundColor: "#be185d" },
                       },
+                      content: `Pay $${amount}.00`,
                     }}
                   />
-                </PaymentForm>
+                </SquareProvider>
               ) : (
                 <div className='text-center p-4 bg-zinc-100 rounded-2xl text-zinc-400 text-xs font-bold animate-pulse'>
                   CONFIGURING SECURE GATEWAY...
