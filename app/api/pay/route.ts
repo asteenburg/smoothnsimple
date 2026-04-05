@@ -45,13 +45,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, payment: safePayment });
   } catch (error: any) {
     // This logs the SPECIFIC Square error code (e.g., 'INVALID_VALUE') to your Vercel/Terminal logs
-    console.error("❌ SQUARE API ERROR:", error.errors || error);
+    console.error("❌ FULL SQUARE ERROR:", JSON.stringify(error, null, 2));
+    let errorMessage = "Payment Failed";
+
+    if (error.errors && error.errors.length > 0) {
+      errorMessage = error.errors[0].detail; // e.g., "Authorization error: 'GENERIC_DECLINE'"
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
 
     return NextResponse.json(
-      {
-        success: false,
-        error: error.errors?.[0]?.detail || "Square API Error",
-      },
+      { success: false, error: errorMessage },
       { status: 400 },
     );
   }
