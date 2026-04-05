@@ -10,7 +10,7 @@ export default function About() {
         <div className='max-w-4xl w-full text-center'>
           {/* Heading */}
           <div data-aos='fade-down'>
-            <h1 className='text-5xl tracking-tighter uppercase italic font-bold mb-4 text-center text-black dark:text-gray-300'>
+            <h1 className='md:text-5xl text-3xltracking-tighter uppercase italic font-bold mb-4 text-center text-black dark:text-gray-300'>
               About
               <br />
               Smooth <span className='text-pink-500'>N</span> Simple
