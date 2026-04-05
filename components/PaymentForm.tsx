@@ -7,17 +7,20 @@ import {
 
 interface PaymentFormProps {
   amount: number;
-  handlePayment: (tokenResult: any) => void;
+  handlePayment: (tokenResult: any) => Promise<void>;
 }
 
 export default function PaymentForm({
   amount,
   handlePayment,
 }: PaymentFormProps) {
+  const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!;
+  const locId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!;
+
   return (
     <SquareProvider
-      applicationId={process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!}
-      locationId={process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!}
+      applicationId={appId}
+      locationId={locId}
       cardTokenizeResponseReceived={handlePayment}
     >
       <CreditCard
