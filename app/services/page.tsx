@@ -31,12 +31,17 @@ export default function Services() {
     <div className='flex flex-col min-h-screen overflow-x-hidden'>
       <Header />
 
-      <main className='flex-1 px-6 py-10 bg-gray-50 dark:bg-black flex flex-col items-center'>
-        <h2 className='text-3xl font-bold mb-10 text-center text-pink-600'>
-          Our Services
-        </h2>
-
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full'>
+      <main className='flex-1 px-6 py-10 bg-black dark:bg-black flex flex-col items-center'>
+        <div data-aos='fade-down'>
+          <h2 className='text-5xl tracking-tighter uppercase italic mb-4 text-center text-white'>
+            Our Services
+          </h2>
+          <div className='h-1 w-24 bg-pink-600 mx-auto rounded-full mb-10'></div>
+        </div>
+        <div
+          className='grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full'
+          data-aos='fade-up'
+        >
           {services.map((s) => (
             <ServiceCard
               key={s.title}

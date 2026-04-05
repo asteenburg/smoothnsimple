@@ -81,7 +81,7 @@ export default function Shop() {
           className='text-center mb-16'
           data-aos='fade-down'
         >
-          <h1 className='text-3xl md:text-5xl font-black tracking-tighter uppercase mb-4 italic'>
+          <h1 className='text-3xl md:text-5xl tracking-tighter uppercase mb-4 italic'>
             Shopping Cart
           </h1>
           <div className='h-1 w-24 bg-pink-600 mx-auto rounded-full'></div>
@@ -99,7 +99,7 @@ export default function Shop() {
                 Gift Card
               </h2>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                {(["gift_card", "prepay"] as const).map((type) => (
+                {(["gift_card"] as const).map((type) => (
                   <button
                     key={type}
                     onClick={() => setPurchaseType(type)}
