@@ -109,9 +109,9 @@ export default function Home() {
           className='relative z-10 text-center px-6'
           data-aos='zoom-in'
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-white">
-  SMOOTH <span className="text-pink-500">N</span> SIMPLE
-</h1>
+          <h1 className='text-4xl md:text-6xl font-bold text-white'>
+            SMOOTH <span className='text-pink-500'>N</span> SIMPLE
+          </h1>
           <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed'>
             {slides[currentIndex].subtitle}
           </p>
@@ -189,7 +189,7 @@ export default function Home() {
             >
               <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
                 <Image
-                  src='/images/pexels-farhadirani-34775440.jpg'
+                  src='/images/1000020714.jpg'
                   alt='Lip Flip'
                   fill
                   className='object-cover transition-transform duration-700 group-hover:scale-110'
@@ -210,7 +210,7 @@ export default function Home() {
             >
               <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
                 <Image
-                  src='/images/pexels-itslauravillela-29478909.jpg'
+                  src='/images/1000020715.jpg'
                   alt='Aftercare'
                   fill
                   className='object-cover transition-transform duration-700 group-hover:scale-110'
