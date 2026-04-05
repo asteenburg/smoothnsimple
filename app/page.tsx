@@ -1,318 +1,250 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
-import { useCart } from "./context/CartContext";
-import ProductModal from "../components/ProductModal";
-import CartDrawer from "../components/CartDrawer";
-import LocalFont from "next/font/local";
-import Mission from "./mission";
-import {
-  ShoppingCart,
-  Heart,
-  Droplet,
-  Sun,
-  HandCoins,
-  Check,
-} from "lucide-react";
-import useSmoothScroll from "@/hooks/useSmoothScroll";
 
-// Asset Imports
-import HoseDraggersHero from "../public/images/hose-draggers-hero.png";
-import HoseDraggerHelmet from "../public/images/hose-dragger-helmet.png";
-import DiaDeMuertos from "../public/images/dia-de-muertos.png";
-import DiaDeMuertosCigar from "../public/images/dia-de-muertos-cigar.png";
-import DiaDeMuertosNozzle from "../public/images/dia-de-muertos-nozzle.png";
-import DiaDeMuertosChariot from "../public/images/chariot-white-bg.png";
-import DiaDeMuertosAxe from "../public/images/dia-de-muertos-axe.png";
-import DiaDeMuertosPoint from "../public/images/dia-de-muertos-point.png";
-import DiaDeMuertosAxeW from "../public/images/dia-de-muertos-axe-white.png";
-import DiaDeMuertosPointing from "@/public/images/dia-de-muertos-pointing.png";
-
-const HoseFont = LocalFont({
-  src: "./fonts/Billy_Ohio.ttf",
-  variable: "--font-hose-draggers",
-});
-
-const products = [
-  {
-    id: "hose-dragger-helmet",
-    name: "Hose Dragger Helmet",
-    price: 900,
-    image: HoseDraggerHelmet,
-  },
-  {
-    id: "ddlmuertos",
-    name: "Dia De Los Muertos",
-    price: 900,
-    image: DiaDeMuertos,
-  },
-  {
-    id: "ddlmuertos-cigar",
-    name: "Dia De Los Muertos (Cigar)",
-    price: 900,
-    image: DiaDeMuertosCigar,
-  },
-  {
-    id: "ddlmuertos-nozzle",
-    name: "Dia De Los Muertos (Nozzle)",
-    price: 900,
-    image: DiaDeMuertosNozzle,
-  },
-  {
-    id: "ddlmuertos-chariot",
-    name: "Dia De Los Muertos (Mahalo)",
-    price: 900,
-    image: DiaDeMuertosChariot,
-  },
-  {
-    id: "ddlmuertos-axe",
-    name: "Dia De Los Muertos (Axe)",
-    price: 900,
-    image: DiaDeMuertosAxe,
-  },
-  {
-    id: "ddlmuertos-axe-white",
-    name: "Dia De Los Muertos (Axe)",
-    price: 900,
-    image: DiaDeMuertosAxeW,
-  },
-  {
-    id: "ddlmuertos-pointing",
-    name: "Dia De Los Muertos (There)",
-    price: 900,
-    image: DiaDeMuertosPoint,
-  },
-];
-
-function DCDescription() {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
-  const scrollY = useSmoothScroll();
-  const [opacity, setOpacity] = useState(0);
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const rect = sectionRef.current.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    const sectionTop = rect.top + scrollY;
-    const start = scrollY + windowHeight;
-    const end = scrollY + windowHeight * 0.2;
-    const visible = Math.min(
-      Math.max((start - sectionTop) / (start - end), 0),
-      1,
-    );
-    setOpacity(visible);
-  }, [scrollY]);
-
-  return (
-    <section
-      ref={sectionRef}
-      className='flex flex-col md:flex-row px-6 bg-white/30 backdrop-blur-xl lg:px-20 mt-20 py-16 gap-12 items-center rounded-[2rem] border border-white/40 shadow-2xl max-w-7xl mx-auto mb-20 transition-opacity duration-300'
-      style={{ opacity }}
-    >
-      <div className='flex-shrink-0 relative group'>
-        <div className='absolute -inset-4 bg-orange-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity' />
-        <Image
-          src={DiaDeMuertosPointing}
-          alt='Dia De Muertos Pointing'
-          width={300}
-          height={300}
-          className='rounded-lg relative z-10 drop-shadow-2xl'
-        />
-      </div>
-      <div className='relative z-10'>
-        <h2
-          className='mb-6 text-orange-600'
-          style={{
-            fontFamily: HoseFont.style.fontFamily,
-            fontSize: "4.5rem",
-            lineHeight: "1",
-          }}
-        >
-          The Secret Sauce
-        </h2>
-        <div className='space-y-6'>
-          <div className='bg-white/40 p-4 rounded-2xl border border-white/20'>
-            <h4 className='text-xs font-black uppercase tracking-[0.2em] mb-2 text-orange-600'>
-              Die-Cut Singles
-            </h4>
-            <p className='max-w-xl tracking-wide font-semibold text-gray-800 leading-relaxed'>
-              Printed with top quality inks on durable vinyl to ensure they are
-              waterproof, weather resistant, dishwasher and microwave safe.
-            </p>
-          </div>
-          <div className='bg-white/40 p-4 rounded-2xl border border-white/20'>
-            <h4 className='text-xs font-black uppercase tracking-[0.2em] mb-2 text-orange-600'>
-              Kiss-Cut Sheets
-            </h4>
-            <p className='max-w-xl tracking-wide font-semibold text-gray-800 leading-relaxed'>
-              The blade cuts only through the vinyl layer, leaving a paper
-              backing—making them super easy to peel and apply.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function Home() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // FIXED: Strictly use Global State from Context
-  const { cart, isDonating, toggleDonation, isCartOpen, toggleCart } =
-    useCart();
+  const slides = [
+    {
+      src: "/videos/293081.mp4",
+      subtitle: "Elevating your natural beauty with precision and care.",
+    },
+    {
+      src: "/videos/mixkit-adult-woman-in-the-mirror-frustrated-by-her-wrinkles-4515-hd-ready.mp4",
+      title: "EXPERT AESTHETICS",
+      subtitle: "Professional Botox & filler treatments tailored for you.",
+    },
+  ];
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 2;
-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
-      setMousePos({ x, y });
+    // 1. Initialize AOS Animations
+    AOS.init({ duration: 800, once: true });
+
+    // 2. THE NUCLEAR AUTOPLAY GUARD
+    const forceVisualPlay = () => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      // Hard-set volume and muted states for cross-browser compliance
+      video.muted = true;
+      video.volume = 0;
+
+      const playPromise = video.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // If the browser blocks it, we wait for the first click/touch anywhere
+          const playOnGesture = () => {
+            if (videoRef.current) {
+              videoRef.current.play();
+              console.log("Video unlocked by user interaction.");
+            }
+            document.removeEventListener("click", playOnGesture);
+            document.removeEventListener("touchstart", playOnGesture);
+          };
+          document.addEventListener("click", playOnGesture);
+          document.addEventListener("touchstart", playOnGesture);
+        });
+      }
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+
+    // Run on initial mount
+    forceVisualPlay();
+
+    // 3. Slide transition interval
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
+    }, 10000);
+
+    return () => {
+      clearInterval(interval);
+      // Cleanup any stray listeners
+      document.removeEventListener("click", () => {});
+      document.removeEventListener("touchstart", () => {});
+    };
+  }, [slides.length]);
+
+  // Re-trigger play specifically when the currentIndex changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load(); // Forces the browser to recognize the new <source>
+      videoRef.current.play().catch(() => {});
+    }
+  }, [currentIndex]);
 
   return (
-    <main
-      className={`min-h-screen bg-gradient-to-b from-black text-gray-900 ${HoseFont.variable} selection:bg-orange-500 selection:text-white`}
-    >
-      {/* FLOATING CART UI - Elevated Z-index and pointer control */}
-      {/*<div className='fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-4'>
-        <button
-          onClick={toggleDonation}
-          className={`flex items-center gap-3 p-3 rounded-2xl shadow-xl border transition-all ${isDonating ? "bg-orange-500 border-orange-400 text-white" : "bg-white border-gray-100 text-gray-600 hover:bg-gray-50"}`}
+    <div className='relative w-full bg-black overflow-x-hidden'>
+      <Header />
+
+      {/* SECTION 1: HERO SLIDESHOW */}
+      <section className='relative h-[75vh] md:h-[85vh] w-full flex items-center justify-center overflow-hidden bg-zinc-950'>
+        <video
+          ref={videoRef}
+          key={slides[currentIndex].src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          /* @ts-ignore - webkit attributes for Safari */
+          webkit-playsinline='true'
+          preload='auto'
+          className='absolute z-0 w-full h-full object-cover opacity-50 transition-opacity duration-1000 pointer-events-none'
         >
-          <Heart
-            size={18}
-            fill={isDonating ? "white" : "none"}
+          <source
+            src={slides[currentIndex].src}
+            type='video/mp4'
           />
-          <span className='text-[10px] font-bold uppercase tracking-tighter'>
-            {isDonating ? "Supporting" : "Support the Crew"}
-          </span>
-        </button>
+        </video>
 
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            toggleCart(); // FIXED: Triggers global context open/close
-          }}
-          className='bg-black text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center gap-2 group relative pointer-events-auto'
-        >
-          <ShoppingCart size={24} />
-          {cart.length > 0 && (
-            <span className='absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] w-6 h-6 rounded-full flex items-center justify-center font-bold border-2 border-white'>
-              {cart.reduce((acc, item) => acc + item.quantity, 0)}
-            </span>
-          )}
-        </button>
-      </div>*/}
-
-      {/* HERO SECTION */}
-      <section className='relative min-h-[75vh] flex flex-col lg:flex-row items-center justify-between overflow-hidden bg-black pt-20 lg:pt-0'>
         <div
-          className='absolute top-0 right-0 w-[800px] h-[800px] bg-orange-600/10 blur-[150px] rounded-full'
-          style={{
-            transform: `translate(${mousePos.x * -30}px, ${mousePos.y * -30}px)`,
-          }}
-        />
-        <div className='relative mt-24 z-30 px-6 lg:pl-20 lg:w-[45%] text-center lg:text-left'>
-          <h1 className='text-6xl lg:text-[7rem] xl:text-[7rem] text-white font-black tracking-tighter uppercase leading-[0.8]'>
-            Stickers <br /> That Match Your <br />
-            <span
-              className={`${HoseFont.className} text-orange-500 normal-case text-8xl lg:text-[12rem] xl:text-[14rem] inline-block -rotate-3 mt-4`}
-            >
-              Vibe
-            </span>
-          </h1>
-          <p className='mt-12 text-gray-400 text-lg lg:text-xl font-bold uppercase tracking-[0.3em]'>
-            Premium High-Heat Decals
+          className='relative z-10 text-center px-6'
+          data-aos='zoom-in'
+        >
+          <h1 className="text-4xl md:text-6xl font-bold text-white">
+  SMOOTH <span className="text-pink-500">N</span> SIMPLE
+</h1>
+          <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed'>
+            {slides[currentIndex].subtitle}
           </p>
-          <Link href='/shop'>
-            <button className='mt-8 mb-24 px-10 py-5 bg-orange-600 text-white font-black uppercase tracking-[0.2em] rounded-full hover:scale-110 transition-all'>
-              Shop Stickers
-            </button>
+
+          <div className='flex flex-col md:flex-row gap-4 justify-center items-center'>
+            <Link
+              href='/booking'
+              className='w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center'
+            >
+              Book Appointment
+            </Link>
+            <Link
+              href='/shop'
+              className='w-full md:w-auto bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-10 py-4 rounded-full font-bold transition-all text-center'
+            >
+              Shop & Gift Cards
+            </Link>
+          </div>
+        </div>
+
+        {/* SLIDE INDICATORS */}
+        <div className='absolute bottom-8 left-0 right-0 flex justify-center gap-3 z-20'>
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`h-2 transition-all rounded-full ${
+                currentIndex === index ? "bg-pink-600 w-10" : "bg-white/40 w-2"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* SECTION 2: THE EXPERIENCE */}
+      <section className='py-20 bg-zinc-950 px-6'>
+        <div className='max-w-7xl mx-auto'>
+          <div
+            className='text-center mb-12'
+            data-aos='fade-up'
+          >
+            <h2 className='text-3xl md:text-5xl font-bold mb-4 text-white uppercase tracking-tight'>
+              Expert Aesthetics
+            </h2>
+            <div className='w-20 h-1 bg-pink-500 mx-auto'></div>
+          </div>
+
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
+            <div
+              className='group'
+              data-aos='fade-up'
+              data-aos-delay='100'
+            >
+              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                <Image
+                  src='/images/jump1987-botox-10084507.jpg'
+                  alt='Botox'
+                  fill
+                  className='object-cover transition-transform duration-700 group-hover:scale-110'
+                />
+              </div>
+              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>
+                Botox
+              </h3>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
+                Precision treatments to enhance your natural beauty
+              </p>
+            </div>
+
+            <div
+              className='group'
+              data-aos='fade-up'
+              data-aos-delay='200'
+            >
+              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                <Image
+                  src='/images/pexels-farhadirani-34775440.jpg'
+                  alt='Lip Flip'
+                  fill
+                  className='object-cover transition-transform duration-700 group-hover:scale-110'
+                />
+              </div>
+              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>
+                Lip Flip
+              </h3>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
+                Create a fuller, natural-looking upper lip
+              </p>
+            </div>
+
+            <div
+              className='group'
+              data-aos='fade-up'
+              data-aos-delay='300'
+            >
+              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                <Image
+                  src='/images/pexels-itslauravillela-29478909.jpg'
+                  alt='Aftercare'
+                  fill
+                  className='object-cover transition-transform duration-700 group-hover:scale-110'
+                />
+              </div>
+              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>
+                Professional Care
+              </h3>
+              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
+                Experience aesthetic excellence in a luxury setting
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3: CTA */}
+      <section className='py-24 bg-pink-600 text-white text-center px-6 relative overflow-hidden'>
+        <div
+          data-aos='fade-up'
+          className='relative z-10'
+        >
+          <h2 className='text-4xl md:text-6xl font-black mb-8 italic tracking-tighter uppercase'>
+            Your transformation awaits
+          </h2>
+          <Link
+            href='/booking'
+            className='inline-block bg-black text-white px-14 py-5 rounded-full font-black text-xl hover:bg-zinc-900 transition-all active:scale-95 shadow-2xl uppercase tracking-widest'
+          >
+            Reserve Now
           </Link>
         </div>
-        <div className='relative z-20 lg:w-[60%] h-full flex items-center lg:justify-end'>
-          <div
-            className='relative w-full aspect-square lg:h-[95vh] lg:w-[120%] lg:-mr-[2%] transition-transform'
-            style={{
-              transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 8}px)`,
-            }}
-          >
-            <Image
-              src={HoseDraggersHero}
-              alt='Hero'
-              className='object-contain lg:object-right select-none drop-shadow-[-30px_30px_60px_rgba(0,0,0,0.9)]'
-              fill
-              priority
-            />
-          </div>
-        </div>
       </section>
-
-      {/* PRODUCTS SECTION */}
-      <section className='bg-white -mt-12 md:mx-8 mx-auto pt-24 pb-20 px-6 rounded-[2rem] relative z-40'>
-        <div className='max-w-7xl mx-auto'>
-          <div className='flex items-center gap-4 mb-12 pt-8'>
-            <h2 className='text-4xl font-black uppercase tracking-tighter'>
-              The Lineup
-            </h2>
-            <div className='h-[2px] flex-grow bg-gray-100' />
-          </div>
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10'>
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onView={() => setSelectedProduct(product)}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <Mission />
-      <DCDescription />
-
-      {/* Modals & Drawer */}
-      {selectedProduct && (
-        <ProductModal
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-          onOpenCart={toggleCart}
-        />
-      )}
-
-      {/* FIXED: Using Global Context state for visibility */}
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={toggleCart}
-      />
-    </main>
-  );
-}
-
-function ProductCard({ product, onView }: any) {
-  return (
-    <button
-      onClick={onView}
-      className='group flex flex-col items-center w-full'
-    >
-      <div className='relative w-full aspect-square bg-white/40 backdrop-blur-md rounded-3xl mb-4 overflow-hidden flex items-center justify-center border border-white/20 transition-all hover:bg-white/60'>
-        <Image
-          src={product.image}
-          alt={product.name}
-          className='w-40 h-40 object-contain transition-transform group-hover:scale-110'
-        />
-      </div>
-      <p className='font-bold text-center text-gray-900'>{product.name}</p>
-      <p className='text-gray-500 font-black text-sm'>
-        ${(product.price / 100).toFixed(2)}
-      </p>
-    </button>
+      <Footer />
+    </div>
   );
 }

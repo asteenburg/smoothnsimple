@@ -1,35 +1,12 @@
-// app/layout.tsx
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import LocalFont from "next/font/local";
-import Footer from "@/components/footer";
 import "./globals.css";
-import CookieBanner from "@/components/CookieBanner";
-import ClientLayout from "../components/clientLayout"; // This will handle Navbar + CartDrawer
+import { Inter } from "next/font/google";
+import CookieBanner from "../components/cookies/CookieBanner";
 
-// Font Definitions
-const myCustomFont = LocalFont({
-  src: "./fonts/Billy_Ohio.ttf",
-  variable: "--font-my-custom-font",
-});
+const inter = Inter({ subsets: ["latin"] });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Hose Draggers Inc.",
-  description: "High quality stickers for firefighters by firefighters.",
-  icons: {
-    icon: "/favicon.ico", // Points to public/favicon.ico or app/favicon.ico
-    apple: "/apple-icon.png", // If you have one
-  },
+export const metadata = {
+  title: "Smooth & Simple Cosmetics",
+  description: "Professional Botox & Aesthetic Treatments",
 };
 
 export default function RootLayout({
@@ -38,21 +15,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <title>Hose Draggers Inc | Premium Firefighter Stickers</title>
-      <head>
-        <link
-          rel='stylesheet'
-          href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
-        />
-      </head>
+    <html
+      lang='en'
+      className='scroll-smooth'
+    >
+      {/* min-h-screen and flow-root ensure the page can grow as long as it needs to */}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${myCustomFont.variable} antialiased`}
+        className={`${inter.className} bg-black text-white min-h-screen flow-root`}
       >
-        {/* Wrap dynamic client features inside ClientLayout */}
-        <ClientLayout>{children}</ClientLayout>
+        {children}
         <CookieBanner />
-        <Footer />
       </body>
     </html>
   );

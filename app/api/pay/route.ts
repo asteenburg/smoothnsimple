@@ -2,41 +2,50 @@ import { SquareClient, SquareEnvironment } from "square";
 import { NextResponse } from "next/server";
 
 const client = new SquareClient({
-  // The new way to pass the key:
   token: process.env.SQUARE_ACCESS_TOKEN,
-  // The new way to set environment:
   environment: SquareEnvironment.Production,
 });
 
 export async function POST(request: Request) {
   try {
-    const { sourceId, amount, type, recipient } = await request.json();
+    const { sourceId, amount, type, billing } = await request.json();
 
-    // Use a try-catch block specifically for the Square API call
+    console.log("Billing received:", billing);
+
     const response = await client.payments.create({
       sourceId,
       idempotencyKey: crypto.randomUUID(),
+
       amountMoney: {
-        // Square now handles the BigInt conversion internally in many cases,
-        // but keeping it as a number or BigInt is safe here.
         amount: BigInt(amount * 100),
         currency: "CAD",
       },
+
+      // ✅ REQUIRED FOR AVS / CARD APPROVAL
+      billingAddress: {
+        addressLine1: billing.address,
+        administrativeDistrictLevel1: billing.province,
+        postalCode: billing.postalCode.replace(/\s/g, ""),
+        country: "CA",
+      },
+
+      // ✅ Helps approval rates
+      buyerEmailAddress: billing.email,
+
       note:
         type === "gift_card"
-          ? `Gift Card for ${recipient}`
+          ? `Gift Card for ${billing.recipientEmail}`
           : "Service Prepayment",
     });
 
     return NextResponse.json({ success: true, result: response });
   } catch (error: any) {
-    console.error("Square API Error:", error);
+    console.error("🔥 FULL SQUARE ERROR:", error);
 
-    // Improved error reporting for the new SDK structure
     return NextResponse.json(
       {
         success: false,
-        error: error.errors ? error.errors[0].detail : "Payment Failed",
+        error: error?.errors?.[0]?.detail || error?.message || "Payment Failed",
       },
       { status: 500 },
     );
