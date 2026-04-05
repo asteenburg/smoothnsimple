@@ -1,62 +1,58 @@
-import {
-  SquareClient as Client,
-  SquareEnvironment as Environment,
-} from "square";
+import { SquareClient, SquareEnvironment } from "square";
 import { NextResponse } from "next/server";
 
-const client = new Client({
-  token: process.env.SQUARE_ACCESS_TOKEN,
-  environment: Environment.Production,
+const client = new SquareClient({
+  token: process.env.SQUARE_ACCESS_TOKEN!,
+  environment: SquareEnvironment.Production,
 });
 
 export async function POST(request: Request) {
   try {
-    const { sourceId, amount, type, billing } = await request.json();
+    const body = await request.json();
+    const { sourceId, amount, type, billing } = body;
 
-    // In v34+, the method returns a direct response object.
-    // We destructure 'payment' (the actual transaction data) from it.
+    // Server-side console log to see what exactly arrived from the frontend
+    console.log("Processing Payment for:", billing?.email);
+
     const { payment } = await client.payments.create({
       sourceId,
       idempotencyKey: crypto.randomUUID(),
       amountMoney: {
-        amount: BigInt(Math.round(amount * 100)),
+        amount: BigInt(Math.round(amount * 100)), // Convert dollars to cents
         currency: "CAD",
       },
       billingAddress: {
-        addressLine1: billing.address,
-        administrativeDistrictLevel1: billing.province,
-        postalCode: billing.postalCode.toUpperCase().replace(/\s/g, ""),
+        addressLine1: billing.address || "",
+        administrativeDistrictLevel1: billing.province || "ON",
+        postalCode: (billing.postalCode || "").toUpperCase().replace(/\s/g, ""),
         country: "CA",
-        firstName: billing.firstName,
-        lastName: billing.lastName,
+        firstName: billing.firstName || "",
+        lastName: billing.lastName || "",
       },
       buyerEmailAddress: billing.email,
       note:
         type === "gift_card"
           ? `Gift Card for ${billing.recipientEmail}`
-          : `Service Prepay: ${billing.firstName} ${billing.lastName}`,
+          : `Prepay: ${billing.firstName} ${billing.lastName}`,
     });
 
-    // Square objects contain BigInts (like 'amountMoney.amount').
-    // Next.js 'NextResponse.json' will throw an error if we don't stringify them first.
-    const safeResponse = JSON.parse(
+    // BigInt Fix: Convert BigInts to strings before sending to Next.js
+    const safePayment = JSON.parse(
       JSON.stringify(payment, (key, value) =>
         typeof value === "bigint" ? value.toString() : value,
       ),
     );
 
-    return NextResponse.json({ success: true, payment: safeResponse });
+    return NextResponse.json({ success: true, payment: safePayment });
   } catch (error: any) {
-    // Standard Square SDK error handling for v34+
-    console.error("Square API Error:", error);
-
-    // If Square returns a validation/auth error, it's in the 'errors' array
-    const detail = error.errors
-      ? error.errors[0].detail
-      : "Payment processing failed";
+    // This logs the SPECIFIC Square error code (e.g., 'INVALID_VALUE') to your Vercel/Terminal logs
+    console.error("❌ SQUARE API ERROR:", error.errors || error);
 
     return NextResponse.json(
-      { success: false, error: detail },
+      {
+        success: false,
+        error: error.errors?.[0]?.detail || "Square API Error",
+      },
       { status: 400 },
     );
   }
