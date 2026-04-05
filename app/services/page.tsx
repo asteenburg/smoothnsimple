@@ -12,8 +12,8 @@ export default function Services() {
       image: "/images/pexels-shvetsa-4586711.jpg",
     },
     {
-      title: "Lip Filler",
-      price: "$125.00 per lip",
+      title: "Lip Flip",
+      price: "$60.00 per lip",
       description:
         "A lip flip uses Botox to relax muscles around the mouth, creating a fuller, natural-looking upper lip without fillers.",
       image: "/images/pexels-farhadirani-34775440.jpg",
@@ -32,7 +32,9 @@ export default function Services() {
       <Header />
 
       <main className='flex-1 px-6 py-10 bg-gray-50 dark:bg-black flex flex-col items-center'>
-        <h2 className='text-3xl font-bold mb-10 text-center'>Our Services</h2>
+        <h2 className='text-3xl font-bold mb-10 text-center text-pink-600'>
+          Our Services
+        </h2>
 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full'>
           {services.map((s) => (
