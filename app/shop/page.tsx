@@ -1,15 +1,11 @@
-// shop/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  CreditCard,
-  PaymentForm as SquareProvider,
-} from "react-square-web-payments-sdk";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import PaymentForm from "../../components/PaymentForm";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function Shop() {
   const [isMounted, setIsMounted] = useState(false);
@@ -29,9 +25,6 @@ export default function Shop() {
     phone: "",
     recipientEmail: "",
   });
-
-  const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID || "";
-  const locId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID || "";
 
   useEffect(() => {
     setIsMounted(true);
@@ -55,43 +48,33 @@ export default function Shop() {
       return;
     }
 
-    setStatus("Processing payment...");
+    setStatus("Processing...");
 
     try {
-      const response = await fetch("/api/pay", {
+      const res = await fetch("/api/pay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           sourceId: tokenResult.token,
           amount,
           type: purchaseType,
-          billing: formData, // your backend handles this
+          billing: formData,
         }),
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        setStatus("✅ Payment SUCCESS!");
-      } else {
-        setStatus(data.error || "Payment failed.");
-      }
-    } catch (err) {
+      const data = await res.json();
+      if (data.success) setStatus("SUCCESS! Transaction complete.");
+      else setStatus(data.error || "Payment failed.");
+    } catch {
       setStatus("Connection error.");
     }
   };
 
   if (!isMounted) return null;
 
-  const inputStyle =
-    "w-full bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-4 text-white focus:border-pink-600 outline-none transition-all placeholder:text-zinc-600";
-  const labelStyle =
-    "block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 ml-2";
-
   return (
     <div className='min-h-screen bg-black text-white selection:bg-pink-500/30'>
       <Header />
-
       <main className='max-w-6xl mx-auto py-12 px-6'>
         {/* Title */}
         <div
@@ -105,12 +88,12 @@ export default function Shop() {
         </div>
 
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-12'>
-          {/* Left Column: Selection & Billing */}
+          {/* Left Column */}
           <div
             className='lg:col-span-7 space-y-12'
             data-aos='fade-right'
           >
-            {/* 01. Selection */}
+            {/* Service Selection */}
             <section>
               <h2 className='text-2xl font-black uppercase italic mb-6'>
                 01. Select Service
@@ -138,7 +121,7 @@ export default function Shop() {
               </div>
             </section>
 
-            {/* 02. Amount */}
+            {/* Amount Selection */}
             <section>
               <h2 className='text-2xl font-black uppercase italic mb-6'>
                 02. Select Amount
@@ -160,81 +143,97 @@ export default function Shop() {
               </div>
             </section>
 
-            {/* 03. Billing */}
+            {/* Billing Form */}
             <section className='bg-zinc-900/30 p-8 rounded-[2rem] border border-zinc-900'>
               <h2 className='text-2xl font-black uppercase italic mb-8'>
                 03. Billing Details
               </h2>
               <div className='grid md:grid-cols-2 gap-6'>
-                <div>
-                  <label className={labelStyle}>First Name *</label>
-                  <input
-                    name='firstName'
-                    placeholder='Jane'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label className={labelStyle}>Last Name *</label>
-                  <input
-                    name='lastName'
-                    placeholder='Doe'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                  />
-                </div>
-                <div className='md:col-span-2'>
-                  <label className={labelStyle}>Email Address *</label>
-                  <input
-                    name='email'
-                    type='email'
-                    placeholder='jane@example.com'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                  />
-                </div>
-                <div className='md:col-span-2'>
-                  <label className={labelStyle}>Street Address *</label>
-                  <input
-                    name='address'
-                    placeholder='123 Smooth St'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label className={labelStyle}>Province</label>
-                  <select
-                    name='province'
-                    onChange={handleInputChange}
-                    className={inputStyle}
+                {[
+                  {
+                    label: "First Name *",
+                    name: "firstName",
+                    type: "text",
+                    placeholder: "Jane",
+                  },
+                  {
+                    label: "Last Name *",
+                    name: "lastName",
+                    type: "text",
+                    placeholder: "Doe",
+                  },
+                  {
+                    label: "Email Address *",
+                    name: "email",
+                    type: "email",
+                    placeholder: "jane@example.com",
+                    span: 2,
+                  },
+                  {
+                    label: "Street Address *",
+                    name: "address",
+                    type: "text",
+                    placeholder: "123 Smooth St",
+                    span: 2,
+                  },
+                  {
+                    label: "Province",
+                    name: "province",
+                    type: "select",
+                    options: ["ON", "QC", "BC", "AB"],
+                  },
+                  {
+                    label: "Postal Code *",
+                    name: "postalCode",
+                    type: "text",
+                    placeholder: "A1B 2C3",
+                  },
+                ].map((field) => (
+                  <div
+                    key={field.name}
+                    className={`md:col-span-${field.span || 1}`}
                   >
-                    <option value='ON'>Ontario</option>
-                    <option value='QC'>Quebec</option>
-                    <option value='BC'>British Columbia</option>
-                    <option value='AB'>Alberta</option>
-                  </select>
-                </div>
-                <div>
-                  <label className={labelStyle}>Postal Code *</label>
-                  <input
-                    name='postalCode'
-                    placeholder='A1B 2C3'
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                  />
-                </div>
+                    <label className='block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 ml-2'>
+                      {field.label}
+                    </label>
+                    {field.type === "select" ? (
+                      <select
+                        name={field.name}
+                        onChange={handleInputChange}
+                        className='w-full bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-4 text-white outline-none transition-all'
+                      >
+                        {field.options!.map((opt) => (
+                          <option
+                            key={opt}
+                            value={opt}
+                          >
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        name={field.name}
+                        type={field.type}
+                        placeholder={field.placeholder}
+                        onChange={handleInputChange}
+                        className='w-full bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-4 text-white outline-none transition-all'
+                      />
+                    )}
+                  </div>
+                ))}
 
                 {purchaseType === "gift_card" && (
                   <div className='md:col-span-2 mt-4 p-6 bg-pink-600/10 border border-pink-600/20 rounded-2xl'>
-                    <label className={labelStyle}>Recipient Email *</label>
+                    <label className='block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 ml-2'>
+                      Recipient Email *
+                    </label>
                     <input
                       name='recipientEmail'
                       type='email'
-                      placeholder='Who is this for?'
+                      placeholder='who is this for?'
                       onChange={handleInputChange}
-                      className={inputStyle}
+                      className='w-full bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-4 text-white outline-none transition-all'
                     />
                   </div>
                 )}
@@ -242,7 +241,7 @@ export default function Shop() {
             </section>
           </div>
 
-          {/* Right Column: Order Summary & Square */}
+          {/* Right Column: Order & Payment */}
           <div className='lg:col-span-5'>
             <div
               className='sticky top-8 bg-white p-8 md:p-10 rounded-[3rem] shadow-2xl text-black'
@@ -258,36 +257,10 @@ export default function Shop() {
                 </span>
               </div>
 
-              {appId && locId ? (
-                <SquareProvider
-                  applicationId={appId}
-                  locationId={locId}
-                  cardTokenizeResponseReceived={handlePayment}
-                >
-                  <CreditCard
-                    buttonProps={{
-                      css: {
-                        backgroundColor: "#db2777",
-                        color: "#fff",
-                        borderRadius: "1.25rem",
-                        padding: "20px",
-                        fontWeight: "900",
-                        width: "100%",
-                        cursor: "pointer",
-                        border: "none",
-                        fontSize: "1rem",
-                        textTransform: "uppercase",
-                        "&:hover": { backgroundColor: "#be185d" },
-                      },
-                      content: `Pay $${amount}.00`,
-                    }}
-                  />
-                </SquareProvider>
-              ) : (
-                <div className='text-center p-4 bg-zinc-100 rounded-2xl text-zinc-400 text-xs font-bold animate-pulse'>
-                  CONFIGURING SECURE GATEWAY...
-                </div>
-              )}
+              <PaymentForm
+                amount={amount}
+                handlePayment={handlePayment}
+              />
 
               {status && (
                 <div
