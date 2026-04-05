@@ -100,7 +100,7 @@ export default function Header() {
 
       {/* Mobile Dropdown */}
       {isOpen && (
-        <div className='md:hidden absolute top-20 left-0 w-full bg-white dark:bg-zinc-900 border-b border-zinc-800 rounded-b-2xl animate-in fade-in slide-in-from-top-2'>
+        <div className='md:hidden absolute top-20 left-0 w-full bg-white text-zinc-900 dark:bg-zinc-900 dark:text-white border-b border-zinc-800 rounded-b-2xl animate-in fade-in slide-in-from-top-2'>
           <nav className='flex flex-col p-4 gap-4'>
             {navLinks.map((link) => renderLink(link, true))}
           </nav>
