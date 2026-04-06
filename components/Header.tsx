@@ -72,32 +72,28 @@ export default function Header() {
   };
 
   return (
-    <header className='relative w-full z-50 bg-white dark:bg-black border-b border-zinc-800 shadow-md'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex justify-between items-center h-20'>
+    <header className="relative w-full z-50 bg-white dark:bg-black border-b border-zinc-800 shadow-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
           {/* LOGO */}
-          <div className='flex flex-col'>
-            <h1 className='text-xl md:text-2xl font-bold text-pink-600 leading-none'>
+          <div className="flex flex-col">
+            <h1 className="text-xl md:text-2xl font-bold text-pink-600 leading-none">
               Smooth N Simple
             </h1>
-            <span className='text-[10px] md:text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-1'>
+            <span className="text-[10px] md:text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-1">
               by Nurse Shelby
             </span>
           </div>
 
           {/* DESKTOP NAV */}
-          <nav className='hidden md:flex items-center gap-8 text-gray-500 dark:text-gray-400'>
+          <nav className="hidden md:flex items-center gap-8 text-gray-500 dark:text-gray-400">
             {navLinks.map((link) => renderLink(link))}
 
             {/* 🛒 CART ICON */}
-            <Link
-              href='/shop'
-              className='relative group'
-            >
-              <ShoppingCart className='w-5 h-5 group-hover:text-pink-500 transition' />
-
+            <Link href="/cart" className="relative group">
+              <ShoppingCart className="w-5 h-5 group-hover:text-pink-500 transition" />
               {cart.length > 0 && (
-                <span className='absolute -top-2 -right-2 bg-pink-600 text-white text-[10px] px-1.5 py-0.5 rounded-full'>
+                <span className="absolute -top-2 -right-2 bg-pink-600 text-white text-[10px] px-1.5 py-0.5 rounded-full">
                   {cart.length}
                 </span>
               )}
@@ -105,14 +101,11 @@ export default function Header() {
           </nav>
 
           {/* MOBILE BUTTON + CART */}
-          <div className='md:hidden flex items-center gap-4'>
-            <Link
-              href='/shop'
-              className='relative'
-            >
-              <ShoppingCart className='w-6 h-6 text-gray-500' />
+          <div className="md:hidden flex items-center gap-4">
+            <Link href="/cart" className="relative">
+              <ShoppingCart className="w-6 h-6 text-gray-500" />
               {cart.length > 0 && (
-                <span className='absolute -top-2 -right-2 bg-pink-600 text-white text-[10px] px-1.5 py-0.5 rounded-full'>
+                <span className="absolute -top-2 -right-2 bg-pink-600 text-white text-[10px] px-1.5 py-0.5 rounded-full">
                   {cart.length}
                 </span>
               )}
@@ -120,7 +113,7 @@ export default function Header() {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className='text-gray-500 hover:text-pink-600 focus:outline-none'
+              className="text-gray-500 hover:text-pink-600 focus:outline-none"
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -130,8 +123,8 @@ export default function Header() {
 
       {/* MOBILE DROPDOWN */}
       {isOpen && (
-        <div className='md:hidden absolute top-20 left-0 w-full bg-white text-zinc-900 dark:bg-zinc-900 dark:text-white border-b border-zinc-800 rounded-b-2xl animate-in fade-in slide-in-from-top-2'>
-          <nav className='flex flex-col p-4 gap-4'>
+        <div className="md:hidden absolute top-20 left-0 w-full bg-white text-zinc-900 dark:bg-zinc-900 dark:text-white border-b border-zinc-800 rounded-b-2xl animate-in fade-in slide-in-from-top-2">
+          <nav className="flex flex-col p-4 gap-4">
             {navLinks.map((link) => renderLink(link, true))}
           </nav>
         </div>
