@@ -102,13 +102,13 @@ export default function ServicesPage() {
                 ))}
               </ul>*/}
 
-              <button
+              {/*<button
                 onClick={() => handleAddToCart(pkg)}
                 className='w-full py-6 bg-white text-black rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all duration-500 active:scale-95 shadow-2xl'
               >
                 <ShoppingBag size={16} />
                 Book Service
-              </button>
+              </button>*/}
             </div>
           ))}
         </div>
