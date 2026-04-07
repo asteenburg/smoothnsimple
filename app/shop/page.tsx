@@ -9,7 +9,6 @@ import { ShoppingBag, Star, Gift, Sparkles } from "lucide-react";
 const TABS = [
   { id: "services", label: "Clinical Services", icon: Sparkles },
   { id: "giftcards", label: "Gift Cards", icon: Gift },
-  { id: "skincare", label: "Medical Skincare", icon: Star },
 ];
 
 const PRODUCTS = {
@@ -17,21 +16,21 @@ const PRODUCTS = {
     {
       id: "btx-01",
       title: "Botox Cosmetic",
-      price: 10.0,
+      price: 8.0,
       description: "Per unit. Minimum 20 units typically required.",
       category: "Injections",
     },
     {
       id: "lip-01",
       title: "Lip Flip",
-      price: 80.0,
+      price: 60.0,
       description: "Subtle eversion of the upper lip using neurotoxin.",
       category: "Injections",
     },
     {
       id: "b12-01",
       title: "B12 Vitamin Shot",
-      price: 40.0,
+      price: 125.0,
       description: "Boost energy and metabolism with a quick IM injection.",
       category: "Wellness",
     },
@@ -57,23 +56,6 @@ const PRODUCTS = {
       price: 500.0,
       description: "The ultimate gift for a full transformation.",
       category: "Gift Cards",
-    },
-  ],
-  skincare: [
-    {
-      id: "ser-01",
-      title: "HA Intensifier",
-      price: 140.0,
-      description:
-        "Multi-functional serum to help amplify skin's hyaluronic acid levels.",
-      category: "Topicals",
-    },
-    {
-      id: "spf-01",
-      title: "Physical Fusion SPF 50",
-      price: 65.0,
-      description: "Tinted sunscreen for weightless, high-level protection.",
-      category: "Topicals",
     },
   ],
 };
