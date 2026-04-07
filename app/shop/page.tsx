@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { ShoppingBag, Star, Gift, Sparkles } from "lucide-react";
 
 const TABS = [
-  { id: "services", label: "Clinical Services", icon: Sparkles },
+  { id: "services", label: "Clinical Treatments", icon: Sparkles },
   { id: "giftcards", label: "Gift Cards", icon: Gift },
 ];
 
@@ -30,7 +30,7 @@ const PRODUCTS = {
     {
       id: "b12-01",
       title: "B12 Vitamin Shot",
-      price: 125.0,
+      price: 50.0,
       description: "Boost energy and metabolism with a quick IM injection.",
       category: "Wellness",
     },
