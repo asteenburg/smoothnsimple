@@ -15,28 +15,36 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { total, sourceId, billing } = body;
 
-    if (!sourceId) throw new Error("Card token missing from request");
+    if (!sourceId) throw new Error("Card token missing");
 
     const amountCents = BigInt(Math.round(parseFloat(total) * 100));
 
-    // Process using the version your build specifically asked for
-    const { payment } = await client.payments.create({
+    // Construct the request object dynamically to avoid sending empty strings
+    // This is the most common cause of V1_ERROR
+    const paymentBase: any = {
       idempotencyKey: crypto.randomUUID(),
       sourceId: sourceId,
       amountMoney: {
         amount: amountCents,
         currency: "CAD",
       },
-      buyerEmailAddress: billing?.email || "",
       note: "Smooth N Simple Purchase",
-      shippingAddress: {
-        addressLine1: billing?.addressLine1 || "",
-        locality: billing?.city || "",
-        administrativeDistrictLevel1: billing?.state || "",
-        postalCode: billing?.postalCode || "",
+    };
+
+    if (billing?.email) paymentBase.buyerEmailAddress = billing.email;
+
+    // Only add shipping if the data actually exists
+    if (billing?.addressLine1 || billing?.city || billing?.postalCode) {
+      paymentBase.shippingAddress = {
+        addressLine1: billing.addressLine1 || undefined,
+        locality: billing.city || undefined,
+        administrativeDistrictLevel1: billing.state || undefined,
+        postalCode: billing.postalCode || undefined,
         country: "CA",
-      },
-    });
+      };
+    }
+
+    const { payment } = await client.payments.create(paymentBase);
 
     const responseData = JSON.parse(
       JSON.stringify(payment, (k, v) =>
@@ -48,19 +56,13 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error("❌ SQUARE API REJECTION:", error);
 
-    // Deep dive into the error object to find the human-readable reason
-    let errorMessage = "Unknown Square Error";
-
-    if (error.errors && error.errors[0]) {
-      errorMessage = error.errors[0].detail || error.errors[0].category;
-    } else if (error.message) {
-      errorMessage = error.message;
-    } else if (typeof error === "string") {
-      errorMessage = error;
-    }
-
+    // V1_ERROR fallback
+    const detail =
+      error.errors?.[0]?.detail ||
+      error.message ||
+      "Square V1 Validation Error";
     return NextResponse.json(
-      { success: false, error: errorMessage },
+      { success: false, error: detail },
       { status: 500 },
     );
   }
