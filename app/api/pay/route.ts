@@ -1,7 +1,9 @@
+// app/api/pay/route.ts
 import { NextResponse } from "next/server";
 import { SquareClient, SquareEnvironment } from "square";
 import crypto from "crypto";
 
+// 1️⃣ Initialize Square client
 const client = new SquareClient({
   token: process.env.SQUARE_TOKEN!,
   environment:
@@ -11,49 +13,61 @@ const client = new SquareClient({
 });
 
 export async function POST(request: Request) {
-   try {
+  // 2️⃣ Log environment variables
+  console.log("💡 SQUARE_TOKEN set?", !!process.env.SQUARE_TOKEN);
+  console.log("💡 SQUARE_ENV:", process.env.SQUARE_ENV);
+
+  try {
+    // 3️⃣ Parse request body
     const { total, sourceId, billing } = await request.json();
+    console.log("💳 Payment request body:", { total, sourceId, billing });
 
+    // 4️⃣ Validate
     if (!sourceId) throw new Error("Missing card token");
-    if (!total || Number(total) <= 0) throw new Error("Invalid total amount");
+    const numericTotal = Number(total);
+    if (!total || numericTotal <= 0) throw new Error("Invalid total amount");
 
-    const amountCents = BigInt(Math.round(Number(total) * 100));
+    const amountCents = BigInt(Math.round(numericTotal * 100));
+    console.log("💳 Creating payment for amount (cents):", amountCents);
+
     let customerId: string | undefined;
 
-    // 1️⃣ Create customer if billing info provided
-    if (billing && (billing.firstName || billing.email)) {
+    // 5️⃣ Optional: create customer if billing info is provided
+    if (billing?.firstName || billing?.email) {
       try {
         const customerResponse = await client.customers.create({
           givenName: billing.firstName,
           familyName: billing.lastName,
           emailAddress: billing.email,
-          address: billing.addressLine1
-            ? {
-                addressLine1: billing.addressLine1,
-                locality: billing.city,
-                administrativeDistrictLevel1: billing.state,
-                postalCode: billing.postalCode,
-                country: billing.country || "CA",
-              }
-            : undefined,
+          address: {
+            addressLine1: billing.addressLine1,
+            locality: billing.city,
+            administrativeDistrictLevel1: billing.state,
+            postalCode: billing.postalCode,
+            country: billing.country || "CA",
+          },
         });
-
         customerId = customerResponse.customer?.id;
+        console.log("✅ Customer created:", customerId);
       } catch (custError) {
         console.warn("⚠️ Customer creation skipped:", custError);
       }
     }
 
-    // 2️⃣ Create the payment
+    // 6️⃣ Create payment
     const paymentResponse = await client.payments.create({
       idempotencyKey: crypto.randomUUID(),
       sourceId,
-      amountMoney: { amount: amountCents, currency: "CAD" },
+      amountMoney: {
+        amount: amountCents,
+        currency: "CAD",
+      },
       customerId,
       buyerEmailAddress: billing?.email,
     });
+    console.log("✅ Payment response received:", paymentResponse.payment);
 
-    // 3️⃣ Serialize BigInt safely
+    // 7️⃣ Serialize BigInt safely
     const responseData = JSON.parse(
       JSON.stringify(paymentResponse.payment, (key, value) =>
         typeof value === "bigint" ? value.toString() : value,
@@ -62,22 +76,19 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, payment: responseData });
   } catch (error: any) {
-    console.error("❌ Square Error:", error);
+    // 8️⃣ Log full error
+    console.error(
+      "❌ Square Error FULL:",
+      JSON.stringify(error, Object.getOwnPropertyNames(error), 2),
+    );
 
     let userMessage = "Payment processing failed.";
-    if (
-      error?.errors &&
-      Array.isArray(error.errors) &&
-      error.errors.length > 0
-    ) {
+    if (error.errors && error.errors.length > 0) {
       userMessage = error.errors[0].detail || userMessage;
     } else if (error.message) {
       userMessage = error.message;
     }
 
-    return NextResponse.json(
-      { success: false, error: userMessage },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: userMessage }, { status: 500 });
   }
 }
