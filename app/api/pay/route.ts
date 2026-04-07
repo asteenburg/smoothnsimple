@@ -1,17 +1,11 @@
 // app/api/pay/route.ts
 import { NextResponse } from "next/server";
-import { Client as SquareClient, Environment as SquareEnvironment } from "square";
+import { SquareClient, SquareEnvironment } from "square";
 import crypto from "crypto";
 
-// -----------------------------
-// 1️⃣ Check that environment variables exist
-console.log("💡 SQUARE_ENV:", process.env.SQUARE_ENV);
-console.log("💡 SQUARE_TOKEN length:", process.env.SQUARE_TOKEN?.length);
-
-// -----------------------------
-// 2️⃣ Initialize Square client
+// 1️⃣ Initialize Square client
 const client = new SquareClient({
-  accessToken: process.env.SQUARE_TOKEN!,
+  token: process.env.SQUARE_TOKEN!,
   environment:
     process.env.SQUARE_ENV === "production"
       ? SquareEnvironment.Production
@@ -19,22 +13,26 @@ const client = new SquareClient({
 });
 
 export async function POST(request: Request) {
+  // 2️⃣ Log environment variables
+  console.log("💡 SQUARE_TOKEN set?", !!process.env.SQUARE_TOKEN);
+  console.log("💡 SQUARE_ENV:", process.env.SQUARE_ENV);
+
   try {
-    const body = await request.json();
-    console.log("💳 Payment request body:", body);
+    // 3️⃣ Parse request body
+    const { total, sourceId, billing } = await request.json();
+    console.log("💳 Payment request body:", { total, sourceId, billing });
 
-    const { total, sourceId, billing } = body;
-
-    if (!sourceId) throw new Error("Missing card token (sourceId)");
+    // 4️⃣ Validate
+    if (!sourceId) throw new Error("Missing card token");
     const numericTotal = Number(total);
     if (!total || numericTotal <= 0) throw new Error("Invalid total amount");
 
     const amountCents = BigInt(Math.round(numericTotal * 100));
+    console.log("💳 Creating payment for amount (cents):", amountCents);
 
     let customerId: string | undefined;
 
-    // -----------------------------
-    // 3️⃣ Create Square Customer (optional)
+    // 5️⃣ Optional: create customer if billing info is provided
     if (billing?.firstName || billing?.email) {
       try {
         const customerResponse = await client.customers.create({
@@ -49,7 +47,6 @@ export async function POST(request: Request) {
             country: billing.country || "CA",
           },
         });
-
         customerId = customerResponse.customer?.id;
         console.log("✅ Customer created:", customerId);
       } catch (custError) {
@@ -57,8 +54,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // -----------------------------
-    // 4️⃣ Create Payment
+    // 6️⃣ Create payment
     const paymentResponse = await client.payments.create({
       idempotencyKey: crypto.randomUUID(),
       sourceId,
@@ -69,28 +65,28 @@ export async function POST(request: Request) {
       customerId,
       buyerEmailAddress: billing?.email,
     });
+    console.log("✅ Payment response received:", paymentResponse.payment);
 
-    // -----------------------------
-    // 5️⃣ Convert BigInt safely
+    // 7️⃣ Serialize BigInt safely
     const responseData = JSON.parse(
       JSON.stringify(paymentResponse.payment, (key, value) =>
         typeof value === "bigint" ? value.toString() : value,
       ),
     );
 
-    console.log("✅ Payment success:", responseData);
-
-    return NextResponse.json({
-      success: true,
-      payment: responseData,
-    });
+    return NextResponse.json({ success: true, payment: responseData });
   } catch (error: any) {
-    console.error("❌ Square Error FULL:", error);
+    // 8️⃣ Log full error
+    console.error(
+      "❌ Square Error FULL:",
+      JSON.stringify(error, Object.getOwnPropertyNames(error), 2),
+    );
 
     let userMessage = "Payment processing failed.";
-
     if (error.errors && error.errors.length > 0) {
       userMessage = error.errors[0].detail || userMessage;
+    } else if (error.message) {
+      userMessage = error.message;
     }
 
     return NextResponse.json(
