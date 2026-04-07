@@ -21,12 +21,12 @@ export default function CartPage() {
     <div className='flex flex-col min-h-screen bg-black text-white'>
       <Header />
       <main className='flex-1 max-w-5xl mx-auto px-6 py-12 w-full'>
-        <div className='flex items-center gap-4 mb-10'>
+        <div className='flex items-center gap-4 mt-28 mb-10'>
           <ShoppingBag
             className='text-pink-500'
             size={32}
           />
-          <h1 className='text-5xl font-black italic uppercase tracking-tighter'>
+          <h1 className='text-5xl font-black italic uppercase mt-25 tracking-tighter'>
             Your Bag
           </h1>
         </div>

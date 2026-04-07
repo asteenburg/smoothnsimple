@@ -1,14 +1,11 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
+import type { Metadata } from "next";
 import Script from "next/script";
-import CookieBanner from "../components/cookies/CookieBanner";
-import { CartProvider } from "./context/CartContext";
+import { CartProvider } from "./context/CartContext"; // 1. Import your provider
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata = {
-  title: "Smooth & Simple | Medical Aesthetics",
-  description: "Professional Botox & Aesthetic Treatments",
+export const metadata: Metadata = {
+  title: "Smooth N Simple | Medical Aesthetics",
+  description: "Professional Medical Aesthetics in Brantford, ON",
 };
 
 export default function RootLayout({
@@ -17,23 +14,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang='en'
-      className='scroll-smooth bg-black'
-    >
-      <head>
-        <Script
-          src='https://web.squarecdn.com/v1/square.js'
-          strategy='beforeInteractive'
-        />
-      </head>
-      <body
-        className={`${inter.className} bg-black text-white min-h-screen antialiased selection:bg-pink-500/30`}
-      >
+    <html lang='en'>
+      <body className='bg-black antialiased'>
+        {/* 2. Wrap EVERYTHING in the CartProvider so useCart() works everywhere */}
         <CartProvider>
-          <div className='relative flex flex-col min-h-screen'>{children}</div>
+          {/* 3. Move Square script here and change strategy to 'afterInteractive' 
+              This is the safest way to avoid hydration/Turbopack errors while 
+              still ensuring Square is ready by the time they hit the cart. */}
+          <Script
+            src='https://web.squarecdn.com/v1/square.js'
+            strategy='afterInteractive'
+          />
+
+          {children}
         </CartProvider>
-        <CookieBanner />
       </body>
     </html>
   );

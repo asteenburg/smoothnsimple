@@ -1,116 +1,148 @@
 "use client";
 
-import { useCart } from "@/app/context/CartContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Sparkles, CheckCircle2, ShoppingBag } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Sparkles, ArrowRight, Calendar } from "lucide-react";
 
 interface Package {
   id: number;
   title: string;
-  price: number;
+  price: string;
   description: string;
+  image: string;
 }
 
 const SERVICE_PACKAGES: Package[] = [
   {
     id: 1,
     title: "Botox",
-    price: 8.0,
+    price: "$8.00 / Unit",
+    image: "/images/jump1987-botox-10084507.jpg",
     description:
-      "Botox decreases fine lines and wrinkles to forehead, frown lines and crows feet. As well as other areas of the face. Results typically last 3-4 months. Treatment time is approximately 30 minutes",
+      "Botox decreases fine lines and wrinkles to forehead, frown lines and crows feet. Results typically last 3-4 months. Treatment time is approximately 30 minutes.",
   },
   {
     id: 2,
     title: "Lip Flip",
-    price: 60.0,
+    price: "$60.00",
+    image: "/images/1000020714.jpg",
     description:
-      "A Lip Flip is a non-surgical cosmetic procedure that uses strategically placed Botox injections to subtly enhance the appearance of the upper lip. By relaxing the muscles around the mouth, the upper lip can appear fuller and more defined, creating a natural-looking pout without the need for fillers.",
+      "A non-surgical cosmetic procedure that uses strategically placed Botox to subtly enhance the upper lip for a fuller, natural-looking pout.",
   },
   {
     id: 3,
     title: "B12 Injections",
-    price: 50.0,
+    price: "$50.00",
+    image: "/images/10000207242.PNG",
     description:
-      "Book a consultation for B12 Injections. B12 injections can help boost energy levels, improve mood, and support overall health. During the consultation, we will discuss your health goals and determine if B12 injections are the right choice for you.",
+      "Boost energy levels, improve mood, and support overall health. Book a consultation to determine if B12 is the right choice for you.",
   },
 ];
 
 export default function ServicesPage() {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = (pkg: Package) => {
-    // FIX: Convert the numeric ID to a string to satisfy the CartItem type
-    addToCart({
-      id: pkg.id.toString(), // critical fix for the Type Error
-      title: pkg.title,
-      price: pkg.price,
-      quantity: 1,
-    });
-  };
-
   return (
     <div className='bg-black min-h-screen text-white flex flex-col selection:bg-pink-600/30'>
       <Header />
 
-      <main className='flex-1 max-w-7xl mx-auto px-6 py-24 w-full'>
-        <div className='mb-20'>
-          <h1 className='text-6xl md:text-5xl italic uppercase tracking-tighter mb-4'>
-            Services
-          </h1>
-          <div className='h-[3px] w-20 bg-pink-600 rounded-full shadow-[0_0_15px_rgba(219,39,119,0.5)]'></div>
-          <p className='text-zinc-500 text-[10px] uppercase font-black tracking-[0.4em] mt-8'>
-            Professional Medical Aesthetics
-          </p>
+      {/* --- HERO SECTION (Outside main for full-width) --- */}
+      <section className='relative h-[60vh] min-h-[400px] w-full flex items-center overflow-hidden border-b border-white/5'>
+        {/* Background Image Overlay */}
+        <div className='absolute inset-0 z-0 pointer-events-none'>
+          <Image
+            src='/images/joe-woods-4Zaq5xY5M_c-unsplash.jpg'
+            alt='Smooth N Simple Services'
+            fill
+            className='object-cover opacity-40 brightness-50'
+            priority
+          />
+          <div className='absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent' />
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-10'>
+        {/* Hero Text */}
+        <div className='relative z-10 max-w-4xl mx-auto text-center px-6 pt-20'>
+          <h1 className='text-6xl md:text-8xl font-black italic uppercase tracking-tighter leading-none'>
+            Smooth <span className='text-pink-600'>N</span> Simple
+          </h1>
+          <p className='text-zinc-500 text-2xl md:text-4xl uppercase font-black tracking-[0.5em] md:tracking-[1em] mt-8'>
+            Services
+          </p>
+        </div>
+      </section>
+
+      {/* Main Content Area */}
+      <main className='flex-1 max-w-7xl mx-auto px-6 py-24 w-full'>
+        {/* Services Grid */}
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
           {SERVICE_PACKAGES.map((pkg) => (
             <div
               key={pkg.id}
-              className='group relative bg-zinc-900/30 border border-white/5 p-10 rounded-[3rem] hover:bg-zinc-900/60 transition-all duration-500 hover:border-pink-500/20 flex flex-col'
+              className='group bg-zinc-900/20 border border-white/5 rounded-[3rem] overflow-hidden flex flex-col transition-all duration-500 hover:border-pink-500/30 hover:bg-zinc-900/40'
             >
-              <div className='flex justify-between items-start mb-8'>
-                <div className='p-3 bg-pink-600/10 rounded-2xl text-pink-500'>
-                  <Sparkles size={24} />
+              {/* Image Header */}
+              <div className='relative h-80 w-full overflow-hidden bg-zinc-800'>
+                <Image
+                  src={pkg.image}
+                  alt={pkg.title}
+                  fill
+                  className='object-cover transition-transform duration-700 ease-out group-hover:scale-110'
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                />
+                <div className='absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70' />
+
+                <div className='absolute bottom-6 left-8'>
+                  <p className='text-2xl font-black italic tracking-tighter text-white'>
+                    {pkg.price}
+                  </p>
                 </div>
-                <span className='text-4xl font-black italic tracking-tighter text-white'>
-                  ${pkg.price.toFixed(0)}
-                </span>
               </div>
 
-              <h3 className='text-3xl font-black italic uppercase tracking-tight mb-4 group-hover:text-pink-500 transition-colors'>
-                {pkg.title}
-              </h3>
+              {/* Content Body */}
+              <div className='p-10 flex flex-col flex-1'>
+                <div className='flex items-center gap-3 mb-6'>
+                  <div className='p-2 bg-pink-600/10 rounded-lg text-pink-500'>
+                    <Sparkles size={16} />
+                  </div>
+                  <h3 className='text-3xl font-black italic uppercase tracking-tight group-hover:text-pink-600 transition-colors'>
+                    {pkg.title}
+                  </h3>
+                </div>
 
-              <p className='text-zinc-400 text-sm leading-relaxed mb-8 flex-1'>
-                {pkg.description}
-              </p>
+                <p className='text-zinc-400 text-sm leading-relaxed mb-10 flex-1'>
+                  {pkg.description}
+                </p>
 
-              {/*<ul className='space-y-4 mb-10'>
-                {pkg.features.map((feature, i) => (
-                  <li
-                    key={i}
-                    className='flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-zinc-500'
-                  >
-                    <CheckCircle2
-                      size={14}
-                      className='text-pink-600'
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>*/}
-
-              {/*<button
-                onClick={() => handleAddToCart(pkg)}
-                className='w-full py-6 bg-white text-black rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all duration-500 active:scale-95 shadow-2xl'
-              >
-                <ShoppingBag size={16} />
-                Book Service
-              </button>*/}
+                <Link
+                  href='/book'
+                  className='w-full py-6 bg-white text-black rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all duration-500 shadow-xl'
+                >
+                  <Calendar size={14} />
+                  Book Appointment
+                  <ArrowRight
+                    size={14}
+                    className='opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all'
+                  />
+                </Link>
+              </div>
             </div>
           ))}
+        </div>
+
+        {/* Bottom Consultation Hook */}
+        <div className='mt-24 p-12 bg-zinc-900/40 border border-white/5 rounded-[4rem] text-center'>
+          <h2 className='text-3xl font-black italic uppercase tracking-tighter mb-4'>
+            Not sure where to start?
+          </h2>
+          <p className='text-zinc-500 text-xs uppercase font-bold tracking-widest mb-10'>
+            Consultations are always complimentary
+          </p>
+          <Link
+            href='/book'
+            className='text-pink-500 font-black italic uppercase tracking-widest text-[10px] hover:text-white transition-colors border-b border-pink-500/30 pb-2'
+          >
+            Schedule a Consultation
+          </Link>
         </div>
       </main>
 

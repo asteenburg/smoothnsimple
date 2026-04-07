@@ -32,23 +32,23 @@ export default function CheckoutPage() {
     postalCode: "",
   });
 
+  // HST Calculation (13%)
   const subtotal = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
-  const total = (subtotal * 1.13).toFixed(2);
+  const tax = subtotal * 0.13;
+  const total = (subtotal + tax).toFixed(2);
 
   const initializeSquare = async () => {
-    // If already initialized or script not loaded, exit
     if (cardInstanceRef.current || !window.Square) return;
 
     try {
-      // Ensure these match your PRODUCTION keys in Vercel
       const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID;
       const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
 
       if (!appId || !locationId) {
-        console.error("Missing Square Production Keys in Environment");
+        console.error("Square Keys Missing");
         return;
       }
 
@@ -93,15 +93,22 @@ export default function CheckoutPage() {
         const data = await resp.json();
 
         if (data.success) {
+          // --- CRITICAL FIX: CACHE ORDER DATA BEFORE REDIRECT ---
+          const orderSnapshot = {
+            items: cart,
+            total: total,
+          };
+          sessionStorage.setItem("last_order", JSON.stringify(orderSnapshot));
+
           window.location.href = "/success";
         } else {
-          // This will now show the actual Square Production error
           alert(`Payment Failed: ${data.error}`);
         }
       } else {
         alert(result.errors[0].message);
       }
     } catch (err) {
+      console.error("Payment Error:", err);
       alert("A system error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -122,7 +129,7 @@ export default function CheckoutPage() {
           onSubmit={handlePayment}
           className='grid grid-cols-1 lg:grid-cols-12 gap-16'
         >
-          {/* Left Column: Billing & Payment */}
+          {/* Left: Forms */}
           <div className='lg:col-span-7 space-y-12'>
             <h1 className='text-5xl md:text-7xl font-black italic uppercase tracking-tighter'>
               Checkout
@@ -139,12 +146,12 @@ export default function CheckoutPage() {
                   className='text-pink-600'
                   size={20}
                 />
-                <h3 className='text-2xl font-black italic uppercase'>
+                <h3 className='text-2xl font-black italic uppercase tracking-tight'>
                   Secure Payment
                 </h3>
               </div>
 
-              <div className='bg-zinc-900/40 p-8 rounded-[2.5rem] border border-white/5 relative min-h-[120px]'>
+              <div className='bg-zinc-900/40 p-8 rounded-[2.5rem] border border-white/5 relative min-h-[100px]'>
                 <div
                   id='card-element'
                   className='w-full'
@@ -153,7 +160,7 @@ export default function CheckoutPage() {
                   <div className='absolute inset-0 flex items-center justify-center bg-zinc-900/90 rounded-[2.5rem] z-10'>
                     <Loader2 className='animate-spin text-pink-600 mr-2' />
                     <span className='text-[10px] uppercase font-black tracking-widest'>
-                      Initializing Production Secure Vault...
+                      Initialising Secure Vault...
                     </span>
                   </div>
                 )}
@@ -161,9 +168,13 @@ export default function CheckoutPage() {
             </section>
           </div>
 
-          {/* Right Column: Summary */}
+          {/* Right: Summary Box */}
           <div className='lg:col-span-5'>
             <div className='sticky top-24 bg-zinc-900/50 rounded-[3rem] p-10 border border-white/5'>
+              <h2 className='text-xl font-black italic uppercase mb-8'>
+                Order Total
+              </h2>
+
               <div className='space-y-4 mb-10'>
                 <div className='flex justify-between text-zinc-400 uppercase text-[10px] font-black tracking-widest'>
                   <span>Subtotal</span>
@@ -171,10 +182,10 @@ export default function CheckoutPage() {
                 </div>
                 <div className='flex justify-between text-zinc-400 uppercase text-[10px] font-black tracking-widest'>
                   <span>HST (13%)</span>
-                  <span>${(subtotal * 0.13).toFixed(2)}</span>
+                  <span>${tax.toFixed(2)}</span>
                 </div>
                 <div className='h-px bg-white/5 my-4' />
-                <div className='flex justify-between text-2xl font-black italic text-pink-600'>
+                <div className='flex justify-between text-3xl font-black italic text-pink-600'>
                   <span>Total</span>
                   <span>${total}</span>
                 </div>
@@ -182,14 +193,14 @@ export default function CheckoutPage() {
 
               <button
                 type='submit'
-                disabled={!isInitialized || loading}
-                className='w-full py-6 bg-white text-black rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all disabled:opacity-20 disabled:cursor-not-allowed group'
+                disabled={!isInitialized || loading || cart.length === 0}
+                className='w-full py-6 bg-white text-black rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all disabled:opacity-20 disabled:cursor-not-allowed group'
               >
                 {loading ? (
                   <Loader2 className='animate-spin' />
                 ) : (
                   <>
-                    Complete Purchase
+                    Authorize Payment
                     <ChevronRight
                       size={14}
                       className='group-hover:translate-x-1 transition-transform'
@@ -199,7 +210,7 @@ export default function CheckoutPage() {
               </button>
 
               <p className='text-[8px] text-zinc-500 uppercase text-center mt-6 tracking-widest font-bold'>
-                Payments processed securely via Square Production
+                Production Secure Handshake Enabled
               </p>
             </div>
           </div>

@@ -7,15 +7,15 @@ export default function About() {
       <Header />
 
       <main className='flex-1 px-6 py-12 bg-gray-50 text-black dark:bg-black dark:text-white flex flex-col items-center'>
-        <div className='max-w-4xl w-full text-center'>
+        <div className='mt-20 max-w-4xl w-full md:text-left text-left'>
           {/* Heading */}
           <div data-aos='fade-down'>
-            <h1 className='md:text-5xl text-3xl tracking-tighter uppercase italic font-bold mb-4 text-center text-black dark:text-gray-300'>
-              About
+            <h1 className='md:text-5xl text-3xl tracking-tighter uppercase italic font-bold mb-4 md:text-left text-left text-black dark:text-gray-300'>
+              <span className='md:text-6xl'>About</span>
               <br />
-              Smooth <span className='text-pink-500'>N</span> Simple
+              Smooth <span className='text-pink-600'>N</span> Simple
             </h1>
-            <div className='h-1 w-24 bg-pink-500 mx-auto rounded-full mb-10'></div>
+            <div className='h-1 w-24 bg-pink-600  rounded-full mb-10'></div>
           </div>
           <p
             className='text-lg text-gray-600 dark:text-gray-300 mb-10'
