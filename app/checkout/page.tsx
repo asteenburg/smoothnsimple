@@ -79,18 +79,23 @@ export default function CheckoutPage() {
           }),
         });
 
-        const data = await resp.json();
+        // Safe JSON parsing
+        const data = await resp.json().catch(() => ({
+          success: false,
+          error: "Server crashed during payment",
+        }));
+
         if (data.success) {
           window.location.href = "/success";
         } else {
-          // This will now show the ACTUAL reason (e.g., "Insufficient Funds" or "Invalid Exp")
-          alert(`Payment Error: ${data.error}`);
+          // If data.error is missing, we provide a fallback message
+          alert(`Payment Failed: ${data.error || "Decline or Invalid Card"}`);
         }
       } else {
         alert(result.errors[0].message);
       }
     } catch (err) {
-      alert("System error. Check your internet connection.");
+      alert("A system error occurred. Please try a different card.");
     } finally {
       setLoading(false);
     }
@@ -110,7 +115,7 @@ export default function CheckoutPage() {
           className='grid grid-cols-1 lg:grid-cols-12 gap-16'
         >
           <div className='lg:col-span-7 space-y-12'>
-            <h1 className='text-5xl font-black italic uppercase tracking-tighter'>
+            <h1 className='text-5xl md:text-7xl font-black italic uppercase tracking-tighter'>
               Checkout
             </h1>
             <BillingForm
@@ -118,13 +123,24 @@ export default function CheckoutPage() {
               setBillingData={setBillingData}
             />
             <section className='pt-10 border-t border-white/5'>
-              <h3 className='text-2xl font-black italic uppercase mb-8'>
-                Payment
-              </h3>
+              <div className='flex items-center gap-3 mb-8'>
+                <Lock
+                  className='text-pink-600'
+                  size={20}
+                />
+                <h3 className='text-2xl font-black italic uppercase'>
+                  Payment
+                </h3>
+              </div>
               <div className='bg-zinc-900/40 p-8 rounded-[2.5rem] border border-white/5 relative min-h-[120px]'>
                 <div id='card-element' />
                 {!isInitialized && (
-                  <Loader2 className='animate-spin text-pink-600 mx-auto' />
+                  <div className='absolute inset-0 flex items-center justify-center bg-zinc-900/90 rounded-[2.5rem]'>
+                    <Loader2 className='animate-spin text-pink-600 mr-2' />
+                    <span className='text-[10px] uppercase font-black tracking-widest'>
+                      Securing Connection...
+                    </span>
+                  </div>
                 )}
               </div>
             </section>
@@ -139,12 +155,14 @@ export default function CheckoutPage() {
               <button
                 type='submit'
                 disabled={!isInitialized || loading}
-                className='w-full py-6 bg-white text-black rounded-[1.5rem] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all disabled:opacity-20'
+                className='w-full py-6 bg-white text-black rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all disabled:opacity-20'
               >
                 {loading ? (
                   <Loader2 className='animate-spin' />
                 ) : (
-                  "Complete Order"
+                  <>
+                    Pay Now <ChevronRight size={14} />
+                  </>
                 )}
               </button>
             </div>

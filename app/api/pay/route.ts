@@ -15,12 +15,11 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { total, sourceId, billing } = body;
 
-    if (!sourceId) throw new Error("Card token missing");
+    if (!sourceId) throw new Error("Card token missing from request");
 
-    // Ensure we have a clean integer for cents
     const amountCents = BigInt(Math.round(parseFloat(total) * 100));
 
-    // Using client.payments.create (The version your build worker expects)
+    // Process using the version your build specifically asked for
     const { payment } = await client.payments.create({
       idempotencyKey: crypto.randomUUID(),
       sourceId: sourceId,
@@ -28,8 +27,8 @@ export async function POST(request: Request) {
         amount: amountCents,
         currency: "CAD",
       },
-      buyerEmailAddress: billing?.email,
-      note: "Smooth N Simple Web Purchase",
+      buyerEmailAddress: billing?.email || "",
+      note: "Smooth N Simple Purchase",
       shippingAddress: {
         addressLine1: billing?.addressLine1 || "",
         locality: billing?.city || "",
@@ -39,7 +38,6 @@ export async function POST(request: Request) {
       },
     });
 
-    // Handle BigInt conversion for the response
     const responseData = JSON.parse(
       JSON.stringify(payment, (k, v) =>
         typeof v === "bigint" ? v.toString() : v,
@@ -48,12 +46,21 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, payment: responseData });
   } catch (error: any) {
-    // Log the full error to Vercel console
-    console.error("❌ SQUARE API ERROR:", error);
+    console.error("❌ SQUARE API REJECTION:", error);
 
-    const detail = error.errors ? error.errors[0].detail : error.message;
+    // Deep dive into the error object to find the human-readable reason
+    let errorMessage = "Unknown Square Error";
+
+    if (error.errors && error.errors[0]) {
+      errorMessage = error.errors[0].detail || error.errors[0].category;
+    } else if (error.message) {
+      errorMessage = error.message;
+    } else if (typeof error === "string") {
+      errorMessage = error;
+    }
+
     return NextResponse.json(
-      { success: false, error: detail },
+      { success: false, error: errorMessage },
       { status: 500 },
     );
   }
