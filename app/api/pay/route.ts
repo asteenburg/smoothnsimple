@@ -2,48 +2,25 @@ import { NextResponse } from "next/server";
 import { SquareClient, SquareEnvironment } from "square";
 import crypto from "crypto";
 
+const client = new SquareClient({
+  token: process.env.SQUARE_TOKEN!,
+  environment:
+    process.env.SQUARE_ENV === "production"
+      ? SquareEnvironment.Production
+      : SquareEnvironment.Sandbox,
+});
+
 export async function POST(request: Request) {
   try {
-    // 1. Try to grab the token from multiple possible process paths
-    const token = process.env.SQUARE_TOKEN;
-    const env = process.env.SQUARE_ENV || "sandbox";
-
-    // SERVER-SIDE LOG: View this in Vercel Dashboard -> Logs
-    console.log("--- SECURE CONFIG CHECK ---");
-    console.log("Environment Mode:", env);
-    console.log(
-      "Token Detected:",
-      token ? "YES (Length: " + token.length + ")" : "NO",
-    );
-
-    if (!token) {
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            "Payment configuration is missing. Please ensure SQUARE_TOKEN is set in Vercel.",
-        },
-        { status: 500 },
-      );
-    }
-
-    // 2. Initialize Client
-    const client = new SquareClient({
-      token: token,
-      environment:
-        env === "production"
-          ? SquareEnvironment.Production
-          : SquareEnvironment.Sandbox,
-    });
-
     const body = await request.json();
-    const { total, sourceId, billing } = body;
+    const { total, sourceId } = body;
 
-    if (!sourceId) throw new Error("Missing card token (sourceId)");
-    const numericTotal = Number(total);
-    const amountCents = BigInt(Math.round(numericTotal * 100));
+    if (!sourceId) throw new Error("Card token missing");
 
-    // 3. Process Payment
+    // Simplest possible amount conversion
+    const amountCents = BigInt(Math.round(Number(total) * 100));
+
+    // Direct Payment - No complex Order API linking
     const { payment } = await client.payments.create({
       idempotencyKey: crypto.randomUUID(),
       sourceId,
@@ -51,18 +28,16 @@ export async function POST(request: Request) {
         amount: amountCents,
         currency: "CAD",
       },
-      buyerEmailAddress: billing?.email,
     });
 
     const responseData = JSON.parse(
-      JSON.stringify(payment, (key, value) =>
-        typeof value === "bigint" ? value.toString() : value,
+      JSON.stringify(payment, (k, v) =>
+        typeof v === "bigint" ? v.toString() : v,
       ),
     );
 
     return NextResponse.json({ success: true, payment: responseData });
   } catch (error: any) {
-    console.error("❌ Square API Error:", error);
     const message = error.errors ? error.errors[0].detail : error.message;
     return NextResponse.json(
       { success: false, error: message },
