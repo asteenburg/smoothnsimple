@@ -15,19 +15,15 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { total, sourceId, billing } = body;
 
-    if (!sourceId) throw new Error("Missing card token (sourceId)");
-    const numericTotal = Number(total);
-    if (!total || numericTotal <= 0) throw new Error("Invalid total amount");
-
-    // Convert to cents using BigInt for Square's API
-    const amountCents = BigInt(Math.round(numericTotal * 100));
+    if (!sourceId) throw new Error("Missing card token");
+    const amountCents = BigInt(Math.round(Number(total) * 100));
 
     let customerId: string | undefined;
 
-    // Create Customer in Square
+    // Fixed: Using client.customers.create instead of customersApi
     if (billing?.email) {
       try {
-        const { result } = await client.customersApi.createCustomer({
+        const { customer } = await client.customers.create({
           givenName: billing.firstName,
           familyName: billing.lastName,
           emailAddress: billing.email,
@@ -39,14 +35,14 @@ export async function POST(request: Request) {
             country: "CA",
           },
         });
-        customerId = result.customer?.id;
-      } catch (custError) {
-        console.warn("Customer creation skipped:", custError);
+        customerId = customer?.id;
+      } catch (e) {
+        console.warn("Customer creation skipped");
       }
     }
 
-    // Process Payment
-    const { result } = await client.paymentsApi.createPayment({
+    // Fixed: Using client.payments.create instead of paymentsApi
+    const { payment } = await client.payments.create({
       idempotencyKey: crypto.randomUUID(),
       sourceId,
       amountMoney: {
@@ -54,23 +50,15 @@ export async function POST(request: Request) {
         currency: "CAD",
       },
       customerId,
-      buyerEmailAddress: billing?.email,
     });
 
-    // Safe JSON conversion for BigInt values
-    const responseData = JSON.parse(
-      JSON.stringify(result.payment, (key, value) =>
-        typeof value === "bigint" ? value.toString() : value,
+    return NextResponse.json({
+      success: true,
+      payment: JSON.parse(
+        JSON.stringify(payment, (k, v) => (typeof v === "bigint" ? v.toString() : v))
       ),
-    );
-
-    return NextResponse.json({ success: true, payment: responseData });
+    });
   } catch (error: any) {
-    console.error("Square Error:", error);
-    const message = error.errors ? error.errors[0].detail : error.message;
-    return NextResponse.json(
-      { success: false, error: message },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
