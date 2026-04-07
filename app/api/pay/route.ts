@@ -11,10 +11,7 @@ const client = new SquareClient({
 });
 
 export async function POST(request: Request) {
-  console.log("💡 SQUARE_TOKEN set?", !!process.env.SQUARE_TOKEN);
-  console.log("💡 SQUARE_ENV:", process.env.SQUARE_ENV);
-
-  try {
+   try {
     const { total, sourceId, billing } = await request.json();
 
     if (!sourceId) throw new Error("Missing card token");
