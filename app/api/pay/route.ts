@@ -2,25 +2,44 @@ import { NextResponse } from "next/server";
 import { SquareClient, SquareEnvironment } from "square";
 import crypto from "crypto";
 
-const client = new SquareClient({
-  token: process.env.SQUARE_TOKEN!,
-  environment:
-    process.env.SQUARE_ENV === "production"
-      ? SquareEnvironment.Production
-      : SquareEnvironment.Sandbox,
-});
-
 export async function POST(request: Request) {
   try {
+    // 1. Force TypeScript to treat these as strings using !
+    const token = process.env.SQUARE_TOKEN!;
+    const env = process.env.SQUARE_ENV!;
+
+    // 2. Runtime safety check (in case Vercel variables aren't propagated)
+    if (!token) {
+      console.error("❌ SQUARE_TOKEN is missing at runtime");
+      return NextResponse.json(
+        { success: false, error: "Server configuration error: Missing Token" },
+        { status: 500 },
+      );
+    }
+
+    const client = new SquareClient({
+      token: token,
+      environment:
+        env === "production"
+          ? SquareEnvironment.Production
+          : SquareEnvironment.Sandbox,
+    });
+
     const body = await request.json();
     const { total, sourceId, billing } = body;
 
-    if (!sourceId) throw new Error("Missing card token");
-    const amountCents = BigInt(Math.round(Number(total) * 100));
+    if (!sourceId) throw new Error("Missing card token (sourceId)");
+
+    const numericTotal = Number(total);
+    if (isNaN(numericTotal) || numericTotal <= 0)
+      throw new Error("Invalid total amount");
+
+    // Convert to cents using BigInt for Square's API
+    const amountCents = BigInt(Math.round(numericTotal * 100));
 
     let customerId: string | undefined;
 
-    // Fixed: Using client.customers.create instead of customersApi
+    // Create Customer in Square
     if (billing?.email) {
       try {
         const { customer } = await client.customers.create({
@@ -36,12 +55,12 @@ export async function POST(request: Request) {
           },
         });
         customerId = customer?.id;
-      } catch (e) {
-        console.warn("Customer creation skipped");
+      } catch (custError) {
+        console.warn("⚠️ Customer creation skipped:", custError);
       }
     }
 
-    // Fixed: Using client.payments.create instead of paymentsApi
+    // Process Payment
     const { payment } = await client.payments.create({
       idempotencyKey: crypto.randomUUID(),
       sourceId,
@@ -50,15 +69,23 @@ export async function POST(request: Request) {
         currency: "CAD",
       },
       customerId,
+      buyerEmailAddress: billing?.email,
     });
 
-    return NextResponse.json({
-      success: true,
-      payment: JSON.parse(
-        JSON.stringify(payment, (k, v) => (typeof v === "bigint" ? v.toString() : v))
+    // Safe JSON conversion for BigInt values
+    const responseData = JSON.parse(
+      JSON.stringify(payment, (key, value) =>
+        typeof value === "bigint" ? value.toString() : value,
       ),
-    });
+    );
+
+    return NextResponse.json({ success: true, payment: responseData });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    console.error("❌ Square API Error:", error);
+    const message = error.errors ? error.errors[0].detail : error.message;
+    return NextResponse.json(
+      { success: false, error: message },
+      { status: 500 },
+    );
   }
 }
