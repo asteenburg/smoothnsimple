@@ -18,12 +18,11 @@ export async function POST(request: Request) {
     if (!sourceId) throw new Error("Card token missing");
 
     // Ensure we have a clean integer for cents
-    // Example: 56.50 -> 5650
     const amountCents = BigInt(Math.round(parseFloat(total) * 100));
 
-    // Process the payment
-    const { result } = await client.paymentsApi.createPayment({
-      idempotencyKey: crypto.randomUUID(), // New key for every single attempt
+    // Using client.payments.create (The version your build worker expects)
+    const { payment } = await client.payments.create({
+      idempotencyKey: crypto.randomUUID(),
       sourceId: sourceId,
       amountMoney: {
         amount: amountCents,
@@ -40,22 +39,19 @@ export async function POST(request: Request) {
       },
     });
 
-    // Square returns BigInts which native JSON.stringify crashes on
+    // Handle BigInt conversion for the response
     const responseData = JSON.parse(
-      JSON.stringify(result.payment, (k, v) =>
+      JSON.stringify(payment, (k, v) =>
         typeof v === "bigint" ? v.toString() : v,
       ),
     );
 
     return NextResponse.json({ success: true, payment: responseData });
   } catch (error: any) {
-    // This logs the ACTUAL error from Square in your Vercel terminal
-    console.error(
-      "❌ SQUARE API REJECTION:",
-      error.result?.errors || error.message,
-    );
+    // Log the full error to Vercel console
+    console.error("❌ SQUARE API ERROR:", error);
 
-    const detail = error.result?.errors?.[0]?.detail || error.message;
+    const detail = error.errors ? error.errors[0].detail : error.message;
     return NextResponse.json(
       { success: false, error: detail },
       { status: 500 },
