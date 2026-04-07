@@ -10,33 +10,29 @@ interface Package {
   title: string;
   price: number;
   description: string;
-  features: string[];
 }
 
 const SERVICE_PACKAGES: Package[] = [
   {
     id: 1,
-    title: "The Glow Up",
-    price: 150.0,
+    title: "Botox",
+    price: 8.0,
     description:
-      "Our signature skin rejuvenation treatment for an immediate radiance boost.",
-    features: ["Deep Cleansing", "HA Infusion", "LED Therapy"],
+      "Botox decreases fine lines and wrinkles to forehead, frown lines and crows feet. As well as other areas of the face. Results typically last 3-4 months. Treatment time is approximately 30 minutes",
   },
   {
     id: 2,
-    title: "Lip Enhancement",
-    price: 550.0,
+    title: "Lip Flip",
+    price: 60.0,
     description:
-      "Premium dermal filler for natural-looking volume and definition.",
-    features: ["Full Consultation", "Topical Numbing", "Post-Care Kit"],
+      "A Lip Flip is a non-surgical cosmetic procedure that uses strategically placed Botox injections to subtly enhance the appearance of the upper lip. By relaxing the muscles around the mouth, the upper lip can appear fuller and more defined, creating a natural-looking pout without the need for fillers.",
   },
   {
     id: 3,
-    title: "The Refresh",
-    price: 300.0,
+    title: "B12 Injections",
+    price: 50.0,
     description:
-      "Targeted neurotoxin treatment to smooth fine lines and wrinkles.",
-    features: ["Up to 30 Units", "Precision Mapping", "2-Week Follow up"],
+      "Book a consultation for B12 Injections. B12 injections can help boost energy levels, improve mood, and support overall health. During the consultation, we will discuss your health goals and determine if B12 injections are the right choice for you.",
   },
 ];
 
@@ -59,7 +55,7 @@ export default function ServicesPage() {
 
       <main className='flex-1 max-w-7xl mx-auto px-6 py-24 w-full'>
         <div className='mb-20'>
-          <h1 className='text-6xl md:text-8xl font-black italic uppercase tracking-tighter mb-4'>
+          <h1 className='text-6xl md:text-5xl italic uppercase tracking-tighter mb-4'>
             Services
           </h1>
           <div className='h-[3px] w-20 bg-pink-600 rounded-full shadow-[0_0_15px_rgba(219,39,119,0.5)]'></div>
@@ -91,7 +87,7 @@ export default function ServicesPage() {
                 {pkg.description}
               </p>
 
-              <ul className='space-y-4 mb-10'>
+              {/*<ul className='space-y-4 mb-10'>
                 {pkg.features.map((feature, i) => (
                   <li
                     key={i}
@@ -104,7 +100,7 @@ export default function ServicesPage() {
                     {feature}
                   </li>
                 ))}
-              </ul>
+              </ul>*/}
 
               <button
                 onClick={() => handleAddToCart(pkg)}
