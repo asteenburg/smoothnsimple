@@ -41,20 +41,19 @@ export default function About() {
               <div className='space-y-5'>
                 <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
                   Hi, I’m <span className='font-semibold'>Shelby</span>, a
-                  certified cosmetic nurse injector with experience in enhancing
-                  natural beauty through Botox and dermal fillers.
+                  certified cosmetic nurse injector spcializing in Botox.
                 </p>
 
                 <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
                   I’m passionate about helping my clients feel confident and
-                  refreshed with personalized treatment plans tailored to their
-                  individual needs.
+                  refreshed with natural-looking results through personalized
+                  treatment plans tailored to each individual.
                 </p>
 
                 <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-                  Whether you’re looking to smooth fine lines or restore volume,
-                  I’m here to provide safe, effective, and professional results
-                  in a comfortable and welcoming environment.
+                  Whether you’re looking to smooth fine lines or prevent deeper
+                  wrinkles, I provide safe, effective, and professional Botox
+                  treatments in a comfortable and welcoming environment.
                 </p>
               </div>
             </div>
