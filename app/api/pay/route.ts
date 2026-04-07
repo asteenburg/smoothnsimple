@@ -4,15 +4,23 @@ import crypto from "crypto";
 
 export async function POST(request: Request) {
   try {
-    // 1. Force TypeScript to treat these as strings using !
-    const token = process.env.SQUARE_TOKEN!;
-    const env = process.env.SQUARE_ENV!;
+    // 1. Pull values from process.env
+    const token = process.env.SQUARE_TOKEN;
+    const env = process.env.SQUARE_ENV;
 
-    // 2. Runtime safety check (in case Vercel variables aren't propagated)
+    // DEBUG LOG: This will show up in your Vercel logs (not the browser)
+    console.log("System Check - Env:", env);
+    console.log(
+      "System Check - Token Length:",
+      token ? token.length : "MISSING",
+    );
+
     if (!token) {
-      console.error("❌ SQUARE_TOKEN is missing at runtime");
       return NextResponse.json(
-        { success: false, error: "Server configuration error: Missing Token" },
+        {
+          success: false,
+          error: "Payment configuration is missing. Please redeploy.",
+        },
         { status: 500 },
       );
     }
@@ -34,7 +42,6 @@ export async function POST(request: Request) {
     if (isNaN(numericTotal) || numericTotal <= 0)
       throw new Error("Invalid total amount");
 
-    // Convert to cents using BigInt for Square's API
     const amountCents = BigInt(Math.round(numericTotal * 100));
 
     let customerId: string | undefined;
@@ -72,7 +79,6 @@ export async function POST(request: Request) {
       buyerEmailAddress: billing?.email,
     });
 
-    // Safe JSON conversion for BigInt values
     const responseData = JSON.parse(
       JSON.stringify(payment, (key, value) =>
         typeof value === "bigint" ? value.toString() : value,
