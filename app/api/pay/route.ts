@@ -4,27 +4,30 @@ import crypto from "crypto";
 
 export async function POST(request: Request) {
   try {
-    // 1. Pull values from process.env
+    // 1. Try to grab the token from multiple possible process paths
     const token = process.env.SQUARE_TOKEN;
-    const env = process.env.SQUARE_ENV;
+    const env = process.env.SQUARE_ENV || "sandbox";
 
-    // DEBUG LOG: This will show up in your Vercel logs (not the browser)
-    console.log("System Check - Env:", env);
+    // SERVER-SIDE LOG: View this in Vercel Dashboard -> Logs
+    console.log("--- SECURE CONFIG CHECK ---");
+    console.log("Environment Mode:", env);
     console.log(
-      "System Check - Token Length:",
-      token ? token.length : "MISSING",
+      "Token Detected:",
+      token ? "YES (Length: " + token.length + ")" : "NO",
     );
 
     if (!token) {
       return NextResponse.json(
         {
           success: false,
-          error: "Payment configuration is missing. Please redeploy.",
+          error:
+            "Payment configuration is missing. Please ensure SQUARE_TOKEN is set in Vercel.",
         },
         { status: 500 },
       );
     }
 
+    // 2. Initialize Client
     const client = new SquareClient({
       token: token,
       environment:
@@ -37,37 +40,10 @@ export async function POST(request: Request) {
     const { total, sourceId, billing } = body;
 
     if (!sourceId) throw new Error("Missing card token (sourceId)");
-
     const numericTotal = Number(total);
-    if (isNaN(numericTotal) || numericTotal <= 0)
-      throw new Error("Invalid total amount");
-
     const amountCents = BigInt(Math.round(numericTotal * 100));
 
-    let customerId: string | undefined;
-
-    // Create Customer in Square
-    if (billing?.email) {
-      try {
-        const { customer } = await client.customers.create({
-          givenName: billing.firstName,
-          familyName: billing.lastName,
-          emailAddress: billing.email,
-          address: {
-            addressLine1: billing.addressLine1,
-            locality: billing.city,
-            administrativeDistrictLevel1: billing.state,
-            postalCode: billing.postalCode,
-            country: "CA",
-          },
-        });
-        customerId = customer?.id;
-      } catch (custError) {
-        console.warn("⚠️ Customer creation skipped:", custError);
-      }
-    }
-
-    // Process Payment
+    // 3. Process Payment
     const { payment } = await client.payments.create({
       idempotencyKey: crypto.randomUUID(),
       sourceId,
@@ -75,7 +51,6 @@ export async function POST(request: Request) {
         amount: amountCents,
         currency: "CAD",
       },
-      customerId,
       buyerEmailAddress: billing?.email,
     });
 
