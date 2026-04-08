@@ -31,7 +31,7 @@ export default function Footer() {
           </div>
 
           {/* Quick Links Column */}
-          <div className='grid grid-cols-2 md:grid-cols-3 gap-12'>
+          <div className='grid grid-cols-3 md:grid-cols-3 gap-12'>
             {/* Socials */}
             <div className='flex flex-col gap-4'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
