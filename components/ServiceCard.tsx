@@ -42,14 +42,14 @@ export default function ServiceCard({
 
         {/* Shimmer */}
         <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-30 transition duration-700 pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%)",
-            backgroundSize: "200% 100%",
-            animation: "shimmer 2s infinite",
-          }}
-        />
+  className="absolute inset-0 opacity-30 sm:opacity-0 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none"
+  style={{
+    background:
+      "linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%)",
+    backgroundSize: "200% 100%",
+    animation: "shimmer 2s infinite linear",
+  }}
+/>
 
         {/* Price */}
         <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
