@@ -9,7 +9,7 @@ type ServiceCardProps = {
   price: string;
   description: string;
   image: string;
-  overlayColor?: string; // optional overlay
+  overlayColor?: string;
 };
 
 export default function ServiceCard({
@@ -34,11 +34,20 @@ export default function ServiceCard({
         {/* Base gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70" />
 
-        {/* Overlay */}
+        {/* Overlay color */}
         <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500"
+          className="absolute inset-0 opacity-0 group-hover:opacity-60 transition duration-500"
+          style={{ backgroundColor: overlayColor ?? "rgba(0,0,0,0.4)" }}
+        />
+
+        {/* Shimmer */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-30 transition duration-700 pointer-events-none"
           style={{
-            backgroundColor: overlayColor ?? "rgba(0,0,0,0.4)",
+            background:
+              "linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%)",
+            backgroundSize: "200% 100%",
+            animation: "shimmer 2s infinite",
           }}
         />
 
