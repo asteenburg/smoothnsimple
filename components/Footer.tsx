@@ -31,7 +31,7 @@ export default function Footer() {
 
             {/* Social */}
             <div className="flex-1 flex flex-col gap-2">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2">
+              <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/40 mb-2">
                 Social
               </h4>
               <a href="https://instagram.com/smoothnsimple" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white text-xs font-bold">
@@ -47,7 +47,7 @@ export default function Footer() {
 
             {/* Explore */}
             <div className="flex-1 flex flex-col gap-2">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2">
+              <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/40 mb-2">
                 Explore
               </h4>
               <Link href="/" className="text-white text-xs font-bold">Home</Link>
@@ -57,7 +57,7 @@ export default function Footer() {
 
             {/* Legal */}
             <div className="flex-1 flex flex-col gap-2">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2">
+              <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/40 mb-2">
                 Legal
               </h4>
               <Link href="/care" className="text-white text-xs font-bold">Care</Link>
