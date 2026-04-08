@@ -105,7 +105,7 @@ export default function Header() {
               />
             </Link>
 
-            {["Shop", "Care", "Services", "About"].map((item) => (
+            {["Shop", "Services", "About", "Care", "Disclaimer"].map((item) => (
               <Link
                 key={item}
                 href={`/${item.toLowerCase()}`}
