@@ -14,6 +14,18 @@ export default function Footer() {
         >
           Privacy Policy
         </Link>
+        <Link
+          href='/disclaimer'
+          className='underline hover:text-blue-600 dark:hover:text-blue-400 mx-4'
+        >
+          Disclaimer
+        </Link>
+        <Link
+          href='/care'
+          className='underline hover:text-blue-600 dark:hover:text-blue-400'
+        >
+          Aftercare
+        </Link>
       </p>
     </footer>
   );
