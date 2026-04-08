@@ -9,7 +9,7 @@ interface ServiceCardProps {
   price: string;
   description: string;
   image: string;
-  overlayColor?: string;
+  overlayColor?: string; // rgba value
 }
 
 export default function ServiceCard({
@@ -17,7 +17,7 @@ export default function ServiceCard({
   price,
   description,
   image,
-  overlayColor = "bg-black/40",
+  overlayColor = "rgba(0,0,0,0.4)",
 }: ServiceCardProps) {
   return (
     <div className='group bg-zinc-900/20 border border-white/5 rounded-[3rem] overflow-hidden flex flex-col transition-all duration-500 hover:border-pink-500/30 hover:bg-zinc-900/40'>
@@ -26,16 +26,19 @@ export default function ServiceCard({
       <div className='relative h-80 w-full overflow-hidden bg-zinc-800'>
         <Image
           src={image}
-          alt={`${title} treatment at Smooth N Simple`}
+          alt={`${title} treatment`}
           fill
           className='object-cover transition-transform duration-700 ease-out group-hover:scale-110'
         />
 
-        {/* Base gradient */}
+        {/* Gradient */}
         <div className='absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70' />
 
-        {/* Overlay (custom per card) */}
-        <div className={`absolute inset-0 ${overlayColor} opacity-0 group-hover:opacity-100 transition duration-500`} />
+        {/* Overlay (SAFE) */}
+        <div
+          className='absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500'
+          style={{ backgroundColor: overlayColor }}
+        />
 
         {/* Price */}
         <div className='absolute bottom-6 left-8'>
