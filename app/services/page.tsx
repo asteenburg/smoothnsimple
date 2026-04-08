@@ -11,7 +11,7 @@ type Package = {
   price: string;
   description: string;
   image: string;
-  overlayColor: string; // ✅ must match prop name
+  overlayColor?: string; // optional = no TS errors
 };
 
 const SERVICE_PACKAGES: Package[] = [
@@ -83,7 +83,7 @@ export default function ServicesPage() {
               price={pkg.price}
               description={pkg.description}
               image={pkg.image}
-              overlayColor={pkg.overlayColor} // ✅ matches perfectly now
+              overlayColor={pkg.overlayColor}
             />
           ))}
         </div>
