@@ -49,7 +49,7 @@ export default function Footer() {
                 <Instagram size={14} /> Instagram
               </a>
               <a
-                href='https://www.facebook.com/share/18c2YeF2dF/'
+                href='https://www.facebook.com/share/17FJDHqG1A/?mibextid=wwXIfr'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='flex items-center gap-2 text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
