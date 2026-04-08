@@ -66,6 +66,12 @@ export default function Footer() {
               <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
                 Explore
               </h4>
+              <a
+                href='/'
+                className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
+              >
+                Home
+              </a>
               <Link
                 href='/shop'
                 className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
