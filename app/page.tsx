@@ -109,7 +109,7 @@ export default function HomePage() {
             >
               {/* VIDEO BACKGROUND COMPONENT */}
               <video
-                ref={(el) => (videoRefs.current[index] = el)}
+                ref={(el) => { videoRefs.current[index] = el; }}
                 src={slide.video}
                 autoPlay
                 muted
