@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
 
         {/* TOP WRAPPER */}
-        <div className="flex flex-col sm:flex-row justify-between gap-12 mb-16 flex-wrap">
+        <div className="flex flex-col sm:flex-row justify-between gap-12 mb-16 flex-nowrap">
 
           {/* BRAND COLUMN */}
           <div className="w-full sm:w-auto mb-6 sm:mb-0 flex-shrink-0">
@@ -26,7 +26,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* SOCIAL + LEGAL */}
+          {/* SOCIAL + EXPLORE + LEGAL */}
           <div className="flex flex-row gap-6 w-full flex-nowrap">
 
             {/* Social */}
@@ -43,6 +43,16 @@ export default function Footer() {
               <a href="mailto:nurseinjectorshelby@gmail.com" className="flex items-center gap-2 text-white text-xs font-bold">
                 <Mail size={14} /> Email
               </a>
+            </div>
+
+            {/* Explore */}
+            <div className="flex-1 flex flex-col gap-2">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2">
+                Explore
+              </h4>
+              <Link href="/" className="text-white text-xs font-bold">Home</Link>
+              <Link href="/shop" className="text-white text-xs font-bold">Shop</Link>
+              <Link href="/services" className="text-white text-xs font-bold">Services</Link>
             </div>
 
             {/* Legal */}
