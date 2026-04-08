@@ -19,7 +19,7 @@ const SERVICE_PACKAGES: Package[] = [
     id: 1,
     title: "Botox",
     price: "$8.00 / Unit",
-    image: "/images/jump1987-botox-10084507.jpg",
+    image: "/images/1000020715.jpg",
     description:
       "Botox decreases fine lines and wrinkles to forehead, frown lines and crows feet. Results typically last 3-4 months. Treatment time is approximately 30 minutes.",
   },
