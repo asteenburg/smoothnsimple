@@ -9,10 +9,10 @@ export default function Footer() {
   return (
     <footer className='w-full bg-black border-t border-white/5 pt-16 pb-8 px-6'>
       <div className='max-w-7xl mx-auto'>
-        {/* Main Content: Stacks on mobile (flex-col), side-by-side on desktop (md:flex-row) */}
+        {/* TOP SECTION: Stacks on mobile, splits on desktop */}
         <div className='flex flex-col md:flex-row justify-between items-start gap-12 mb-16'>
-          {/* --- BRAND COLUMN --- */}
-          <div className='max-w-xs'>
+          {/* Brand Column */}
+          <div className='w-full md:max-w-xs'>
             <Link
               href='/'
               className='flex items-center gap-2 mb-6 group'
@@ -33,11 +33,10 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* --- QUICK LINKS GRID --- */}
-          {/* FIX: grid-cols-1 for mobile, md:grid-cols-3 for desktop */}
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 w-full md:w-auto'>
-            {/* Social Column */}
-            <div className='flex flex-col gap-4'>
+          {/* LINKS AREA: Using Flex-Wrap instead of Grid to prevent "2-column" lock */}
+          <div className='flex flex-wrap gap-x-12 gap-y-10 w-full md:w-auto'>
+            {/* Socials */}
+            <div className='flex flex-col gap-4 min-w-[140px]'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
                 Social
               </h4>
@@ -65,8 +64,8 @@ export default function Footer() {
               </a>
             </div>
 
-            {/* Explore Column */}
-            <div className='flex flex-col gap-4'>
+            {/* Explore */}
+            <div className='flex flex-col gap-4 min-w-[140px]'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
                 Explore
               </h4>
@@ -98,8 +97,8 @@ export default function Footer() {
               </a>
             </div>
 
-            {/* Legal Column */}
-            <div className='flex flex-col gap-4'>
+            {/* Legal */}
+            <div className='flex flex-col gap-4 min-w-[140px]'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
                 Legal
               </h4>
@@ -119,13 +118,13 @@ export default function Footer() {
                 href='/privacy'
                 className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
               >
-                Privacy Policy
+                Privacy
               </Link>
             </div>
           </div>
         </div>
 
-        {/* --- BOTTOM BAR --- */}
+        {/* BOTTOM BAR */}
         <div className='pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left'>
           <p className='text-[10px] font-black uppercase tracking-widest text-zinc-600'>
             &copy; {new Date().getFullYear()} Smooth N Simple.
