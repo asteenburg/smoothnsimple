@@ -122,7 +122,7 @@ export default function ShopPage() {
 
         {/* Text Content: Centered and positioned above the overlays */}
         <div className='relative z-10 max-w-4xl mx-auto text-center px-6 pt-20'>
-          <h1 className='text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-none'>
+          <h1 className='text-4xl md:text-8xl font-black italic uppercase tracking-tighter leading-none'>
             Smooth <span className='text-pink-600'>N</span> Simple
           </h1>
           <p className='text-zinc-500 text-2xl md:text-4xl uppercase font-black tracking-[0.5em] md:tracking-[1em] mt-8'>
