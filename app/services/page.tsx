@@ -66,7 +66,7 @@ export default function ServicesPage() {
           <h1 className="text-3xl sm:text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-none">
             Smooth <span className="text-pink-600">N</span> Simple
           </h1>
-          <p className="text-zinc-500 text-xl sm:text-2xl md:text-4xl uppercase font-black tracking-[0.3em] sm:tracking-[0.5em] md:tracking-[1em] mt-6 sm:mt-8">
+          <p className="text-zinc-500 text-xl sm:text-2xl md:text-4xl uppercase font-black tracking-[1em] mt-6 sm:mt-8">
             Services
           </p>
         </div>
