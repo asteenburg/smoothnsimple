@@ -13,10 +13,15 @@ import {
   MapPin, 
   Clock, 
   Instagram,
-  Star
+  Star,
+  ChevronRight,
+  UserCheck
 } from "lucide-react";
 
-// --- CONTENT DATA ---
+/**
+ * CONTENT DATA
+ * Restored original slide data and treatment categories.
+ */
 const HERO_SLIDES = [
   {
     id: 1,
@@ -36,30 +41,36 @@ const HERO_SLIDES = [
   },
 ];
 
-const TRUST_REASONS = [
+const TREATMENTS = [
   {
-    title: "Safety First",
-    desc: "Treatments administered by a double-certified medical professional in a sterile, clinical environment.",
-    icon: <Shield size={24} />
+    title: "Neuromodulators",
+    subtitle: "Botox & Dysport",
+    description: "Target fine lines and wrinkles for a smooth, refreshed appearance.",
+    image: "/images/treatment-1.jpg",
+    link: "/services/neuromodulators"
   },
   {
-    title: "Subtle Artistry",
-    desc: "We focus on 'the refresh'—natural-looking enhancements that never look frozen or overfilled.",
-    icon: <Sparkles size={24} />
+    title: "Lip Enhancement",
+    subtitle: "Lip Filler & Flips",
+    description: "Add volume or redefine your shape with a natural, artistic touch.",
+    image: "/images/treatment-2.jpg",
+    link: "/services/lips"
   },
   {
-    title: "Expert Mapping",
-    desc: "Every face is unique. We provide custom muscle mapping to ensure your results fit your specific anatomy.",
-    icon: <Zap size={24} />
+    title: "Skin Vitality",
+    subtitle: "Microneedling & Peels",
+    description: "Restore your natural glow and improve overall skin texture.",
+    image: "/images/treatment-3.jpg",
+    link: "/services/skin"
   }
 ];
 
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isScrolled, setIsScrolled] = useState(false);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   // --- NUCLEAR AUTOPLAY GUARD ---
+  // Ensuring cross-browser compatibility and bypassing power-saving mode.
   useEffect(() => {
     videoRefs.current.forEach((video, index) => {
       if (video) {
@@ -72,7 +83,7 @@ export default function HomePage() {
           const playPromise = video.play();
           if (playPromise !== undefined) {
             playPromise.catch((error) => {
-              console.warn("Autoplay interaction blocked by browser.", error);
+              console.warn("Autoplay interaction blocked by browser policy.", error);
             });
           }
         }
@@ -80,12 +91,7 @@ export default function HomePage() {
     });
   }, [currentSlide]);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+  // Slide Rotation Logic (7 Seconds)
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev === HERO_SLIDES.length - 1 ? 0 : prev + 1));
@@ -167,38 +173,40 @@ export default function HomePage() {
               />
             ))}
           </div>
-          <div className="flex flex-col items-center gap-2 opacity-30 animate-pulse">
-            <span className="text-[9px] uppercase font-black tracking-[0.5em]">Explore</span>
-            <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent" />
-          </div>
+          <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent opacity-30 animate-pulse" />
         </div>
       </section>
 
-      {/* --- REPUTATION GRID SECTION --- */}
-      <section className="relative z-20 py-32 bg-black overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-[0.02] pointer-events-none flex items-center justify-center overflow-hidden">
-          <h2 className="text-[30vw] font-black italic uppercase leading-none select-none">SMOOTH</h2>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-24">
-            <h2 className="text-4xl md:text-7xl font-black italic uppercase tracking-tighter mb-6">
-              The <span className="text-pink-600">Standard</span> of Care
-            </h2>
-            <div className="h-1 w-24 bg-pink-600 mx-auto rounded-full" />
+      {/* --- SERVICES GRID SECTION --- */}
+      <section className="py-32 bg-black px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+            <div className="max-w-2xl">
+              <h2 className="text-4xl md:text-7xl font-black italic uppercase tracking-tighter mb-6">
+                Aesthetic <span className="text-pink-600">Services</span>
+              </h2>
+              <p className="text-zinc-500 text-lg italic">
+                Professional medical grade treatments tailored specifically to your facial anatomy.
+              </p>
+            </div>
+            <Link href="/services" className="group flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-pink-600 border-b border-pink-600/20 pb-2">
+              Full Service Menu <ChevronRight size={16} className="group-hover:translate-x-2 transition-transform" />
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-            {TRUST_REASONS.map((reason, index) => (
-              <div key={index} className="group flex flex-col items-center text-center p-8 bg-zinc-950 border border-white/5 rounded-[3rem] hover:border-pink-500/30 transition-all duration-500 shadow-xl">
-                <div className="mb-10 p-6 bg-zinc-900 rounded-[2rem] text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all duration-700 shadow-inner">
-                  {reason.icon}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {TREATMENTS.map((item, idx) => (
+              <Link href={item.link} key={idx} className="group relative aspect-[3/4] overflow-hidden rounded-[3rem] border border-white/5">
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-700 z-10" />
+                <img src={item.image} alt={item.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000" />
+                <div className="absolute bottom-0 left-0 w-full p-10 z-20">
+                  <p className="text-pink-600 font-black uppercase text-[10px] tracking-[0.3em] mb-2">{item.subtitle}</p>
+                  <h3 className="text-3xl font-black italic uppercase tracking-tighter mb-4">{item.title}</h3>
+                  <p className="text-zinc-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed italic">
+                    {item.description}
+                  </p>
                 </div>
-                <h3 className="text-2xl font-black italic uppercase tracking-tight mb-6">{reason.title}</h3>
-                <p className="text-zinc-500 text-sm leading-relaxed max-w-[280px] italic">
-                  "{reason.desc}"
-                </p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -208,14 +216,13 @@ export default function HomePage() {
       <section className="py-32 bg-zinc-950 border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="relative group">
-            <div className="absolute -inset-4 bg-pink-600/20 rounded-[4rem] blur-2xl group-hover:bg-pink-600/30 transition-all duration-700" />
+            <div className="absolute -inset-4 bg-pink-600/10 rounded-[4rem] blur-2xl" />
             <div className="relative aspect-square rounded-[4rem] overflow-hidden border border-white/10">
                <img 
                 src="/images/joe-woods-4Zaq5xY5M_c-unsplash.jpg" 
-                alt="Brantford Medical Aesthetics Clinic Environment" 
+                alt="Brantford Clinic" 
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
                />
-               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
                <div className="absolute bottom-10 left-10 flex items-center gap-4">
                   <div className="p-4 bg-white text-black rounded-2xl shadow-2xl">
                     <MapPin size={24} />
@@ -229,46 +236,34 @@ export default function HomePage() {
           </div>
 
           <div className="space-y-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-600/10 border border-pink-600/20 rounded-full text-pink-500 text-[10px] font-black uppercase tracking-widest">
-              <Star size={12} /> Personalized Approach
-            </div>
             <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter leading-none">
               Where Science <br /> 
               Meets <span className="text-pink-600">Simplicity.</span>
             </h2>
             <p className="text-zinc-400 text-lg leading-relaxed italic">
-              "We believe aesthetic treatments shouldn't be complicated or obvious. Our philosophy is rooted in clinical safety and the art of the 'lip flip' and 'botox bank'—treatments that empower you to look as vibrant as you feel."
+              "We believe aesthetic treatments shouldn't be complicated. Our philosophy is rooted in clinical safety and the art of the 'refresh'—treatments that empower you to look as vibrant as you feel."
             </p>
             
-            <ul className="space-y-6">
-              <li className="flex items-center gap-4 group">
-                <div className="p-2 bg-zinc-900 rounded-lg text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all">
-                  <CheckCircle2 size={18} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {[
+                { label: "Safety First", icon: <Shield size={18} /> },
+                { label: "Natural Results", icon: <Sparkles size={18} /> },
+                { label: "Medical Grade", icon: <UserCheck size={18} /> },
+                { label: "Private Clinic", icon: <MapPin size={18} /> }
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-4 p-4 bg-black/40 border border-white/5 rounded-2xl">
+                  <div className="text-pink-600">{item.icon}</div>
+                  <span className="text-[10px] font-black uppercase tracking-widest">{item.label}</span>
                 </div>
-                <span className="text-zinc-300 font-bold uppercase tracking-widest text-xs">Complimentary Consultations</span>
-              </li>
-              <li className="flex items-center gap-4 group">
-                <div className="p-2 bg-zinc-900 rounded-lg text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all">
-                  <CheckCircle2 size={18} />
-                </div>
-                <span className="text-zinc-300 font-bold uppercase tracking-widest text-xs">Advanced Neuromodulator Expertise</span>
-              </li>
-              <li className="flex items-center gap-4 group">
-                <div className="p-2 bg-zinc-900 rounded-lg text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all">
-                  <CheckCircle2 size={18} />
-                </div>
-                <span className="text-zinc-300 font-bold uppercase tracking-widest text-xs">Private, One-on-One Care</span>
-              </li>
-            </ul>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* --- THE CTA CALLOUT --- */}
+      {/* --- CTA CALLOUT --- */}
       <section className="py-40 px-6">
         <div className="max-w-5xl mx-auto relative rounded-[5rem] overflow-hidden bg-zinc-900/30 border border-white/5 p-16 md:p-24 text-center">
-          <div className="absolute inset-0 bg-gradient-to-br from-pink-600/5 via-transparent to-transparent" />
-          
           <div className="relative z-10">
             <h2 className="text-4xl md:text-8xl font-black italic uppercase tracking-tighter mb-8 leading-none">
               Ready for your <span className="text-pink-600">Refresh?</span>
@@ -276,24 +271,12 @@ export default function HomePage() {
             <p className="text-zinc-500 text-sm md:text-xl max-w-2xl mx-auto mb-16 italic font-medium">
               Join the hundreds of clients in Brant County who trust Smooth N Simple for natural, professional cosmetic injections.
             </p>
-            
-            <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-               <Link
-                href="/book"
-                className="px-12 py-6 bg-pink-600 text-white rounded-2xl font-black uppercase text-[11px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-700 shadow-2xl flex items-center gap-4"
-              >
-                Secure Your Spot <Clock size={16} />
-              </Link>
-              
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className="px-12 py-6 bg-transparent border border-white/10 text-white rounded-2xl font-black uppercase text-[11px] tracking-[0.3em] hover:border-pink-600 transition-all flex items-center gap-4"
-              >
-                Follow Results <Instagram size={16} />
-              </a>
-            </div>
+            <Link
+              href="/book"
+              className="px-12 py-6 bg-pink-600 text-white rounded-2xl font-black uppercase text-[11px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-700 shadow-2xl flex items-center gap-4 justify-center mx-auto max-w-[320px]"
+            >
+              Secure Your Spot <Clock size={16} />
+            </Link>
           </div>
         </div>
       </section>
