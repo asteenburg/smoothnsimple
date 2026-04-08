@@ -9,10 +9,10 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
 
         {/* TOP WRAPPER */}
-        <div className="flex flex-col sm:flex-row justify-between gap-12 mb-16 flex-wrap">
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-12 mb-16 flex-wrap">
 
           {/* BRAND COLUMN */}
-          <div className="w-full sm:w-auto mb-6 sm:mb-0">
+          <div className="w-full sm:w-auto mb-6 sm:mb-0 flex-shrink-0">
             <Link href="/" className="flex items-center gap-2 mb-4 group">
               <div className="bg-pink-600 p-1 rounded-lg transition-transform group-hover:rotate-12">
                 <Zap size={16} className="text-white fill-current" />
@@ -27,10 +27,10 @@ export default function Footer() {
           </div>
 
           {/* SOCIAL + LEGAL */}
-          <div className="flex flex-col sm:flex-row justify-between w-full sm:w-auto gap-6 flex-wrap">
+          <div className="flex flex-row justify-center sm:justify-start gap-6 w-full sm:w-auto flex-wrap">
 
             {/* Social */}
-            <div className="flex flex-col gap-2 sm:w-1/2">
+            <div className="flex flex-col gap-2 w-1/2 min-w-[140px]">
               <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2">
                 Social
               </h4>
@@ -46,7 +46,7 @@ export default function Footer() {
             </div>
 
             {/* Legal */}
-            <div className="flex flex-col gap-2 sm:w-1/2">
+            <div className="flex flex-col gap-2 w-1/2 min-w-[140px]">
               <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2">
                 Legal
               </h4>
