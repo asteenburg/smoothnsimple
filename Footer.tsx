@@ -7,11 +7,11 @@ export default function Footer() {
   const BOOKING_URL = "https://smoothnsimple.janeapp.com";
 
   return (
-    <footer className='w-full bg-black border-t border-white/5 pt-16 pb-8 px-6'>
+    <footer className='w-full bg-black border-t border-white/5 pt-16 pb-12 px-6'>
       <div className='max-w-7xl mx-auto'>
-        {/* TOP SECTION: Stacks on mobile, splits on desktop */}
+        {/* TOP WRAPPER */}
         <div className='flex flex-col md:flex-row justify-between items-start gap-12 mb-16'>
-          {/* Brand Column */}
+          {/* BRAND COLUMN */}
           <div className='w-full md:max-w-xs'>
             <Link
               href='/'
@@ -33,11 +33,11 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* LINKS AREA: Using Flex-Wrap instead of Grid to prevent "2-column" lock */}
-          <div className='flex flex-wrap gap-x-12 gap-y-10 w-full md:w-auto'>
+          {/* --- THE FIX: DIRECT FLEX STACKING --- */}
+          <div className='w-full md:w-auto flex flex-col md:flex-row gap-12'>
             {/* Socials */}
-            <div className='flex flex-col gap-4 min-w-[140px]'>
-              <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
+            <div className='flex flex-col gap-4 min-w-[150px]'>
+              <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Social
               </h4>
               <a
@@ -65,8 +65,8 @@ export default function Footer() {
             </div>
 
             {/* Explore */}
-            <div className='flex flex-col gap-4 min-w-[140px]'>
-              <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
+            <div className='flex flex-col gap-4 min-w-[150px]'>
+              <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Explore
               </h4>
               <Link
@@ -87,19 +87,11 @@ export default function Footer() {
               >
                 Services
               </Link>
-              <a
-                href={BOOKING_URL}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
-              >
-                Book Now
-              </a>
             </div>
 
             {/* Legal */}
-            <div className='flex flex-col gap-4 min-w-[140px]'>
-              <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
+            <div className='flex flex-col gap-4 min-w-[150px]'>
+              <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Legal
               </h4>
               <Link
@@ -125,11 +117,11 @@ export default function Footer() {
         </div>
 
         {/* BOTTOM BAR */}
-        <div className='pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left'>
+        <div className='pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left'>
           <p className='text-[10px] font-black uppercase tracking-widest text-zinc-600'>
             &copy; {new Date().getFullYear()} Smooth N Simple.
           </p>
-          <div className='h-[2px] w-12 bg-pink-600/30 rounded-full md:block hidden'></div>
+          <div className='h-[1px] w-12 bg-pink-600/20 rounded-full md:block hidden'></div>
           <p className='text-[10px] font-black uppercase tracking-widest text-zinc-600'>
             Ontario, Canada
           </p>
