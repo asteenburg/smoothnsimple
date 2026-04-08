@@ -7,6 +7,11 @@ import Footer from "@/components/Footer";
 import Image from "next/image";
 import { ShoppingBag, Star, Gift, Sparkles, ArrowRight } from "lucide-react";
 
+// --- SEO METADATA ---
+// Note: In Next.js, 'use client' files usually have metadata handled by the parent layout
+// or a separate layout.tsx in the same folder to keep the client component clean.
+// --------------------
+
 const TABS = [
   { id: "services", label: "Treatments", icon: Sparkles },
   { id: "packages", label: "Bundles", icon: Star },
@@ -107,39 +112,38 @@ export default function ShopPage() {
 
       {/* --- HERO SECTION --- */}
       <section className='relative h-[60vh] min-h-[400px] w-full flex items-center overflow-hidden border-b border-white/5'>
-        {/* Background Image: pointer-events-none ensures it doesn't block clicks */}
         <div className='absolute inset-0 z-0 pointer-events-none'>
           <Image
             src='/images/joe-woods-4Zaq5xY5M_c-unsplash.jpg'
-            alt='Smooth N Simple Shop'
+            alt='Shop Botox and Lip Flip treatments in Brantford'
             fill
             className='object-cover opacity-40 brightness-50'
             priority
           />
-          {/* Gradient Overlay: pointer-events-none ensures it's "clickable through" */}
           <div className='absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent' />
         </div>
 
-        {/* Text Content: Centered and positioned above the overlays */}
         <div className='relative z-10 max-w-4xl mx-auto text-center px-6 pt-20'>
           <h1 className='text-4xl md:text-8xl font-black italic uppercase tracking-tighter leading-none'>
             Smooth <span className='text-pink-600'>N</span> Simple
           </h1>
           <p className='text-zinc-500 text-2xl md:text-4xl uppercase font-black tracking-[0.5em] md:tracking-[1em] mt-8'>
-            Shop
+            Shop <span className="sr-only">Treatments & Gift Cards</span>
           </p>
         </div>
       </section>
 
       <main className='flex-1 max-w-7xl mx-auto px-6 py-24 w-full'>
         {/* Tab Navigation */}
-        <div className='flex flex-wrap gap-3 mb-16'>
+        <div className='flex flex-wrap gap-3 mb-16' role="tablist">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
+                role="tab"
+                aria-selected={activeTab === tab.id}
                 className={`flex items-center gap-4 px-10 py-5 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] transition-all duration-500 border-2 ${
                   activeTab === tab.id
                     ? "bg-white text-black border-white shadow-2xl scale-105"
