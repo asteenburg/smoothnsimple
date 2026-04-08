@@ -71,21 +71,22 @@ export default function Home() {
       <Header />
 
       {/* HERO */}
-      <section className='relative h-[75vh] md:h-[85vh] w-full flex items-center justify-center overflow-hidden bg-zinc-950'>
-        <video
-          ref={videoRef}
-          key={slides[currentIndex].src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          /* @ts-ignore */
-          webkit-playsinline='true'
-          preload='auto'
-          className='absolute z-0 w-full h-full object-cover transition-opacity duration-1000 pointer-events-none'
-        >
-          <source src={slides[currentIndex].src} type='video/mp4' />
-        </video>
+      <video
+  ref={videoRef}
+  key={slides[currentIndex].src}
+  autoPlay
+  muted
+  loop
+  playsInline
+  /* @ts-ignore */
+  webkit-playsinline='true'
+  preload='auto'
+  className='absolute z-0 w-full h-full object-cover transition-opacity duration-1000 pointer-events-none'
+>
+  <source src={slides[currentIndex].src} type='video/mp4' />
+</video>
+
+<div className="absolute inset-0 bg-black/50 z-0 pointer-events-none"></div>
 
         <div className='relative z-10 text-center px-6' data-aos='zoom-in'>
           <h1 className='text-4xl md:text-6xl font-bold text-white'>
