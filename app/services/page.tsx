@@ -69,7 +69,7 @@ export default function ServicesPage() {
           <p className="text-zinc-500 text-xl sm:text-2xl md:text-4xl uppercase font-black tracking-[1em] mt-6 sm:mt-8">
             Services
           </p>
-          <p className="text-zinc-500 text-xl sm:text-2xl md:text-4xl uppercase font-black tracking-[1em] mt-6 sm:mt-8">Expert medical aesthetic treatments in Brantford, including Botox, Lip Flips, and B12 Injections. Safe, personalized, and designed to enhance your natural beauty.</p>
+          <p className="text-zinc-500 text-md sm:text-2xl md:text-lg uppercase font-black tracking-[0.5em] mt-6 sm:mt-8">Expert medical aesthetic treatments in Brantford, including Botox, Lip Flips, and B12 Injections. Safe, personalized, and designed to enhance your natural beauty.</p>
         </div>
       </section>
 
