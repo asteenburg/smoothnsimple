@@ -1,15 +1,18 @@
+"use client";
+
 import Link from "next/link";
-import { Zap } from "lucide-react";
+import { Zap, Instagram, Facebook, Mail } from "lucide-react";
 
 export default function Footer() {
   const BOOKING_URL = "https://smoothnsimple.janeapp.com";
 
   return (
-    <footer className='w-full bg-black border-t border-white/5 pt-16 pb-8 px-6'>
+    <footer className='w-full bg-black border-t border-white/5 pt-16 pb-12 px-6'>
       <div className='max-w-7xl mx-auto'>
+        {/* TOP WRAPPER */}
         <div className='flex flex-col md:flex-row justify-between items-start gap-12 mb-16'>
-          {/* Brand Column */}
-          <div className='max-w-xs'>
+          {/* BRAND COLUMN */}
+          <div className='w-full md:max-w-xs'>
             <Link
               href='/'
               className='flex items-center gap-2 mb-6 group'
@@ -30,12 +33,48 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Quick Links Column */}
-          <div className='grid grid-cols-2 gap-12'>
-            <div className='flex flex-col gap-4'>
-              <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
+          {/* --- THE FIX: DIRECT FLEX STACKING --- */}
+          <div className='w-full md:w-auto flex flex-col md:flex-row gap-12'>
+            {/* Socials */}
+            <div className='flex flex-col gap-4 min-w-[150px]'>
+              <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
+                Social
+              </h4>
+              <a
+                href='https://instagram.com/smoothnsimple'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='flex items-center gap-2 text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
+              >
+                <Instagram size={14} /> Instagram
+              </a>
+              <a
+                href='https://facebook.com/smoothnsimple'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='flex items-center gap-2 text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
+              >
+                <Facebook size={14} /> Facebook
+              </a>
+              <a
+                href='mailto:nurseinjectorshelby@gmail.com'
+                className='flex items-center gap-2 text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
+              >
+                <Mail size={14} /> Email
+              </a>
+            </div>
+
+            {/* Explore */}
+            <div className='flex flex-col gap-4 min-w-[150px]'>
+              <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Explore
               </h4>
+              <Link
+                href='/'
+                className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
+              >
+                Home
+              </Link>
               <Link
                 href='/shop'
                 className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
@@ -48,18 +87,11 @@ export default function Footer() {
               >
                 Services
               </Link>
-              <a
-                href={BOOKING_URL}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
-              >
-                Book Now
-              </a>
             </div>
 
-            <div className='flex flex-col gap-4'>
-              <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
+            {/* Legal */}
+            <div className='flex flex-col gap-4 min-w-[150px]'>
+              <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Legal
               </h4>
               <Link
@@ -84,13 +116,12 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className='pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4'>
+        {/* BOTTOM BAR */}
+        <div className='pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left'>
           <p className='text-[10px] font-black uppercase tracking-widest text-zinc-600'>
-            &copy; {new Date().getFullYear()} Smooth N Simple. Clinical
-            Excellence.
+            &copy; {new Date().getFullYear()} Smooth N Simple.
           </p>
-          <div className='h-[2px] w-12 bg-pink-600/30 rounded-full md:block hidden'></div>
+          <div className='h-[1px] w-12 bg-pink-600/20 rounded-full md:block hidden'></div>
           <p className='text-[10px] font-black uppercase tracking-widest text-zinc-600'>
             Ontario, Canada
           </p>
