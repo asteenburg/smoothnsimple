@@ -126,7 +126,7 @@ export default function Home() {
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-12' data-aos='fade-up'>
             <h2 className='text-3xl md:text-5xl mb-4 text-white uppercase italic tracking-tight'>
-              Cosmetic Injectables & Skincare
+              Cosmetic Injectables
             </h2>
             <div className='w-20 h-1 bg-pink-500 mx-auto'></div>
           </div>
