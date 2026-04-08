@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { Zap, Instagram, Facebook } from "lucide-react"; // Using Lucide for consistency
+import { Zap, Instagram, Facebook, Mail } from "lucide-react";
 
 export default function Footer() {
   const BOOKING_URL = "https://smoothnsimple.janeapp.com";
@@ -7,8 +9,9 @@ export default function Footer() {
   return (
     <footer className='w-full bg-black border-t border-white/5 pt-16 pb-8 px-6'>
       <div className='max-w-7xl mx-auto'>
+        {/* Main Content: Stacks on mobile (flex-col), side-by-side on desktop (md:flex-row) */}
         <div className='flex flex-col md:flex-row justify-between items-start gap-12 mb-16'>
-          {/* Brand Column */}
+          {/* --- BRAND COLUMN --- */}
           <div className='max-w-xs'>
             <Link
               href='/'
@@ -30,9 +33,10 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Quick Links Column */}
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-12 w-full'>
-            {/* Socials */}
+          {/* --- QUICK LINKS GRID --- */}
+          {/* FIX: grid-cols-1 for mobile, md:grid-cols-3 for desktop */}
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 w-full md:w-auto'>
+            {/* Social Column */}
             <div className='flex flex-col gap-4'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
                 Social
@@ -57,21 +61,21 @@ export default function Footer() {
                 href='mailto:nurseinjectorshelby@gmail.com'
                 className='flex items-center gap-2 text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
               >
-                <i className='fas fa-envelope text-[10px]'></i> Email
+                <Mail size={14} /> Email
               </a>
             </div>
 
-            {/* Explore */}
+            {/* Explore Column */}
             <div className='flex flex-col gap-4'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
                 Explore
               </h4>
-              <a
+              <Link
                 href='/'
                 className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
               >
                 Home
-              </a>
+              </Link>
               <Link
                 href='/shop'
                 className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
@@ -94,7 +98,7 @@ export default function Footer() {
               </a>
             </div>
 
-            {/* Legal */}
+            {/* Legal Column */}
             <div className='flex flex-col gap-4'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2'>
                 Legal
@@ -115,14 +119,14 @@ export default function Footer() {
                 href='/privacy'
                 className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
               >
-                Privacy
+                Privacy Policy
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className='pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4'>
+        {/* --- BOTTOM BAR --- */}
+        <div className='pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left'>
           <p className='text-[10px] font-black uppercase tracking-widest text-zinc-600'>
             &copy; {new Date().getFullYear()} Smooth N Simple.
           </p>
