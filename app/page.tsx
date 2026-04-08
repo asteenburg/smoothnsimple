@@ -17,11 +17,12 @@ import {
 
 /**
  * HERO_SLIDES Data Array
+ * Restored to the actual project file paths to fix the "missing video" error.
  */
 const HERO_SLIDES = [
   {
     id: 1,
-    video: "/videos/hero-1.mp4",
+    video: "/videos/293081.mp4",
     title: "Smooth N Simple",
     subtitle: "Medical Aesthetics Brantford",
     cta: "Book Treatment",
@@ -29,7 +30,7 @@ const HERO_SLIDES = [
   },
   {
     id: 2,
-    video: "/videos/hero-2.mp4",
+    video: "/videos/mixkit-adult-woman-in-the-mirror-frustrated-by-her-wrinkles-4515-hd-ready.mp4",
     title: "Natural Results",
     subtitle: "Expert Injectables",
     cta: "View Services",
@@ -37,17 +38,22 @@ const HERO_SLIDES = [
   },
 ];
 
+/**
+ * HomePage Component
+ * Includes the Triple-Layer Cinematic Overlay and the Nuclear Autoplay Guard.
+ */
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   /**
    * --- NUCLEAR AUTOPLAY GUARD ---
+   * Forces autoplay and bypasses power-saving restrictions.
    */
   useEffect(() => {
     videoRefs.current.forEach((video, index) => {
       if (video) {
-        // Direct DOM manipulation to ensure the browser sees the attributes
+        // Direct DOM manipulation for maximum compatibility
         video.muted = true;
         video.defaultMuted = true;
         video.setAttribute("muted", "");
@@ -55,9 +61,10 @@ export default function HomePage() {
         
         if (index === currentSlide) {
           const playPromise = video.play();
+          
           if (playPromise !== undefined) {
             playPromise.catch((error) => {
-              console.warn("Autoplay interaction blocked by policy:", error);
+              console.warn("Autoplay blocked by browser policy:", error);
             });
           }
         }
@@ -67,6 +74,7 @@ export default function HomePage() {
 
   /**
    * SLIDE ROTATION LOGIC
+   * Cycles every 6 seconds.
    */
   useEffect(() => {
     const timer = setInterval(() => {
@@ -80,6 +88,7 @@ export default function HomePage() {
 
   return (
     <div className='bg-black min-h-screen text-white flex flex-col selection:bg-pink-600/30 font-sans'>
+      {/* GLOBAL HEADER */}
       <Header />
 
       <main className="flex-1">
@@ -92,9 +101,10 @@ export default function HomePage() {
                 index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}
             >
+              {/* VIDEO BACKGROUND COMPONENT */}
               <video
-                ref={(el) => {
-                  if (el) videoRefs.current[index] = el;
+                ref={(el) => { 
+                  if (el) videoRefs.current[index] = el; 
                 }}
                 src={slide.video}
                 autoPlay
@@ -106,13 +116,20 @@ export default function HomePage() {
               
               {/* --- TRIPLE-LAYER CINEMATIC OVERLAY --- */}
               <div className="absolute inset-0 z-10 pointer-events-none">
+                {/* Layer 1: Global Dimmer */}
                 <div className="absolute inset-0 bg-black/40" /> 
+                
+                {/* Layer 2: Bottom-up Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black" /> 
+                
+                {/* Layer 3: Radial Vignette */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_20%,black_85%)] opacity-80" />
               </div>
 
+              {/* HERO TEXT OVERLAY */}
               <div className='relative z-20 h-full flex flex-col items-center justify-center text-center px-6'>
                 <div className="max-w-5xl mx-auto space-y-4">
+                  
                   <h1 className='text-5xl md:text-[9.5rem] font-black italic uppercase tracking-tighter leading-[0.8] drop-shadow-[0_10px_30px_rgba(0,0,0,0.85)]'>
                     {index === 0 ? (
                       <>Smooth <span className='text-pink-600'>N</span> Simple</>
@@ -141,11 +158,13 @@ export default function HomePage() {
                       Explore Services
                     </Link>
                   </div>
+
                 </div>
               </div>
             </div>
           ))}
           
+          {/* NAVIGATION INDICATORS */}
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6">
             <div className="flex gap-3">
               {HERO_SLIDES.map((_, i) => (
@@ -159,16 +178,18 @@ export default function HomePage() {
                 />
               ))}
             </div>
+            
             <div className="flex flex-col items-center gap-2 opacity-30 animate-pulse">
               <ChevronDown size={20} />
             </div>
           </div>
         </section>
 
-        {/* --- STATS SECTION --- */}
+        {/* --- REPUTATION / CLINICAL STATS SECTION --- */}
         <section className="relative z-20 py-40 bg-black">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
+              
               <div className="group flex flex-col items-center text-center">
                 <div className="mb-10 p-6 bg-zinc-900 rounded-[2rem] border border-white/5 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 shadow-xl rotate-3 group-hover:rotate-0">
                   <Sparkles size={24} />
@@ -198,21 +219,25 @@ export default function HomePage() {
                   "High-impact results with minimal downtime, tailored to your unique facial anatomy."
                 </p>
               </div>
+
             </div>
           </div>
         </section>
 
-        {/* --- CTA SECTION --- */}
+        {/* --- CONSULTATION CALL TO ACTION --- */}
         <section className="pb-40 px-6">
           <div className="max-w-5xl mx-auto p-20 rounded-[5rem] bg-zinc-900/20 border border-white/5 text-center relative overflow-hidden group hover:border-pink-600/30 transition-all duration-1000">
+            
             <div className="relative z-10">
               <h2 className="text-4xl md:text-7xl font-black italic uppercase tracking-tighter mb-8 leading-none">
                 Ready for your <span className="text-pink-600">Refresh?</span>
               </h2>
+              
               <p className="text-zinc-500 text-sm md:text-lg max-w-xl mx-auto mb-16 italic font-medium leading-relaxed">
                 "Complimentary consultations available for all new clients in Brantford. 
                 Let's build a treatment plan that fits your goals and anatomy."
               </p>
+              
               <Link
                 href="/book"
                 className="inline-flex items-center gap-6 text-white font-black uppercase tracking-[0.4em] text-[11px] border-b-2 border-pink-600 pb-3 hover:text-pink-600 transition-all duration-300"
@@ -220,11 +245,13 @@ export default function HomePage() {
                 Schedule Consultation <ArrowRight size={16} />
               </Link>
             </div>
+
             <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
                <Sparkles size={200} className="text-pink-600" />
             </div>
           </div>
         </section>
+
       </main>
 
       <Footer />
