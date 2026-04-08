@@ -10,7 +10,7 @@ export default function Footer() {
     <footer className='w-full bg-black border-t border-white/5 pt-16 pb-12 px-6'>
       <div className='max-w-7xl mx-auto'>
         {/* TOP WRAPPER */}
-        <div className='flex flex-col md:flex-row justify-between items-start gap-12 mb-16'>
+        <div className='flex flex-col md:flex-row justify-between items-start gap-12 mb-16 flex-wrap'>
           {/* BRAND COLUMN */}
           <div className='w-full md:max-w-xs'>
             <Link
@@ -33,10 +33,10 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* --- THE FIX: DIRECT FLEX STACKING --- */}
-          <div className='w-full md:w-auto flex flex-col md:flex-row gap-12'>
+          {/* COLUMNS */}
+          <div className='w-full md:w-auto flex flex-col md:flex-row gap-8 md:gap-12 flex-wrap'>
             {/* Socials */}
-            <div className='flex flex-col gap-4 min-w-[150px]'>
+            <div className='flex flex-col gap-4 w-full sm:w-auto'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Social
               </h4>
@@ -65,7 +65,7 @@ export default function Footer() {
             </div>
 
             {/* Explore */}
-            <div className='flex flex-col gap-4 min-w-[150px]'>
+            <div className='flex flex-col gap-4 w-full sm:w-auto'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Explore
               </h4>
@@ -90,7 +90,7 @@ export default function Footer() {
             </div>
 
             {/* Legal */}
-            <div className='flex flex-col gap-4 min-w-[150px]'>
+            <div className='flex flex-col gap-4 w-full sm:w-auto'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Legal
               </h4>
