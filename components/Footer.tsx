@@ -41,7 +41,7 @@ export default function Footer() {
                 Social
               </h4>
               <a
-                href='https://instagram.com/smoothnsimple'
+                href='https://www.instagram.com/nurse.injector.shelby?igsh=c3Z4bmVidmF4dmFn'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='flex items-center gap-2 text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
@@ -49,7 +49,7 @@ export default function Footer() {
                 <Instagram size={14} /> Instagram
               </a>
               <a
-                href='https://facebook.com/smoothnsimple'
+                href='https://www.facebook.com/share/18c2YeF2dF/'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='flex items-center gap-2 text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
