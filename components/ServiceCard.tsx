@@ -9,7 +9,7 @@ type ServiceCardProps = {
   price: string;
   description: string;
   image: string;
-  overlayColor?: string; // optional + safe
+  overlayColor?: string; // optional overlay
 };
 
 export default function ServiceCard({
@@ -20,21 +20,21 @@ export default function ServiceCard({
   overlayColor,
 }: ServiceCardProps) {
   return (
-    <div className="group bg-zinc-900/20 border border-white/5 rounded-[3rem] overflow-hidden flex flex-col transition-all duration-500 hover:border-pink-500/30 hover:bg-zinc-900/40">
+    <div className="group bg-zinc-900/20 border border-white/5 rounded-[2rem] overflow-hidden flex flex-col transition-all duration-500 hover:border-pink-500/30 hover:bg-zinc-900/40">
       
       {/* IMAGE */}
-      <div className="relative h-80 w-full overflow-hidden bg-zinc-800">
+      <div className="relative h-64 sm:h-72 md:h-80 w-full overflow-hidden bg-zinc-800">
         <Image
           src={image}
           alt={`${title} treatment`}
           fill
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
 
         {/* Base gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70" />
 
-        {/* SAFE overlay (no Tailwind dynamic classes) */}
+        {/* Overlay */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500"
           style={{
@@ -43,32 +43,31 @@ export default function ServiceCard({
         />
 
         {/* Price */}
-        <div className="absolute bottom-6 left-8">
-          <p className="text-2xl font-black italic tracking-tighter text-white">
+        <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
+          <p className="text-lg sm:text-2xl font-black italic tracking-tighter text-white">
             {price}
           </p>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div className="p-10 flex flex-col flex-1">
-        <div className="flex items-center gap-3 mb-6">
+      <div className="p-6 sm:p-8 flex flex-col flex-1">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
           <div className="p-2 bg-pink-600/10 rounded-lg text-pink-500">
             <Sparkles size={16} />
           </div>
-
-          <h3 className="text-3xl font-black italic uppercase tracking-tight group-hover:text-pink-600 transition-colors">
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-black italic uppercase tracking-tight group-hover:text-pink-600 transition-colors">
             {title}
           </h3>
         </div>
 
-        <p className="text-zinc-400 text-sm leading-relaxed mb-10 flex-1">
+        <p className="text-zinc-400 text-sm sm:text-base leading-relaxed mb-6 sm:mb-10 flex-1">
           {description}
         </p>
 
         <Link
           href="/book"
-          className="w-full py-6 bg-white text-black rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all duration-500 shadow-xl"
+          className="w-full py-4 sm:py-6 bg-white text-black rounded-2xl font-black uppercase text-[10px] sm:text-xs tracking-[0.2em] flex items-center justify-center gap-2 sm:gap-3 hover:bg-pink-600 hover:text-white transition-all duration-500 shadow-xl"
         >
           <Calendar size={14} />
           Book Appointment
