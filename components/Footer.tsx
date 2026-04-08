@@ -65,7 +65,7 @@ export default function Footer() {
             </div>
 
             {/* Explore */}
-            <div className='flex flex-col gap-4 min-w-[150px]'>
+            {/*<div className='flex flex-col gap-4 min-w-[150px]'>
               <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Explore
               </h4>
@@ -87,7 +87,7 @@ export default function Footer() {
               >
                 Services
               </Link>
-            </div>
+            </div>*/}
 
             {/* Legal */}
             <div className='flex flex-col gap-4 min-w-[150px]'>
