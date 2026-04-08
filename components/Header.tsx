@@ -39,6 +39,12 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <div className='hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2 z-[10000]'>
+          <Link
+            href='/'
+            className='text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-pink-600 transition-colors pointer-events-auto'
+          >
+            Home
+          </Link>
           {["Shop", "Services", "About"].map((item) => (
             <Link
               key={item}
