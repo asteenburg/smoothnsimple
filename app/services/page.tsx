@@ -2,6 +2,7 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Image from "next/image";
 import ServiceCard from "@/components/ServiceCard";
 
 interface Package {
@@ -19,7 +20,7 @@ const SERVICE_PACKAGES: Package[] = [
     title: "Botox",
     price: "$8.00 / Unit",
     image: "/images/1000020715.jpg",
-    overlay: "bg-pink-600/20",
+    overlay: "rgba(236,72,153,0.2)", // pink
     description:
       "Botox decreases fine lines and wrinkles to forehead, frown lines and crows feet. Results typically last 3-4 months. Treatment time is approximately 30 minutes.",
   },
@@ -28,7 +29,7 @@ const SERVICE_PACKAGES: Package[] = [
     title: "Lip Flip",
     price: "$60.00",
     image: "/images/1000020714.jpg",
-    overlay: "bg-purple-600/20",
+    overlay: "rgba(168,85,247,0.2)", // purple
     description:
       "A non-surgical cosmetic procedure that uses strategically placed Botox to subtly enhance the upper lip for a fuller, natural-looking pout.",
   },
@@ -37,7 +38,7 @@ const SERVICE_PACKAGES: Package[] = [
     title: "B12 Injections",
     price: "$50.00",
     image: "/images/10000207242.PNG",
-    overlay: "bg-blue-600/20",
+    overlay: "rgba(59,130,246,0.2)", // blue
     description:
       "Boost energy levels, improve mood, and support overall health. Book a consultation to determine if B12 is the right choice for you.",
   },
@@ -50,16 +51,19 @@ export default function ServicesPage() {
 
       {/* HERO */}
       <section className='relative h-[60vh] min-h-[400px] w-full flex items-center overflow-hidden border-b border-white/5'>
-        <div className='absolute inset-0'>
-          <img
+        <div className='absolute inset-0 z-0'>
+          <Image
             src='/images/joe-woods-4Zaq5xY5M_c-unsplash.jpg'
-            className='w-full h-full object-cover opacity-40 brightness-50'
+            alt='Medical Aesthetic Services'
+            fill
+            className='object-cover opacity-40 brightness-50'
+            priority
           />
           <div className='absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent' />
         </div>
 
         <div className='relative z-10 max-w-4xl mx-auto text-center px-6 pt-20'>
-          <h1 className='text-4xl md:text-8xl font-black italic uppercase tracking-tighter'>
+          <h1 className='text-4xl md:text-8xl font-black italic uppercase tracking-tighter leading-none'>
             Smooth <span className='text-pink-600'>N</span> Simple
           </h1>
 
