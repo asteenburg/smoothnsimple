@@ -71,55 +71,56 @@ export default function Home() {
       <Header />
 
       {/* HERO */}
-      <video
-  ref={videoRef}
-  key={slides[currentIndex].src}
-  autoPlay
-  muted
-  loop
-  playsInline
-  /* @ts-ignore */
-  webkit-playsinline='true'
-  preload='auto'
-  className='absolute z-0 w-full h-full object-cover transition-opacity duration-1000 pointer-events-none'
->
-  <source src={slides[currentIndex].src} type='video/mp4' />
-</video>
+<section className='relative h-[75vh] md:h-[85vh] w-full flex items-center justify-center overflow-hidden bg-zinc-950'>
+  <video
+    ref={videoRef}
+    key={slides[currentIndex].src}
+    autoPlay
+    muted
+    loop
+    playsInline
+    /* @ts-ignore */
+    webkit-playsinline='true'
+    preload='auto'
+    className='absolute z-0 w-full h-full object-cover transition-opacity duration-1000 pointer-events-none'
+  >
+    <source src={slides[currentIndex].src} type='video/mp4' />
+  </video>
 
-<div className="absolute inset-0 bg-black/50 z-0 pointer-events-none"></div>
+  <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none"></div>
 
-        <div className='relative z-10 text-center px-6' data-aos='zoom-in'>
-          <h1 className='text-4xl md:text-6xl font-bold text-white'>
-            SMOOTH <span className='text-pink-500'>N</span> SIMPLE 
-            <span className="sr-only"> - Medical Aesthetics Brantford</span>
-          </h1>
-          <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed'>
-            {slides[currentIndex].subtitle}
-          </p>
+  <div className='relative z-10 text-center px-6' data-aos='zoom-in'>
+    <h1 className='text-4xl md:text-6xl font-bold text-white'>
+      SMOOTH <span className='text-pink-500'>N</span> SIMPLE 
+      <span className="sr-only"> - Medical Aesthetics Brantford</span>
+    </h1>
+    <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed'>
+      {slides[currentIndex].subtitle}
+    </p>
 
-          <div className='flex flex-col md:flex-row gap-4 justify-center items-center'>
-            <Link href='/booking' className='w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center'>
-              Book Appointment
-            </Link>
-            <Link href='/shop' className='w-full md:w-auto bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-10 py-4 rounded-full font-bold transition-all text-center'>
-              Shop Treatments
-            </Link>
-          </div>
-        </div>
+    <div className='flex flex-col md:flex-row gap-4 justify-center items-center'>
+      <Link href='/booking' className='w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center'>
+        Book Appointment
+      </Link>
+      <Link href='/shop' className='w-full md:w-auto bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-10 py-4 rounded-full font-bold transition-all text-center'>
+        Shop Treatments
+      </Link>
+    </div>
+  </div>
 
-        <div className='absolute bottom-8 left-0 right-0 flex justify-center gap-3 z-20'>
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`h-2 transition-all rounded-full ${
-                currentIndex === index ? "bg-pink-600 w-10" : "bg-white/40 w-2"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      </section>
+  <div className='absolute bottom-8 left-0 right-0 flex justify-center gap-3 z-20'>
+    {slides.map((_, index) => (
+      <button
+        key={index}
+        onClick={() => setCurrentIndex(index)}
+        className={`h-2 transition-all rounded-full ${
+          currentIndex === index ? "bg-pink-600 w-10" : "bg-white/40 w-2"
+        }`}
+        aria-label={`Go to slide ${index + 1}`}
+      />
+    ))}
+  </div>
+</section>
 
       {/* SERVICES (UNCHANGED) */}
       <section className='py-20 bg-zinc-950 px-6'>
