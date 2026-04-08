@@ -59,7 +59,9 @@ export default function Home() {
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
-      videoRef.current.play().catch(() => {});
+      setTimeout(() => {
+  videoRef.current?.play().catch(() => {});
+}, 100);
     }
   }, [currentIndex]);
 
