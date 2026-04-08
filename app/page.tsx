@@ -136,7 +136,7 @@ export default function Home() {
             <div className='group' data-aos='fade-up' data-aos-delay='100'>
               <Link href="/services#botox">
                 <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                  <Image src='/images/1000020714.jpg' alt='Professional Botox injections in Brantford' fill className='object-cover transition-transform duration-700 group-hover:scale-110'/>
+                  <Image src='/images/1000020715.jpg' alt='Professional Botox injections in Brantford' fill className='object-cover transition-transform duration-700 group-hover:scale-110'/>
                 </div>
                 <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Botox & Anti-Wrinkle</h3>
                 <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
@@ -148,7 +148,7 @@ export default function Home() {
             <div className='group' data-aos='fade-up' data-aos-delay='200'>
               <Link href="/services#lip-flip">
                 <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                  <Image src='/images/jump1987-botox-10084507.jpg' alt='Natural Lip Flip treatment results' fill className='object-cover transition-transform duration-700 group-hover:scale-110'/>
+                  <Image src='/images/1000020714.jpg' alt='Natural Lip Flip treatment results' fill className='object-cover transition-transform duration-700 group-hover:scale-110'/>
                 </div>
                 <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Natural Lip Flip</h3>
                 <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
@@ -160,7 +160,7 @@ export default function Home() {
             <div className='group' data-aos='fade-up' data-aos-delay='300'>
               <Link href="/services#b12">
                 <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                  <Image src='/images/1000020715.jpg' alt='B12 Vitamin injections at Smooth N Simple' fill className='object-cover transition-transform duration-700 group-hover:scale-110'/>
+                  <Image src='/images/jump1987-botox-10084507.jpg' alt='B12 Vitamin injections at Smooth N Simple' fill className='object-cover transition-transform duration-700 group-hover:scale-110'/>
                 </div>
                 <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Vitamin B12 Boosts</h3>
                 <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
