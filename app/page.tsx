@@ -17,8 +17,6 @@ import {
 
 /**
  * HERO_SLIDES Data Array
- * Defines the video content, main titles, and calls to action for the 
- * home page hero slider.
  */
 const HERO_SLIDES = [
   {
@@ -39,37 +37,26 @@ const HERO_SLIDES = [
   },
 ];
 
-/**
- * HomePage Component
- * Handles the main landing experience, including the high-performance
- * video slider with the Nuclear Autoplay Guard.
- */
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   /**
    * --- NUCLEAR AUTOPLAY GUARD ---
-   * * This effect ensures that the videos continue to auto-play even under 
-   * strict browser power-saving or silent-autoplay policies. 
-   * It forces the muted state and triggers play() on the current active slide.
    */
   useEffect(() => {
     videoRefs.current.forEach((video, index) => {
       if (video) {
-        // Force critical video attributes for cross-browser autoplay compliance
+        // Direct DOM manipulation to ensure the browser sees the attributes
         video.muted = true;
         video.defaultMuted = true;
         video.setAttribute("muted", "");
         video.setAttribute("playsinline", "");
         
-        // Ensure the current slide's video is playing
         if (index === currentSlide) {
           const playPromise = video.play();
-          
           if (playPromise !== undefined) {
             playPromise.catch((error) => {
-              // Silently catch autoplay errors to prevent console noise
               console.warn("Autoplay interaction blocked by policy:", error);
             });
           }
@@ -80,7 +67,6 @@ export default function HomePage() {
 
   /**
    * SLIDE ROTATION LOGIC
-   * * Cycles through the HERO_SLIDES every 6000ms.
    */
   useEffect(() => {
     const timer = setInterval(() => {
@@ -94,7 +80,6 @@ export default function HomePage() {
 
   return (
     <div className='bg-black min-h-screen text-white flex flex-col selection:bg-pink-600/30 font-sans'>
-      {/* GLOBAL HEADER */}
       <Header />
 
       <main className="flex-1">
@@ -107,9 +92,10 @@ export default function HomePage() {
                 index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}
             >
-              {/* VIDEO BACKGROUND COMPONENT */}
               <video
-                ref={(el) => { videoRefs.current[index] = el; }}
+                ref={(el) => {
+                  if (el) videoRefs.current[index] = el;
+                }}
                 src={slide.video}
                 autoPlay
                 muted
@@ -119,25 +105,14 @@ export default function HomePage() {
               />
               
               {/* --- TRIPLE-LAYER CINEMATIC OVERLAY --- */}
-              {/* This layer addresses the issue where bright high-quality footage 
-                  makes the white text difficult to read. 
-              */}
               <div className="absolute inset-0 z-10 pointer-events-none">
-                {/* Layer 1: Global Dimmer ( Sunglasses Effect ) */}
                 <div className="absolute inset-0 bg-black/40" /> 
-                
-                {/* Layer 2: Bottom-up Linear Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black" /> 
-                
-                {/* Layer 3: Radial Vignette - Centering the Brand Focus */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_20%,black_85%)] opacity-80" />
               </div>
 
-              {/* HERO TEXT OVERLAY CONTAINER */}
               <div className='relative z-20 h-full flex flex-col items-center justify-center text-center px-6'>
                 <div className="max-w-5xl mx-auto space-y-4">
-                  
-                  {/* MAIN BRANDING HEADER */}
                   <h1 className='text-5xl md:text-[9.5rem] font-black italic uppercase tracking-tighter leading-[0.8] drop-shadow-[0_10px_30px_rgba(0,0,0,0.85)]'>
                     {index === 0 ? (
                       <>Smooth <span className='text-pink-600'>N</span> Simple</>
@@ -146,12 +121,10 @@ export default function HomePage() {
                     )}
                   </h1>
                   
-                  {/* SUBTITLE TRACKING */}
                   <p className='text-zinc-300 text-lg md:text-2xl uppercase font-black tracking-[0.4em] md:tracking-[0.7em] mt-10 drop-shadow-lg'>
                     {slide.subtitle}
                   </p>
                   
-                  {/* CALL TO ACTION BUTTONS */}
                   <div className="mt-16 flex flex-col sm:flex-row gap-6 justify-center items-center">
                     <Link
                       href={slide.path}
@@ -168,13 +141,11 @@ export default function HomePage() {
                       Explore Services
                     </Link>
                   </div>
-
                 </div>
               </div>
             </div>
           ))}
           
-          {/* NAVIGATION INDICATORS - VISUAL DOTS */}
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6">
             <div className="flex gap-3">
               {HERO_SLIDES.map((_, i) => (
@@ -188,20 +159,16 @@ export default function HomePage() {
                 />
               ))}
             </div>
-            
-            {/* SCROLL SUGGESTION ANIMATION */}
             <div className="flex flex-col items-center gap-2 opacity-30 animate-pulse">
               <ChevronDown size={20} />
             </div>
           </div>
         </section>
 
-        {/* --- REPUTATION / CLINICAL STATS SECTION --- */}
+        {/* --- STATS SECTION --- */}
         <section className="relative z-20 py-40 bg-black">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
-              
-              {/* NATURAL STAT */}
               <div className="group flex flex-col items-center text-center">
                 <div className="mb-10 p-6 bg-zinc-900 rounded-[2rem] border border-white/5 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 shadow-xl rotate-3 group-hover:rotate-0">
                   <Sparkles size={24} />
@@ -212,7 +179,6 @@ export default function HomePage() {
                 </p>
               </div>
 
-              {/* EXPERTISE STAT */}
               <div className="group flex flex-col items-center text-center">
                 <div className="mb-10 p-6 bg-zinc-900 rounded-[2rem] border border-white/5 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 shadow-xl -rotate-3 group-hover:rotate-0">
                   <Shield size={24} />
@@ -223,7 +189,6 @@ export default function HomePage() {
                 </p>
               </div>
 
-              {/* REFRESHED STAT */}
               <div className="group flex flex-col items-center text-center">
                 <div className="mb-10 p-6 bg-zinc-900 rounded-[2rem] border border-white/5 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 shadow-xl rotate-6 group-hover:rotate-0">
                   <Zap size={24} />
@@ -233,25 +198,21 @@ export default function HomePage() {
                   "High-impact results with minimal downtime, tailored to your unique facial anatomy."
                 </p>
               </div>
-
             </div>
           </div>
         </section>
 
-        {/* --- CONSULTATION CALL TO ACTION --- */}
+        {/* --- CTA SECTION --- */}
         <section className="pb-40 px-6">
           <div className="max-w-5xl mx-auto p-20 rounded-[5rem] bg-zinc-900/20 border border-white/5 text-center relative overflow-hidden group hover:border-pink-600/30 transition-all duration-1000">
-            
             <div className="relative z-10">
               <h2 className="text-4xl md:text-7xl font-black italic uppercase tracking-tighter mb-8 leading-none">
                 Ready for your <span className="text-pink-600">Refresh?</span>
               </h2>
-              
               <p className="text-zinc-500 text-sm md:text-lg max-w-xl mx-auto mb-16 italic font-medium leading-relaxed">
                 "Complimentary consultations available for all new clients in Brantford. 
                 Let's build a treatment plan that fits your goals and anatomy."
               </p>
-              
               <Link
                 href="/book"
                 className="inline-flex items-center gap-6 text-white font-black uppercase tracking-[0.4em] text-[11px] border-b-2 border-pink-600 pb-3 hover:text-pink-600 transition-all duration-300"
@@ -259,17 +220,13 @@ export default function HomePage() {
                 Schedule Consultation <ArrowRight size={16} />
               </Link>
             </div>
-
-            {/* DECORATIVE BACKGROUND ACCENT */}
             <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
                <Sparkles size={200} className="text-pink-600" />
             </div>
           </div>
         </section>
-
       </main>
 
-      {/* GLOBAL FOOTER */}
       <Footer />
     </div>
   );
