@@ -16,38 +16,28 @@ export default function Home() {
   const slides = [
     {
       src: "/videos/293081.mp4",
-      subtitle: "Elevating your natural beauty with precision and care.",
+      subtitle: "Elevating your natural beauty with precision medical aesthetics in Brantford.",
     },
     {
       src: "/videos/mixkit-adult-woman-in-the-mirror-frustrated-by-her-wrinkles-4515-hd-ready.mp4",
       title: "EXPERT AESTHETICS",
-      subtitle: "Professional Botox & filler treatments tailored for you.",
+      subtitle: "Professional Botox & filler treatments tailored for your unique skin goals.",
     },
   ];
 
   useEffect(() => {
-    // 1. Initialize AOS Animations
     AOS.init({ duration: 800, once: true });
 
-    // 2. THE NUCLEAR AUTOPLAY GUARD
     const forceVisualPlay = () => {
       const video = videoRef.current;
       if (!video) return;
-
-      // Hard-set volume and muted states for cross-browser compliance
       video.muted = true;
       video.volume = 0;
-
       const playPromise = video.play();
-
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // If the browser blocks it, we wait for the first click/touch anywhere
           const playOnGesture = () => {
-            if (videoRef.current) {
-              videoRef.current.play();
-              console.log("Video unlocked by user interaction.");
-            }
+            if (videoRef.current) videoRef.current.play();
             document.removeEventListener("click", playOnGesture);
             document.removeEventListener("touchstart", playOnGesture);
           };
@@ -57,26 +47,18 @@ export default function Home() {
       }
     };
 
-    // Run on initial mount
     forceVisualPlay();
 
-    // 3. Slide transition interval
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % slides.length);
     }, 10000);
 
-    return () => {
-      clearInterval(interval);
-      // Cleanup any stray listeners
-      document.removeEventListener("click", () => {});
-      document.removeEventListener("touchstart", () => {});
-    };
+    return () => clearInterval(interval);
   }, [slides.length]);
 
-  // Re-trigger play specifically when the currentIndex changes
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.load(); // Forces the browser to recognize the new <source>
+      videoRef.current.load();
       videoRef.current.play().catch(() => {});
     }
   }, [currentIndex]);
@@ -94,23 +76,19 @@ export default function Home() {
           muted
           loop
           playsInline
-          /* @ts-ignore - webkit attributes for Safari */
+          /* @ts-ignore */
           webkit-playsinline='true'
           preload='auto'
           className='absolute z-0 w-full h-full object-cover opacity-50 transition-opacity duration-1000 pointer-events-none'
         >
-          <source
-            src={slides[currentIndex].src}
-            type='video/mp4'
-          />
+          <source src={slides[currentIndex].src} type='video/mp4' />
         </video>
 
-        <div
-          className='relative z-10 text-center px-6'
-          data-aos='zoom-in'
-        >
+        <div className='relative z-10 text-center px-6' data-aos='zoom-in'>
+          {/* SEO: Main H1 with Keyword and Location */}
           <h1 className='text-4xl md:text-6xl font-bold text-white'>
-            SMOOTH <span className='text-pink-500'>N</span> SIMPLE
+            SMOOTH <span className='text-pink-500'>N</span> SIMPLE 
+            <span className="sr-only"> - Medical Aesthetics Brantford</span>
           </h1>
           <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed'>
             {slides[currentIndex].subtitle}
@@ -127,7 +105,7 @@ export default function Home() {
               href='/shop'
               className='w-full md:w-auto bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-10 py-4 rounded-full font-bold transition-all text-center'
             >
-              Shop & Gift Cards
+              Shop Treatments
             </Link>
           </div>
         </div>
@@ -150,95 +128,90 @@ export default function Home() {
       {/* SECTION 2: THE EXPERIENCE */}
       <section className='py-20 bg-zinc-950 px-6'>
         <div className='max-w-7xl mx-auto'>
-          <div
-            className='text-center mb-12'
-            data-aos='fade-up'
-          >
+          <div className='text-center mb-12' data-aos='fade-up'>
+            {/* SEO: H2 with service-specific keyword */}
             <h2 className='text-3xl md:text-5xl mb-4 text-white uppercase italic tracking-tight'>
-              Expert Aesthetics
+              Cosmetic Injectables & Skincare
             </h2>
             <div className='w-20 h-1 bg-pink-500 mx-auto'></div>
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
-            <div
-              className='group'
-              data-aos='fade-up'
-              data-aos-delay='100'
-            >
-              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                <Image
-                  src='/images/jump1987-botox-10084507.jpg'
-                  alt='Botox'
-                  fill
-                  className='object-cover transition-transform duration-700 group-hover:scale-110'
-                />
-              </div>
-              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>
-                Botox
-              </h3>
-              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
-                Precision treatments to enhance your natural beauty
-              </p>
+            {/* SERVICE 1: BOTOX */}
+            <div className='group' data-aos='fade-up' data-aos-delay='100'>
+              <Link href="/services#botox">
+                <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                  <Image
+                    src='/images/jump1987-botox-10084507.jpg'
+                    alt='Professional Botox injections in Brantford'
+                    fill
+                    className='object-cover transition-transform duration-700 group-hover:scale-110'
+                  />
+                </div>
+                <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Botox & Anti-Wrinkle</h3>
+                <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
+                  Precision Botox treatments to smooth fine lines and restore your youthful glow.
+                </p>
+              </Link>
             </div>
-            <div
-              className='group'
-              data-aos='fade-up'
-              data-aos-delay='200'
-            >
-              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                <Image
-                  src='/images/1000020714.jpg'
-                  alt='Lip Flip'
-                  fill
-                  className='object-cover transition-transform duration-700 group-hover:scale-110'
-                />
-              </div>
-              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>
-                Lip Flip
-              </h3>
-              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
-                Create a fuller, natural-looking upper lip
-              </p>
+
+            {/* SERVICE 2: LIP FLIP */}
+            <div className='group' data-aos='fade-up' data-aos-delay='200'>
+              <Link href="/services#lip-flip">
+                <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                  <Image
+                    src='/images/1000020714.jpg'
+                    alt='Natural Lip Flip treatment results'
+                    fill
+                    className='object-cover transition-transform duration-700 group-hover:scale-110'
+                  />
+                </div>
+                <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Natural Lip Flip</h3>
+                <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
+                  Achieve a subtle, fuller upper lip with our specialized Lip Flip injections.
+                </p>
+              </Link>
             </div>
-            <div
-              className='group'
-              data-aos='fade-up'
-              data-aos-delay='300'
-            >
-              <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                <Image
-                  src='/images/1000020715.jpg'
-                  alt='Aftercare'
-                  fill
-                  className='object-cover transition-transform duration-700 group-hover:scale-110'
-                />
-              </div>
-              <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>
-                Professional Care
-              </h3>
-              <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
-                Experience aesthetic excellence in a luxury setting
-              </p>
+
+            {/* SERVICE 3: VITAMIN BOOSTS */}
+            <div className='group' data-aos='fade-up' data-aos-delay='300'>
+              <Link href="/services#b12">
+                <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
+                  <Image
+                    src='/images/1000020715.jpg'
+                    alt='B12 Vitamin injections at Smooth N Simple'
+                    fill
+                    className='object-cover transition-transform duration-700 group-hover:scale-110'
+                  />
+                </div>
+                <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Vitamin B12 Boosts</h3>
+                <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
+                  Recharge your energy and wellness with professional B12 injections.
+                </p>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 3: CTA */}
+      {/* SECTION 3: LOCAL FOCUS / SEO TEXT (HIDDEN OR SUBTLE) */}
+      <section className="py-10 bg-black text-center border-t border-zinc-900">
+        <p className="text-zinc-600 text-xs uppercase tracking-widest">
+          Serving Brantford, Paris, and Brant County
+        </p>
+      </section>
+
+      {/* SECTION 4: CTA */}
       <section className='py-24 bg-pink-600 text-white text-center px-6 relative overflow-hidden'>
-        <div
-          data-aos='fade-up'
-          className='relative z-10'
-        >
+        <div data-aos='fade-up' className='relative z-10'>
           <h2 className='text-4xl md:text-6xl font-black mb-8 italic tracking-tighter uppercase'>
-            Your transformation awaits
+            Start Your Skin Journey
           </h2>
           <Link
             href='/booking'
             className='inline-block bg-black text-white px-14 py-5 rounded-full font-black text-xl hover:bg-zinc-900 transition-all active:scale-95 shadow-2xl uppercase tracking-widest'
           >
-            Book Now
+            Book in Brantford
           </Link>
         </div>
       </section>
