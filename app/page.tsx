@@ -1,220 +1,275 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import Image from "next/image";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Link from "next/link";
+import { 
+  ArrowRight, 
+  Sparkles, 
+  Shield, 
+  Zap, 
+  ChevronDown,
+  Star,
+  Instagram,
+  MapPin
+} from "lucide-react";
 
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+/**
+ * HERO_SLIDES Data Array
+ * Defines the video content, main titles, and calls to action for the 
+ * home page hero slider.
+ */
+const HERO_SLIDES = [
+  {
+    id: 1,
+    video: "/videos/hero-1.mp4",
+    title: "Smooth N Simple",
+    subtitle: "Medical Aesthetics Brantford",
+    cta: "Book Treatment",
+    path: "/book"
+  },
+  {
+    id: 2,
+    video: "/videos/hero-2.mp4",
+    title: "Natural Results",
+    subtitle: "Expert Injectables",
+    cta: "View Services",
+    path: "/services"
+  },
+];
 
-export default function Home() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
+/**
+ * HomePage Component
+ * Handles the main landing experience, including the high-performance
+ * video slider with the Nuclear Autoplay Guard.
+ */
+export default function HomePage() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  const slides = [
-    {
-      src: "/videos/293081.mp4",
-      subtitle: "Elevating your natural beauty with precision medical aesthetics in Brantford.",
-    },
-    {
-      src: "/videos/mixkit-adult-woman-in-the-mirror-frustrated-by-her-wrinkles-4515-hd-ready.mp4",
-      title: "EXPERT AESTHETICS",
-      subtitle: "Professional Botox & filler treatments tailored for your unique skin goals.",
-    },
-  ];
-
+  /**
+   * --- NUCLEAR AUTOPLAY GUARD ---
+   * * This effect ensures that the videos continue to auto-play even under 
+   * strict browser power-saving or silent-autoplay policies. 
+   * It forces the muted state and triggers play() on the current active slide.
+   */
   useEffect(() => {
-    AOS.init({ duration: 800, once: true });
-
-    const forceVisualPlay = () => {
-      const video = videoRef.current;
-      if (!video) return;
-      video.muted = true;
-      video.volume = 0;
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          const playOnGesture = () => {
-            if (videoRef.current) videoRef.current.play();
-            document.removeEventListener("click", playOnGesture);
-            document.removeEventListener("touchstart", playOnGesture);
-          };
-          document.addEventListener("click", playOnGesture);
-          document.addEventListener("touchstart", playOnGesture);
-        });
+    videoRefs.current.forEach((video, index) => {
+      if (video) {
+        // Force critical video attributes for cross-browser autoplay compliance
+        video.muted = true;
+        video.defaultMuted = true;
+        video.setAttribute("muted", "");
+        video.setAttribute("playsinline", "");
+        
+        // Ensure the current slide's video is playing
+        if (index === currentSlide) {
+          const playPromise = video.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              // Silently catch autoplay errors to prevent console noise
+              console.warn("Autoplay interaction blocked by policy:", error);
+            });
+          }
+        }
       }
-    };
+    });
+  }, [currentSlide]);
 
-    forceVisualPlay();
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % slides.length);
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [slides.length]);
-
+  /**
+   * SLIDE ROTATION LOGIC
+   * * Cycles through the HERO_SLIDES every 6000ms.
+   */
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load();
-      videoRef.current.play().catch(() => {});
-    }
-  }, [currentIndex]);
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => 
+        prev === HERO_SLIDES.length - 1 ? 0 : prev + 1
+      );
+    }, 6000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className='relative w-full bg-black overflow-x-hidden'>
+    <div className='bg-black min-h-screen text-white flex flex-col selection:bg-pink-600/30 font-sans'>
+      {/* GLOBAL HEADER */}
       <Header />
 
-      {/* SECTION 1: HERO SLIDESHOW */}
-      <section className='relative h-[75vh] md:h-[85vh] w-full flex items-center justify-center overflow-hidden bg-zinc-950'>
-        <video
-          ref={videoRef}
-          key={slides[currentIndex].src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          /* @ts-ignore */
-          webkit-playsinline='true'
-          preload='auto'
-          className='absolute z-0 w-full h-full object-cover opacity-50 transition-opacity duration-1000 pointer-events-none'
-        >
-          <source src={slides[currentIndex].src} type='video/mp4' />
-        </video>
-
-        <div className='relative z-10 text-center px-6' data-aos='zoom-in'>
-          {/* SEO: Main H1 with Keyword and Location */}
-          <h1 className='text-4xl md:text-6xl font-bold text-white'>
-            SMOOTH <span className='text-pink-500'>N</span> SIMPLE 
-            <span className="sr-only"> - Medical Aesthetics Brantford</span>
-          </h1>
-          <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed'>
-            {slides[currentIndex].subtitle}
-          </p>
-
-          <div className='flex flex-col md:flex-row gap-4 justify-center items-center'>
-            <Link
-              href='/booking'
-              className='w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center'
-            >
-              Book Appointment
-            </Link>
-            <Link
-              href='/shop'
-              className='w-full md:w-auto bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-10 py-4 rounded-full font-bold transition-all text-center'
-            >
-              Shop Treatments
-            </Link>
-          </div>
-        </div>
-
-        {/* SLIDE INDICATORS */}
-        <div className='absolute bottom-8 left-0 right-0 flex justify-center gap-3 z-20'>
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`h-2 transition-all rounded-full ${
-                currentIndex === index ? "bg-pink-600 w-10" : "bg-white/40 w-2"
+      <main className="flex-1">
+        {/* --- HERO SECTION --- */}
+        <section className='relative h-screen w-full overflow-hidden border-b border-white/5'>
+          {HERO_SLIDES.map((slide, index) => (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
+            >
+              {/* VIDEO BACKGROUND COMPONENT */}
+              <video
+                ref={(el) => (videoRefs.current[index] = el)}
+                src={slide.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className='absolute inset-0 w-full h-full object-cover brightness-[0.9]'
+              />
+              
+              {/* --- TRIPLE-LAYER CINEMATIC OVERLAY --- */}
+              {/* This layer addresses the issue where bright high-quality footage 
+                  makes the white text difficult to read. 
+              */}
+              <div className="absolute inset-0 z-10 pointer-events-none">
+                {/* Layer 1: Global Dimmer ( Sunglasses Effect ) */}
+                <div className="absolute inset-0 bg-black/40" /> 
+                
+                {/* Layer 2: Bottom-up Linear Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black" /> 
+                
+                {/* Layer 3: Radial Vignette - Centering the Brand Focus */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_20%,black_85%)] opacity-80" />
+              </div>
+
+              {/* HERO TEXT OVERLAY CONTAINER */}
+              <div className='relative z-20 h-full flex flex-col items-center justify-center text-center px-6'>
+                <div className="max-w-5xl mx-auto space-y-4">
+                  
+                  {/* MAIN BRANDING HEADER */}
+                  <h1 className='text-5xl md:text-[9.5rem] font-black italic uppercase tracking-tighter leading-[0.8] drop-shadow-[0_10px_30px_rgba(0,0,0,0.85)]'>
+                    {index === 0 ? (
+                      <>Smooth <span className='text-pink-600'>N</span> Simple</>
+                    ) : (
+                      slide.title
+                    )}
+                  </h1>
+                  
+                  {/* SUBTITLE TRACKING */}
+                  <p className='text-zinc-300 text-lg md:text-2xl uppercase font-black tracking-[0.4em] md:tracking-[0.7em] mt-10 drop-shadow-lg'>
+                    {slide.subtitle}
+                  </p>
+                  
+                  {/* CALL TO ACTION BUTTONS */}
+                  <div className="mt-16 flex flex-col sm:flex-row gap-6 justify-center items-center">
+                    <Link
+                      href={slide.path}
+                      className='min-w-[280px] px-12 py-6 bg-white text-black rounded-2xl font-black uppercase text-[11px] tracking-[0.3em] hover:bg-pink-600 hover:text-white transition-all duration-500 active:scale-95 shadow-2xl flex items-center justify-center gap-4 group'
+                    >
+                      {slide.cta}
+                      <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
+                    </Link>
+                    
+                    <Link
+                      href='/services'
+                      className='min-w-[280px] px-12 py-6 bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl font-black uppercase text-[11px] tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500 flex items-center justify-center'
+                    >
+                      Explore Services
+                    </Link>
+                  </div>
+
+                </div>
+              </div>
+            </div>
           ))}
-        </div>
-      </section>
-
-      {/* SECTION 2: THE EXPERIENCE */}
-      <section className='py-20 bg-zinc-950 px-6'>
-        <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-12' data-aos='fade-up'>
-            {/* SEO: H2 with service-specific keyword */}
-            <h2 className='text-3xl md:text-5xl mb-4 text-white uppercase italic tracking-tight'>
-              Cosmetic Injectables & Skincare
-            </h2>
-            <div className='w-20 h-1 bg-pink-500 mx-auto'></div>
-          </div>
-
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
-            {/* SERVICE 1: BOTOX */}
-            <div className='group' data-aos='fade-up' data-aos-delay='100'>
-              <Link href="/services#botox">
-                <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                  <Image
-                    src='/images/jump1987-botox-10084507.jpg'
-                    alt='Professional Botox injections in Brantford'
-                    fill
-                    className='object-cover transition-transform duration-700 group-hover:scale-110'
-                  />
-                </div>
-                <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Botox & Anti-Wrinkle</h3>
-                <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
-                  Precision Botox treatments to smooth fine lines and restore your youthful glow.
-                </p>
-              </Link>
+          
+          {/* NAVIGATION INDICATORS - VISUAL DOTS */}
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6">
+            <div className="flex gap-3">
+              {HERO_SLIDES.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentSlide(i)}
+                  className={`h-1.5 transition-all duration-500 rounded-full ${
+                    i === currentSlide ? "w-12 bg-pink-600" : "w-4 bg-white/20 hover:bg-white/40"
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
             </div>
-
-            {/* SERVICE 2: LIP FLIP */}
-            <div className='group' data-aos='fade-up' data-aos-delay='200'>
-              <Link href="/services#lip-flip">
-                <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                  <Image
-                    src='/images/1000020714.jpg'
-                    alt='Natural Lip Flip treatment results'
-                    fill
-                    className='object-cover transition-transform duration-700 group-hover:scale-110'
-                  />
-                </div>
-                <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Natural Lip Flip</h3>
-                <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
-                  Achieve a subtle, fuller upper lip with our specialized Lip Flip injections.
-                </p>
-              </Link>
-            </div>
-
-            {/* SERVICE 3: VITAMIN BOOSTS */}
-            <div className='group' data-aos='fade-up' data-aos-delay='300'>
-              <Link href="/services#b12">
-                <div className='relative h-72 md:h-80 w-full mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                  <Image
-                    src='/images/1000020715.jpg'
-                    alt='B12 Vitamin injections at Smooth N Simple'
-                    fill
-                    className='object-cover transition-transform duration-700 group-hover:scale-110'
-                  />
-                </div>
-                <h3 className='text-xl md:text-2xl font-bold mb-2 text-white'>Vitamin B12 Boosts</h3>
-                <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
-                  Recharge your energy and wellness with professional B12 injections.
-                </p>
-              </Link>
+            
+            {/* SCROLL SUGGESTION ANIMATION */}
+            <div className="flex flex-col items-center gap-2 opacity-30 animate-pulse">
+              <ChevronDown size={20} />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* SECTION 3: LOCAL FOCUS / SEO TEXT (HIDDEN OR SUBTLE) */}
-      <section className="py-10 bg-black text-center border-t border-zinc-900">
-        <p className="text-zinc-600 text-xs uppercase tracking-widest">
-          Serving Brantford, Paris, and Brant County
-        </p>
-      </section>
+        {/* --- REPUTATION / CLINICAL STATS SECTION --- */}
+        <section className="relative z-20 py-40 bg-black">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
+              
+              {/* NATURAL STAT */}
+              <div className="group flex flex-col items-center text-center">
+                <div className="mb-10 p-6 bg-zinc-900 rounded-[2rem] border border-white/5 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 shadow-xl rotate-3 group-hover:rotate-0">
+                  <Sparkles size={24} />
+                </div>
+                <h3 className="text-2xl font-black italic uppercase tracking-tight mb-6">Natural</h3>
+                <p className="text-zinc-500 text-sm leading-relaxed max-w-[280px] italic font-medium">
+                  "Subtle, refined enhancements designed to keep you looking like yourself—only refreshed."
+                </p>
+              </div>
 
-      {/* SECTION 4: CTA */}
-      <section className='py-24 bg-pink-600 text-white text-center px-6 relative overflow-hidden'>
-        <div data-aos='fade-up' className='relative z-10'>
-          <h2 className='text-4xl md:text-6xl font-black mb-8 italic tracking-tighter uppercase'>
-            Start Your Skin Journey
-          </h2>
-          <Link
-            href='/booking'
-            className='inline-block bg-black text-white px-14 py-5 rounded-full font-black text-xl hover:bg-zinc-900 transition-all active:scale-95 shadow-2xl uppercase tracking-widest'
-          >
-            Book in Brantford
-          </Link>
-        </div>
-      </section>
+              {/* EXPERTISE STAT */}
+              <div className="group flex flex-col items-center text-center">
+                <div className="mb-10 p-6 bg-zinc-900 rounded-[2rem] border border-white/5 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 shadow-xl -rotate-3 group-hover:rotate-0">
+                  <Shield size={24} />
+                </div>
+                <h3 className="text-2xl font-black italic uppercase tracking-tight mb-6">Expertise</h3>
+                <p className="text-zinc-500 text-sm leading-relaxed max-w-[280px] italic font-medium">
+                  "Led by certified medical professionals specializing in precision injectable treatments."
+                </p>
+              </div>
+
+              {/* REFRESHED STAT */}
+              <div className="group flex flex-col items-center text-center">
+                <div className="mb-10 p-6 bg-zinc-900 rounded-[2rem] border border-white/5 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 shadow-xl rotate-6 group-hover:rotate-0">
+                  <Zap size={24} />
+                </div>
+                <h3 className="text-2xl font-black italic uppercase tracking-tight mb-4">Refreshed</h3>
+                <p className="text-zinc-500 text-sm leading-relaxed max-w-[280px] italic font-medium">
+                  "High-impact results with minimal downtime, tailored to your unique facial anatomy."
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* --- CONSULTATION CALL TO ACTION --- */}
+        <section className="pb-40 px-6">
+          <div className="max-w-5xl mx-auto p-20 rounded-[5rem] bg-zinc-900/20 border border-white/5 text-center relative overflow-hidden group hover:border-pink-600/30 transition-all duration-1000">
+            
+            <div className="relative z-10">
+              <h2 className="text-4xl md:text-7xl font-black italic uppercase tracking-tighter mb-8 leading-none">
+                Ready for your <span className="text-pink-600">Refresh?</span>
+              </h2>
+              
+              <p className="text-zinc-500 text-sm md:text-lg max-w-xl mx-auto mb-16 italic font-medium leading-relaxed">
+                "Complimentary consultations available for all new clients in Brantford. 
+                Let's build a treatment plan that fits your goals and anatomy."
+              </p>
+              
+              <Link
+                href="/book"
+                className="inline-flex items-center gap-6 text-white font-black uppercase tracking-[0.4em] text-[11px] border-b-2 border-pink-600 pb-3 hover:text-pink-600 transition-all duration-300"
+              >
+                Schedule Consultation <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            {/* DECORATIVE BACKGROUND ACCENT */}
+            <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
+               <Sparkles size={200} className="text-pink-600" />
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      {/* GLOBAL FOOTER */}
       <Footer />
     </div>
   );
