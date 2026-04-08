@@ -46,13 +46,12 @@ export default function ServicesPage() {
     <div className='bg-black min-h-screen text-white flex flex-col selection:bg-pink-600/30'>
       <Header />
 
-      {/* --- HERO SECTION (Outside main for full-width) --- */}
+      {/* --- HERO SECTION --- */}
       <section className='relative h-[60vh] min-h-[400px] w-full flex items-center overflow-hidden border-b border-white/5'>
-        {/* Background Image Overlay */}
         <div className='absolute inset-0 z-0 pointer-events-none'>
           <Image
             src='/images/joe-woods-4Zaq5xY5M_c-unsplash.jpg'
-            alt='Smooth N Simple Services'
+            alt='Medical Aesthetic Services in Brantford, Ontario'
             fill
             className='object-cover opacity-40 brightness-50'
             priority
@@ -60,13 +59,12 @@ export default function ServicesPage() {
           <div className='absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent' />
         </div>
 
-        {/* Hero Text */}
         <div className='relative z-10 max-w-4xl mx-auto text-center px-6 pt-20'>
           <h1 className='text-4xl md:text-8xl font-black italic uppercase tracking-tighter leading-none'>
             Smooth <span className='text-pink-600'>N</span> Simple
           </h1>
           <p className='text-zinc-500 text-2xl md:text-4xl uppercase font-black tracking-[0.5em] md:tracking-[1em] mt-8'>
-            Services
+            Services <span className="sr-only"> - Botox, Lip Flips & B12 Injections</span>
           </p>
         </div>
       </section>
@@ -84,7 +82,7 @@ export default function ServicesPage() {
               <div className='relative h-80 w-full overflow-hidden bg-zinc-800'>
                 <Image
                   src={pkg.image}
-                  alt={pkg.title}
+                  alt={`${pkg.title} treatment at Smooth N Simple Brantford`}
                   fill
                   className='object-cover transition-transform duration-700 ease-out group-hover:scale-110'
                   sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
@@ -135,7 +133,7 @@ export default function ServicesPage() {
             Not sure where to start?
           </h2>
           <p className='text-zinc-500 text-xs uppercase font-bold tracking-widest mb-10'>
-            Consultations are always complimentary
+            Consultations are always complimentary in Brantford
           </p>
           <Link
             href='/book'
