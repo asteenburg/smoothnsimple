@@ -73,7 +73,6 @@ export default function Home() {
       <Header />
 
       {/* HERO */}
-      {/* HERO */}
       <section className="relative h-[75vh] md:h-[85vh] w-full flex items-center justify-center overflow-hidden bg-zinc-950">
         <video
           ref={videoRef}
@@ -91,7 +90,7 @@ export default function Home() {
         </video>
 
         {/* DARK OVERLAY */}
-        <div className="absolute inset-0 bg-black/85 z-10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-black/80 md:bg-black/85 z-10 pointer-events-none"></div>
 
         <div className="relative z-20 text-center px-6" data-aos="zoom-in">
           <h1 className="text-4xl md:text-6xl font-bold text-white">
@@ -105,7 +104,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
             <Link
               href="/booking"
-              className="w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center"
+              className="w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white md:px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center"
             >
               Book Appointment
             </Link>
