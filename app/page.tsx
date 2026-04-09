@@ -90,7 +90,7 @@ export default function Home() {
         </video>
 
         {/* DARK OVERLAY */}
-        <div className="absolute inset-0 bg-black/75 md:bg-black/85 z-10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-black/70 md:bg-black/85 z-10 pointer-events-none"></div>
 
         <div className="relative z-20 text-center px-6" data-aos="zoom-in">
           <h1 className="text-4xl md:text-6xl font-bold text-white">
