@@ -104,7 +104,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
             <Link
               href="/booking"
-              className="w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white md:px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center"
+              className="w-full md:w-auto bg-pink-600 hover:bg-pink-700 text-white  md:px-10 py-4 rounded-full font-bold transition-all transform active:scale-95 text-center"
             >
               Book Appointment
             </Link>
