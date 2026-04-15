@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Zap, Instagram, Facebook, Mail } from "lucide-react";
+import { Star, ExternalLink } from "lucide-react";
 
 export default function Footer() {
   const BOOKING_URL = "https://smoothnsimple.janeapp.com";
@@ -40,6 +41,19 @@ export default function Footer() {
               <h4 className='text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-2'>
                 Social
               </h4>
+              <a
+                href='https://www.google.com/search?sca_esv=55e9f3c856495c1e&rlz=1C5BAPC_enCA1191CA1192&sxsrf=ANbL-n4qABOLjVaDqPNngCRw2gFrYfgOMw:1776272984792&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOYrYkd5r5myptXoSQMpvluiCNaoPd7ESbCCw6fVCSSFUrbSdtEJY2C4MpZE5LtUf0TXqyApifmqWipj2ZpdHgejJPiVD&q=Smooth+N+Simple+Reviews&sa=X&ved=2ahUKEwjni6HCrPCTAxV2vokEHb6_HVcQ0bkNegQIMRAH&biw=1440&bih=726&dpr=2'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='flex items-center gap-2 text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
+              >
+                <Star
+                  size={14}
+                  className='text-yellow-500'
+                />
+                Google Reviews
+                <ExternalLink size={12} />
+              </a>
               <a
                 href='https://www.instagram.com/nurse.injector.shelby?utm_source=qr&igsh=c3Z4bmVidmF4dmFn'
                 target='_blank'
