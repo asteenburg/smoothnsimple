@@ -16,7 +16,7 @@ export default function CarePage() {
             Result <span className='text-pink-600'>Optimization</span>
           </h1>
           <p className='text-zinc-500 text-[10px] md:text-xs uppercase font-black tracking-[0.4em]'>
-            Botox & Lip Flip <span className="sr-only">Pre and Post Treatment Protocol Brantford</span> Protocol
+            Pre and Post Treatment Protocol
           </p>
         </div>
 
@@ -31,7 +31,7 @@ export default function CarePage() {
                 />
               </div>
               <h2 className='text-3xl font-black italic uppercase tracking-tight'>
-                Before <span className="sr-only">Botox</span> Care
+                Before Care
               </h2>
             </div>
 
@@ -62,7 +62,7 @@ export default function CarePage() {
                 />
               </div>
               <h2 className='text-3xl font-black italic uppercase tracking-tight'>
-                Aftercare <span className="sr-only">Instructions</span>
+                Aftercare
               </h2>
             </div>
 
@@ -92,7 +92,7 @@ export default function CarePage() {
         {/* --- THE TIMELINE NOTICE --- */}
         <div className='mt-24 p-12 bg-zinc-900/20 border border-white/5 rounded-[4rem] text-center'>
           <h2 className='text-3xl font-black italic uppercase tracking-tighter mb-6'>
-            The 14-Day <span className="sr-only">Botox</span> Rule
+            The 14-Day Rule
           </h2>
           <p className='text-zinc-400 text-sm leading-relaxed max-w-2xl mx-auto italic'>
             "Botox takes time to settle. While you may see changes in 3–5 days,
@@ -107,6 +107,9 @@ export default function CarePage() {
   );
 }
 
+{
+  /* Internal Helper Component for clean code */
+}
 function CareItem({
   type,
   title,

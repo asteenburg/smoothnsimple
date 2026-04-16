@@ -6,6 +6,11 @@ export default function ReferralModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -26,11 +31,55 @@ export default function ReferralModal() {
   }, [mounted]);
 
   const closeModal = () => {
-    // 7-day cooldown
     const expiresAt = Date.now() + 7 * 24 * 60 * 60 * 1000;
     localStorage.setItem("referralModalSeenUntil", expiresAt.toString());
 
     setIsOpen(false);
+  };
+
+  const handleSendInvite = async () => {
+    if (!email.includes("@")) return;
+
+    try {
+      setLoading(true);
+      setSuccess(false);
+
+      const res = await fetch("/api/referral", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          referrerName: name,
+        }),
+      });
+
+      const text = await res.text(); // 👈 IMPORTANT: always read raw response first
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        console.error("Non-JSON response:", text);
+        return;
+      }
+
+      if (!res.ok) {
+        console.error("Referral error:", data);
+        return;
+      }
+
+      setSuccess(true);
+
+      setTimeout(() => {
+        closeModal();
+      }, 1500);
+    } catch (err) {
+      console.error("Request failed:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -47,34 +96,49 @@ export default function ReferralModal() {
         </button>
 
         {/* Title */}
-        <h2 className='text-2xl text-gray-600 font-bold uppercase tracking-wide text-center mb-2'>
+        <h2 className='text-2xl font-bold text-center text-gray-700 uppercase mb-2'>
           Referral Bonus
         </h2>
+        <div className='w-16 h-1 bg-pink-600 mx-auto mb-4 rounded-full'></div>
 
-        <p className='text-gray-500 text-center mb-5'>
-          Existing clients can refer a friend to receive 10% off their next
-          treatment. New clients get $6.00 per unit on first visit! It’s a
-          win-win!
+        <p className='text-gray-500 text-center mb-5 text-sm'>
+          Refer a friend
+          <span className='text-xs align-super'>1</span> and you both receive
+          10% off your next treatment.
         </p>
 
         {/* Input */}
-        {/*} <input
+        <input
+          type='text'
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder='Your name'
+          className='w-full border rounded-lg text-gray-700 px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-black'
+        />
+        <input
           type='email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder='Friend’s email'
-          className='w-full border rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-black'
-        /> */}
+          className='w-full border rounded-lg text-gray-700 px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-black'
+        />
 
         {/* CTA */}
-        {/*<button
-          onClick={closeModal}
-          className='w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition'
+        <button
+          onClick={handleSendInvite}
+          disabled={loading}
+          className='w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition disabled:opacity-50'
         >
-          Send Invite
-        </button> */}
+          {loading ? "Sending..." : success ? "Sent 🎉" : "Send Invite"}
+        </button>
 
-        {/* Footer note */}
+        {/* Footer */}
         <p className='text-xs text-gray-400 text-center mt-3'>
           No spam. Just savings.
+        </p>
+        <p className='text-xs text-gray-400 text-center tracking-[-0.10em] mt-1'>
+          1 Only one referral bonus per person. See website for full terms and
+          conditions.
         </p>
       </div>
     </div>

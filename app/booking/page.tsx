@@ -1,5 +1,6 @@
 "use client";
 
+import RedeemBox from "../../components/RedeemBox";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "../../components/Header";
@@ -10,6 +11,7 @@ export default function Booking() {
 
   return (
     <div className='flex flex-col min-h-screen bg-black'>
+      <RedeemBox />
       <Header />
 
       <main className='flex-1 flex flex-col items-center justify-center px-6 py-20'>
