@@ -49,10 +49,10 @@ export default function Footer() {
               >
                 <Star
                   size={14}
-                  className='text-yellow-500'
+                  className='text-gray-500'
                 />
                 Google Reviews
-                <ExternalLink size={12} />
+                {/*<ExternalLink size={12} />*/}
               </a>
               <a
                 href='https://www.instagram.com/nurse.injector.shelby?utm_source=qr&igsh=c3Z4bmVidmF4dmFn'
