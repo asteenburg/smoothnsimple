@@ -126,6 +126,12 @@ export default function Footer() {
               >
                 Privacy
               </Link>
+              <Link
+                href='/terms'
+                className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
+              >
+                Terms
+              </Link>
             </div>
           </div>
         </div>
