@@ -185,7 +185,7 @@ export default function Home() {
 
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12'>
             {/* REVIEW 1 */}
-            <div className='bg-zinc-900 p-5 md:p-5 rounded-2xl border border-zinc-800 text-left h-full'>
+            <div className='bg-zinc-900 p-5 rounded-2xl border border-zinc-800 text-left h-full flex flex-col'>
               <div className='flex justify-between mb-2'>
                 <h3 className='text-white font-semibold tracking-[-0.075em]'>
                   Mia Harris
@@ -203,7 +203,7 @@ export default function Home() {
                 <div className='text-yellow-500'>★★★★★</div>
               </div>
 
-              <p className='text-gray-300'>
+              <p className='mt-auto text-gray-300 text-sm'>
                 My experience with Smooth N Simple was nothing but informative
                 and professional. I was extremely happy with my results and will
                 continue to use Shelby’s expertise.
@@ -211,7 +211,7 @@ export default function Home() {
             </div>
 
             {/* REVIEW 2 */}
-            <div className='bg-zinc-900 p-5 md:p-5 rounded-2xl border border-zinc-800 text-left h-full'>
+            <div className='bg-zinc-900 p-5 rounded-2xl border border-zinc-800 text-left h-full flex flex-col'>
               <div className='flex justify-between mb-2'>
                 <h3 className='text-white font-semibold tracking-[-0.075em]'>
                   Kate Hall
@@ -229,14 +229,14 @@ export default function Home() {
                 <div className='text-yellow-500'>★★★★★</div>
               </div>
 
-              <p className='text-gray-300'>
+              <p className='mt-auto text-gray-300 text-sm'>
                 Shelby is knowledgeable, takes time to understand your goals,
                 and delivers natural, balanced results. Highly recommend!
               </p>
             </div>
 
             {/* REVIEW 3 */}
-            <div className='bg-zinc-900 p-5 md:p-5 rounded-2xl border border-zinc-800 text-left h-full'>
+            <div className='bg-zinc-900 p-5 rounded-2xl border border-zinc-800 text-left h-full flex flex-col'>
               <div className='flex justify-between mb-2'>
                 <h3 className='text-white font-semibold tracking-[-0.075em]'>
                   Tammy Harper
@@ -254,7 +254,7 @@ export default function Home() {
                 <div className='text-yellow-500'>★★★★★</div>
               </div>
 
-              <p className='text-gray-300'>
+              <p className='mt-auto text-gray-300 text-sm'>
                 Five-star experience at Smooth N Simple! Shelby was
                 professional, friendly, and did a great job explaining the
                 treatment. She was also incredibly flexible with my schedule,
