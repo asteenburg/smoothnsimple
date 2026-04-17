@@ -143,7 +143,7 @@ export default function Footer() {
           </p>
           <div className='h-[1px] w-12 bg-pink-600/20 rounded-full md:block hidden'></div>
           <p className='text-[10px] font-black uppercase tracking-widest text-zinc-600'>
-            Ontario, Canada.
+            Ontario, Canada
           </p>
         </div>
       </div>
