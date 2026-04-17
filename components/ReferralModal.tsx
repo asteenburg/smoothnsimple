@@ -103,8 +103,8 @@ export default function ReferralModal() {
 
         <p className='text-gray-500 text-center mb-5 text-sm'>
           Refer a friend
-          <span className='text-xs align-super'>1</span> and you both receive
-          10% off your next treatment.
+          <span className='text-xs align-super'>1</span> and you receive 10% off
+          your next treatment. Discount applied at your next appointment.
         </p>
 
         {/* Input */}

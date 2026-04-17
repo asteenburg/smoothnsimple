@@ -94,7 +94,8 @@ export async function POST(req: Request) {
     // EMAIL SEND
     // -----------------------------
     await resend.emails.send({
-      from: "Smooth N Simple <onboarding@resend.dev>",
+      from: "Smooth N Simple <noreply@smoothnsimple.com>",
+      replyTo: "nurseinjectorshelby@gmail.com",
       to: cleanEmail,
       subject: `${cleanName} saved you 10% 🎉`,
       html: `

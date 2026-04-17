@@ -1,5 +1,7 @@
 // app/privacy/page.tsx
 import Link from "next/link";
+import Header from "../../components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Privacy Policy | Smooth n Simple",
@@ -21,7 +23,8 @@ const sections = [
 export default function PrivacyPage() {
   return (
     <main className='min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 scroll-smooth'>
-      <div className='max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8'>
+      <Header />
+      <div className='max-w-6xl mt-8 mb-12 mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8'>
         {/* Table of Contents */}
         <nav className='hidden lg:block sticky top-24 self-start'>
           <h2 className='text-lg font-semibold text-gray-800 mb-4'>Contents</h2>
@@ -83,6 +86,7 @@ export default function PrivacyPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }
