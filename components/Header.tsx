@@ -56,7 +56,7 @@ export default function Header() {
           ))}
 
           <Link
-            href='#reviews'
+            href='/#reviews'
             onClick={() => setIsMenuOpen(false)}
             className='flex justify-between items-center group pointer-events-auto'
           >
@@ -156,7 +156,7 @@ export default function Header() {
             </a>
 
             <Link
-              href='#reviews'
+              href='https://g.page/r/CUd7qwLJY0OWEAE/review'
               onClick={() => setIsMenuOpen(false)}
               className='flex justify-between items-center group pointer-events-auto'
             >

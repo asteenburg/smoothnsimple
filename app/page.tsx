@@ -183,9 +183,9 @@ export default function Home() {
             <div className='w-20 h-1 bg-pink-500 mx-auto mt-4'></div>
           </div>
 
-          <div className='grid md:grid-cols-2 gap-8 mb-12'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12'>
             {/* REVIEW 1 */}
-            <div className='bg-zinc-900 p-6 rounded-2xl border border-zinc-800 text-left'>
+            <div className='bg-zinc-900 p-5 md:p-5 rounded-2xl border border-zinc-800 text-left h-full'>
               <div className='flex justify-between mb-2'>
                 <h3 className='text-white font-semibold tracking-[-0.075em]'>
                   Mia Harris
@@ -201,7 +201,6 @@ export default function Home() {
 
               <div className='flex items-center gap-3 mb-4'>
                 <div className='text-yellow-500'>★★★★★</div>
-                <span className='text-gray-500 text-sm'>a year ago</span>
               </div>
 
               <p className='text-gray-300'>
@@ -212,7 +211,7 @@ export default function Home() {
             </div>
 
             {/* REVIEW 2 */}
-            <div className='bg-zinc-900 p-6 rounded-2xl border border-zinc-800 text-left'>
+            <div className='bg-zinc-900 p-5 md:p-5 rounded-2xl border border-zinc-800 text-left h-full'>
               <div className='flex justify-between mb-2'>
                 <h3 className='text-white font-semibold tracking-[-0.075em]'>
                   Kate Hall
@@ -222,18 +221,44 @@ export default function Home() {
                   target='_blank'
                   className='text-pink-500 text-xs underline'
                 >
-                  2 reviews
+                  7 reviews
                 </a>
               </div>
 
               <div className='flex items-center gap-3 mb-4'>
                 <div className='text-yellow-500'>★★★★★</div>
-                <span className='text-gray-500 text-sm'>3 weeks ago</span>
               </div>
 
               <p className='text-gray-300'>
                 Shelby is knowledgeable, takes time to understand your goals,
                 and delivers natural, balanced results. Highly recommend!
+              </p>
+            </div>
+
+            {/* REVIEW 3 */}
+            <div className='bg-zinc-900 p-5 md:p-5 rounded-2xl border border-zinc-800 text-left h-full'>
+              <div className='flex justify-between mb-2'>
+                <h3 className='text-white font-semibold tracking-[-0.075em]'>
+                  Tammy Harper
+                </h3>
+                <a
+                  href='https://maps.app.goo.gl/mSdd9eLg74yxRzxU8'
+                  target='_blank'
+                  className='text-pink-500 text-xs underline'
+                >
+                  8 reviews
+                </a>
+              </div>
+
+              <div className='flex items-center gap-3 mb-4'>
+                <div className='text-yellow-500'>★★★★★</div>
+              </div>
+
+              <p className='text-gray-300'>
+                Five-star experience at Smooth N Simple! Shelby was
+                professional, friendly, and did a great job explaining the
+                treatment. She was also incredibly flexible with my schedule,
+                which I truly appreciated. Highly recommend!
               </p>
             </div>
           </div>
