@@ -1,6 +1,5 @@
 "use client";
 
-import RedeemBox from "@/components/RedeemBox";
 import { useEffect, useRef, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
