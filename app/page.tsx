@@ -1,6 +1,5 @@
 "use client";
 
-import RedeemBox from "@/components/RedeemBox";
 import { useEffect, useRef, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -52,7 +51,6 @@ export default function Home() {
 
   return (
     <div className='relative w-full bg-black overflow-x-hidden'>
-      <RedeemBox />
       <ReferralModal />
       <Header />
 
@@ -102,7 +100,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* SERVICES */}
       <section className='py-20 bg-zinc-950 px-6'>
         <div className='max-w-7xl mx-auto'>
