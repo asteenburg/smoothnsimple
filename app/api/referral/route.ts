@@ -135,7 +135,7 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: "Smooth N Simple <noreply@smoothnsimple.com>",
-      to: "asteenburg@live.ca",
+      to: "nurseinjectorshelby@gmail.com",
       subject: "New Referral Received 🎉",
       html: `
         <h2>New Referral</h2>
