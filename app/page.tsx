@@ -97,49 +97,66 @@ export default function Home() {
             >
               Shop & Gift Cards
             </Link>
+            <Link
+              href='#new-client-promo'
+              className='border-2 border-white text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-black'
+            >
+              New Client Special
+            </Link>
           </div>
         </div>
       </section>
       {/* NEW CLIENT PROMO - Editorial Split */}
-<section className="py-20 bg-zinc-950 px-6 border-y border-zinc-900">
-  <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-    
-    <div className="relative h-[400px] rounded-3xl overflow-hidden border border-zinc-800" data-aos="fade-right">
-      <Image
-        src="/images/pexels-cottonbro-7581590 copy.jpg" 
-        alt="Botox Treatment"
-        fill
-        className="object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-8">
-        <p className="text-white font-bold italic text-xl">Precision care, naturally enhanced.</p>
-      </div>
-    </div>
+      <section className='py-20 bg-zinc-950 px-6 border-y border-zinc-900'>
+        <div className='max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center'>
+          <div
+            className='relative h-[400px] rounded-3xl overflow-hidden border border-zinc-800'
+            data-aos='fade-right'
+          >
+            <Image
+              src='/images/pexels-cottonbro-7581590 copy.jpg'
+              alt='Botox Treatment'
+              fill
+              className='object-cover'
+            />
+            <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-8'>
+              <p className='text-white font-bold italic text-xl'>
+                Precision care, naturally enhanced.
+              </p>
+            </div>
+          </div>
+          {/* NEW CLIENT PROMO - Editorial Split */}
+          <div
+            data-aos='fade-left'
+            id='new-client-promo'
+          >
+            <h2 className='text-pink-500 font-black text-sm uppercase tracking-[0.3em] mb-4'>
+              First-Time Visit
+            </h2>
+            <h3 className='text-4xl md:text-5xl text-white font-bold leading-tight'>
+              Refresh your look <br />
+              for just <span className='text-pink-600'>$6/unit.</span>
+            </h3>
+            <p className='text-gray-400 mt-6 text-lg leading-relaxed'>
+              We believe everyone deserves to feel confident. Our new client
+              special allows you to experience Shelby's expert injection
+              technique at our lowest rate ever.
+            </p>
 
-    <div data-aos="fade-left">
-      <h2 className="text-pink-500 font-black text-sm uppercase tracking-[0.3em] mb-4">First-Time Visit</h2>
-      <h3 className="text-4xl md:text-5xl text-white font-bold leading-tight">
-        Refresh your look <br /> 
-        for just <span className="text-pink-600">$6/unit.</span>
-      </h3>
-      <p className="text-gray-400 mt-6 text-lg leading-relaxed">
-        We believe everyone deserves to feel confident. Our new client special allows you to experience Shelby's expert injection technique at our lowest rate ever.
-      </p>
-      
-      <div className="mt-10 flex flex-col sm:flex-row gap-4">
-        <Link
-          href="/booking"
-          className="bg-white text-black px-8 py-4 rounded-full font-bold text-center hover:bg-pink-600 hover:text-white transition"
-        >
-          Book Appointment
-        </Link>
-        <div className="flex items-center justify-center px-6 py-4 border border-zinc-700 rounded-full text-zinc-400 text-sm">
-          Recommended min 20 units
+            <div className='mt-10 flex flex-col sm:flex-row gap-4'>
+              <Link
+                href='/booking'
+                className='bg-white text-black px-8 py-4 rounded-full font-bold text-center hover:bg-pink-600 hover:text-white transition'
+              >
+                Book Appointment
+              </Link>
+              <div className='flex items-center justify-center px-6 py-4 border border-zinc-700 rounded-full text-zinc-400 text-sm'>
+                Recommended min 20 units
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
       {/* SERVICES */}
       <section className='py-20 bg-zinc-950 px-6'>
         <div className='max-w-7xl mx-auto'>
