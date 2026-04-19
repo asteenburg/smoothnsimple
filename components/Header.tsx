@@ -120,8 +120,47 @@ export default function Header() {
                 className='text-zinc-800'
               />
             </Link>
+            <Link
+              href='/shop'
+              onClick={() => setIsMenuOpen(false)}
+              className='flex justify-between items-center group pointer-events-auto'
+            >
+              <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
+                Shop
+              </span>
+              <ChevronRight
+                size={16}
+                className='text-zinc-800'
+              />
+            </Link>
+            <Link
+              href='/services'
+              onClick={() => setIsMenuOpen(false)}
+              className='flex justify-between items-center group pointer-events-auto'
+            >
+              <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
+                Services
+              </span>
+              <ChevronRight
+                size={16}
+                className='text-zinc-800'
+              />
+            </Link>
+            <Link
+              href='/promos'
+              onClick={() => setIsMenuOpen(false)}
+              className='flex justify-between items-center group pointer-events-auto'
+            >
+              <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
+                Promotions
+              </span>
+              <ChevronRight
+                size={16}
+                className='text-zinc-800'
+              />
+            </Link>
 
-            {["Shop", "Services", "About", "Care", "Disclaimer"].map((item) => (
+            {["About", "Care", "Disclaimer"].map((item) => (
               <Link
                 key={item}
                 href={`/${item.toLowerCase()}`}

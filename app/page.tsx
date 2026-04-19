@@ -98,10 +98,10 @@ export default function Home() {
               Shop & Gift Cards
             </Link>
             <Link
-              href='#new-client-promo'
+              href='/promos'
               className='border-2 border-white text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-black'
             >
-              New Client Special
+              Promotions
             </Link>
           </div>
         </div>
