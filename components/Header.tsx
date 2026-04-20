@@ -117,114 +117,87 @@ export default function Header() {
 
         {/* MOBILE DROPDOWN */}
         <div
-          className={`absolute top-20 right-0 w-64 bg-black/95 border-l border-b border-white/5 rounded-bl-3xl transition-all duration-300 ease-in-out overflow-hidden md:hidden z-[9998] ${
+          className={`absolute top-20 right-0 w-72 bg-black/95 backdrop-blur-xl border-l border-b border-white/5 rounded-bl-3xl overflow-hidden md:hidden z-[9998] transition-all duration-300 ease-out ${
             isMenuOpen
-              ? "max-h-[500px] opacity-100"
-              : "max-h-0 opacity-0 pointer-events-none"
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 translate-x-6 pointer-events-none"
           }`}
         >
-          <nav className='flex flex-col p-8 gap-6'>
-            {/* Added Home Link */}
-            <Link
-              href='/'
-              onClick={() => setIsMenuOpen(false)}
-              className='flex justify-between items-center group pointer-events-auto'
-            >
-              <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
-                Home
-              </span>
-              <ChevronRight
-                size={16}
-                className='text-zinc-800'
-              />
-            </Link>
-            <Link
-              href='/shop'
-              onClick={() => setIsMenuOpen(false)}
-              className='flex justify-between items-center group pointer-events-auto'
-            >
-              <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
-                Shop
-              </span>
-              <ChevronRight
-                size={16}
-                className='text-zinc-800'
-              />
-            </Link>
-            <Link
-              href='/services'
-              onClick={() => setIsMenuOpen(false)}
-              className='flex justify-between items-center group pointer-events-auto'
-            >
-              <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
-                Services
-              </span>
-              <ChevronRight
-                size={16}
-                className='text-zinc-800'
-              />
-            </Link>
-            <Link
-              href='/promos'
-              onClick={() => setIsMenuOpen(false)}
-              className='flex justify-between items-center group pointer-events-auto'
-            >
-              <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
-                Promotions
-              </span>
-              <ChevronRight
-                size={16}
-                className='text-zinc-800'
-              />
-            </Link>
+          <nav className='flex flex-col p-8'>
+            {/* PRIMARY NAV */}
+            <div className='space-y-5 mb-8'>
+              {[
+                { label: "Home", href: "/" },
+                { label: "Shop", href: "/shop" },
+                { label: "Services", href: "/services" },
+                { label: "Promotions", href: "/promos" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className='flex items-center justify-between group'
+                >
+                  <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
+                    {item.label}
+                  </span>
 
-            {["About", "Care", "Disclaimer"].map((item) => (
-              <Link
-                key={item}
-                href={`/${item.toLowerCase()}`}
-                onClick={() => setIsMenuOpen(false)}
-                className='flex justify-between items-center group pointer-events-auto'
-              >
-                <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
-                  {item}
-                </span>
-                <ChevronRight
-                  size={16}
-                  className='text-zinc-800 group-hover:text-pink-600 group-hover:translate-x-1 transition-all'
-                />
-              </Link>
-            ))}
+                  <ChevronRight
+                    size={16}
+                    className='text-zinc-600 group-hover:text-pink-600 group-hover:translate-x-1 transition-all'
+                  />
+                </Link>
+              ))}
+            </div>
 
-            {/* Book Link in Mobile Menu - External Tab */}
+            {/* DIVIDER */}
+            <div className='h-px bg-white/5 mb-6' />
+
+            {/* SECONDARY NAV */}
+            <div className='space-y-5 mb-8'>
+              {[
+                { label: "About", href: "/about" },
+                { label: "Disclaimer", href: "/disclaimer" },
+                { label: "Reviews", href: "/#reviews" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className='flex items-center justify-between group'
+                >
+                  <span className='text-lg italic uppercase tracking-tighter text-zinc-300 group-hover:text-white transition-colors'>
+                    {item.label}
+                  </span>
+
+                  <ChevronRight
+                    size={16}
+                    className='text-zinc-700 group-hover:text-pink-600 group-hover:translate-x-1 transition-all'
+                  />
+                </Link>
+              ))}
+            </div>
+
+            {/* DIVIDER */}
+            <div className='h-px bg-white/5 mb-6' />
+
+            {/* CTA */}
             <a
               href={BOOKING_URL}
               target='_blank'
               rel='noopener noreferrer'
               onClick={() => setIsMenuOpen(false)}
-              className='flex justify-between items-center group pointer-events-auto border-t border-white/5 pt-4'
+              className='flex items-center justify-between group'
             >
               <span className='text-xl italic uppercase tracking-tighter text-pink-600'>
                 Book Now
               </span>
+
               <ChevronRight
                 size={16}
-                className='text-pink-600'
+                className='text-pink-600 group-hover:translate-x-1 transition-all'
               />
             </a>
-
-            <Link
-              href='https://g.page/r/CUd7qwLJY0OWEAE/review'
-              onClick={() => setIsMenuOpen(false)}
-              className='flex justify-between items-center group pointer-events-auto'
-            >
-              <span className='text-xl italic uppercase tracking-tighter text-white group-hover:text-pink-600 transition-colors'>
-                Reviews
-              </span>
-              <ChevronRight
-                size={16}
-                className='text-zinc-800'
-              />
-            </Link>
           </nav>
         </div>
       </nav>
