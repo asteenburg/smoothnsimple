@@ -11,93 +11,106 @@ export default function CarePage() {
 
       <main className='flex-1 max-w-5xl mx-auto px-6 pt-32 pb-24 w-full'>
         {/* --- HERO HEADER --- */}
-        <div className='text-center mb-20'>
+        <div className='text-center mb-24'>
           <h1 className='text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-none mb-6'>
             Result <span className='text-pink-600'>Optimization</span>
           </h1>
+
+          <div className='w-24 h-px bg-white/10 mx-auto mb-6' />
+
           <p className='text-zinc-500 text-[10px] md:text-xs uppercase font-black tracking-[0.4em]'>
             Pre and Post Treatment Protocol
           </p>
         </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-14'>
           {/* --- BEFORE CARE --- */}
-          <div className='space-y-8'>
-            <div className='flex items-center gap-4 mb-4'>
-              <div className='bg-zinc-900 p-3 rounded-2xl border border-white/5'>
+          <div className='space-y-10'>
+            <div className='flex items-center gap-4'>
+              <div className='bg-zinc-900/60 p-3 rounded-2xl border border-white/5'>
                 <Clock
                   className='text-pink-600'
-                  size={24}
+                  size={22}
                 />
               </div>
+
               <h2 className='text-3xl font-black italic uppercase tracking-tight'>
                 Before Care
               </h2>
             </div>
 
-            <CareItem
-              type='dont'
-              title='Blood Thinners'
-              desc='Avoid Ibuprofen, Aspirin, and Vitamin E for 24 hours to minimize bruising.'
-            />
-            <CareItem
-              type='dont'
-              title='Alcohol'
-              desc='Avoid alcohol 24 hours prior; it thins the blood and increases swelling.'
-            />
-            <CareItem
-              type='do'
-              title='Arnica'
-              desc='Consider taking Arnica tablets 2 days before to reduce potential bruising.'
-            />
+            <div className='space-y-5'>
+              <CareItem
+                type='dont'
+                title='Blood Thinners'
+                desc='Avoid Ibuprofen, Aspirin, and Vitamin E for 24 hours to minimize bruising.'
+              />
+              <CareItem
+                type='dont'
+                title='Alcohol'
+                desc='Avoid alcohol 24 hours prior; it increases bruising and swelling risk.'
+              />
+              <CareItem
+                type='do'
+                title='Arnica'
+                desc='Start Arnica 48 hours before treatment to help reduce bruising.'
+              />
+            </div>
           </div>
 
           {/* --- AFTERCARE --- */}
-          <div className='space-y-8'>
-            <div className='flex items-center gap-4 mb-4'>
-              <div className='bg-zinc-900 p-3 rounded-2xl border border-white/5'>
+          <div className='space-y-10'>
+            <div className='flex items-center gap-4'>
+              <div className='bg-zinc-900/60 p-3 rounded-2xl border border-white/5'>
                 <Zap
                   className='text-pink-600'
-                  size={24}
+                  size={22}
                 />
               </div>
+
               <h2 className='text-3xl font-black italic uppercase tracking-tight'>
                 Aftercare
               </h2>
             </div>
 
-            <CareItem
-              type='dont'
-              title='Heavy Lifting'
-              desc='No strenuous exercise for 24 hours. Keep blood pressure stable.'
-            />
-            <CareItem
-              type='dont'
-              title='Pressure'
-              desc='Do not massage the area or wear tight hats/headbands for 4 hours.'
-            />
-            <CareItem
-              type='do'
-              title='Stay Upright'
-              desc='Keep your head elevated and do not lie completely flat for 4 hours.'
-            />
-            <CareItem
-              type='dont'
-              title='Extreme Heat'
-              desc='Avoid saunas, hot tubs, or intense sun exposure for 24-48 hours.'
-            />
+            <div className='space-y-5'>
+              <CareItem
+                type='dont'
+                title='Heavy Exercise'
+                desc='Avoid intense exercise for 24 hours to reduce swelling and product migration risk.'
+              />
+              <CareItem
+                type='dont'
+                title='Pressure / Touching'
+                desc='Do not massage or apply pressure to treated areas for at least 4 hours.'
+              />
+              <CareItem
+                type='do'
+                title='Stay Upright'
+                desc='Remain upright for 4 hours post-treatment to support optimal product placement.'
+              />
+              <CareItem
+                type='dont'
+                title='Heat Exposure'
+                desc='Avoid saunas, hot tubs, and direct heat exposure for 24–48 hours.'
+              />
+            </div>
           </div>
         </div>
 
         {/* --- THE TIMELINE NOTICE --- */}
-        <div className='mt-24 p-12 bg-zinc-900/20 border border-white/5 rounded-[4rem] text-center'>
+        <div className='mt-28 p-12 bg-zinc-900/20 border border-white/5 rounded-[4rem] text-center'>
           <h2 className='text-3xl font-black italic uppercase tracking-tighter mb-6'>
             The 14-Day Rule
           </h2>
+
+          <div className='w-20 h-px bg-pink-600 mx-auto mb-6' />
+
           <p className='text-zinc-400 text-sm leading-relaxed max-w-2xl mx-auto italic'>
-            "Botox takes time to settle. While you may see changes in 3–5 days,
-            full results require a full 14 days. Please wait the full two weeks
-            before requesting a touch-up."
+            “Botox takes time to settle. Initial changes may appear in 3–5 days,
+            but full results are only visible after 14 days. Please allow the
+            full two-week window before assessing results or requesting
+            adjustments.”
           </p>
         </div>
       </main>
@@ -107,9 +120,7 @@ export default function CarePage() {
   );
 }
 
-{
-  /* Internal Helper Component for clean code */
-}
+/* --- CLEAN CARD COMPONENT (polished only, same structure) --- */
 function CareItem({
   type,
   title,
@@ -120,7 +131,7 @@ function CareItem({
   desc: string;
 }) {
   return (
-    <div className='group p-6 bg-zinc-900/40 border border-white/5 rounded-3xl transition-all hover:border-pink-500/30'>
+    <div className='group p-6 bg-zinc-900/40 border border-white/5 rounded-3xl transition-all duration-300 hover:border-pink-500/30 hover:bg-zinc-900/60'>
       <div className='flex items-start gap-4'>
         {type === "do" ? (
           <CheckCircle2
@@ -133,13 +144,13 @@ function CareItem({
             size={18}
           />
         )}
+
         <div>
           <h3 className='font-black uppercase tracking-widest text-[11px] mb-2 text-white'>
             {type === "do" ? "Recommended" : "Avoid"}: {title}
           </h3>
-          <p className='text-zinc-500 text-sm leading-relaxed italic'>
-            "{desc}"
-          </p>
+
+          <p className='text-zinc-500 text-sm leading-relaxed italic'>{desc}</p>
         </div>
       </div>
     </div>
