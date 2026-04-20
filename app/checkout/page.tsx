@@ -124,7 +124,7 @@ export default function CheckoutPage() {
       />
       <Header />
 
-      <main className='flex-1 max-w-7xl mx-auto px-6 py-16 w-full'>
+      <main className='flex-1 max-w-7xl mx-auto mt-16 px-6 py-16 w-full'>
         <form
           onSubmit={handlePayment}
           className='grid grid-cols-1 lg:grid-cols-12 gap-16'
