@@ -151,7 +151,7 @@ export default function Home() {
               </Link>
 
               <div className='flex items-center justify-center px-6 py-4 border border-zinc-700 rounded-full text-zinc-400 text-sm'>
-                Recommended min 20 units
+                New clients only
               </div>
             </div>
           </div>
