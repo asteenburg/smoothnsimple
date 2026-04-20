@@ -45,7 +45,7 @@ export default function Header() {
           >
             Home
           </Link>
-          {["Shop", "Services", "About"].map((item) => (
+          {["Shop", "Services"].map((item) => (
             <Link
               key={item}
               href={`/${item.toLowerCase()}`}
@@ -55,6 +55,24 @@ export default function Header() {
             </Link>
           ))}
 
+          <Link
+            href='/promos'
+            onClick={() => setIsMenuOpen(false)}
+            className='flex justify-between items-center group pointer-events-auto'
+          >
+            <span className='text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-pink-600 transition-colors pointer-events-auto'>
+              Promotions
+            </span>
+          </Link>
+          <Link
+            href='/about'
+            onClick={() => setIsMenuOpen(false)}
+            className='flex justify-between items-center group pointer-events-auto'
+          >
+            <span className='text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-pink-600 transition-colors pointer-events-auto'>
+              About
+            </span>
+          </Link>
           <Link
             href='/#reviews'
             onClick={() => setIsMenuOpen(false)}

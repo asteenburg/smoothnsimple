@@ -66,7 +66,7 @@ export default function PromosPage() {
               Limited Time Offers
             </p>
 
-            <h1 className='text-5xl md:text-7xl font-black leading-tight'>
+            <h1 className='text-5xl md:text-7xl font-black tracking-wider leading-tight'>
               Current Promotions
             </h1>
 

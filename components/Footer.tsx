@@ -101,6 +101,12 @@ export default function Footer() {
               >
                 Services
               </Link>
+              <Link
+                href='/promos'
+                className='text-zinc-500 hover:text-pink-600 text-xs uppercase font-bold tracking-widest transition-colors'
+              >
+                Promotions
+              </Link>
             </div>
 
             {/* Legal */}
