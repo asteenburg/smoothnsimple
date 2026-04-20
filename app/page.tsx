@@ -6,7 +6,6 @@ import "aos/dist/aos.css";
 import Image from "next/image";
 import Link from "next/link";
 
-//import ReferralModal from "@/components/ReferralModal";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -51,7 +50,6 @@ export default function Home() {
 
   return (
     <div className='relative w-full bg-black overflow-x-hidden'>
-      {/*<ReferralModal />*/}
       <Header />
 
       {/* HERO */}
@@ -63,7 +61,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          className='absolute w-full h-full object-cover lg:opacity-20 md:opacity-20 opacity-30'
+          className='absolute w-full h-full object-cover opacity-30 md:opacity-20 lg:opacity-20'
         >
           <source
             src={slides[currentIndex].src}
@@ -75,39 +73,41 @@ export default function Home() {
           className='relative z-10 text-center px-6'
           data-aos='zoom-in'
         >
-          <h1 className='text-4xl md:text-6xl font-bold text-white'>
+          <h1 className='text-4xl md:text-6xl font-black text-white tracking-tight'>
             SMOOTH <span className='text-pink-500'>N</span> SIMPLE
           </h1>
 
-          <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10'>
+          <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 mt-4'>
             {slides[currentIndex].subtitle}
           </p>
 
-          <div className='flex flex-col md:flex-row gap-4 justify-center'>
+          <div className='flex flex-col md:flex-row gap-4 justify-center mt-10'>
             <Link
               href='/booking'
-              className='bg-pink-600 text-white px-8 py-4 rounded-full font-bold'
+              className='bg-pink-600 hover:bg-pink-500 text-white px-8 py-4 rounded-full font-bold transition-all duration-300'
             >
               Book Appointment
             </Link>
 
             <Link
               href='/shop'
-              className='border-2 border-white text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-black'
+              className='bg-white text-black hover:bg-pink-600 hover:text-white px-8 py-4 rounded-full font-bold transition-all duration-300'
             >
               Shop & Gift Cards
             </Link>
+
             <Link
               href='/promos'
-              className='border-2 border-white text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-black'
+              className='border border-white/20 text-white hover:bg-white hover:text-black px-8 py-4 rounded-full font-bold transition-all duration-300'
             >
               Promotions
             </Link>
           </div>
         </div>
       </section>
-      {/* NEW CLIENT PROMO - Editorial Split */}
-      <section className='py-20 bg-zinc-950 px-6 border-y border-zinc-900'>
+
+      {/* NEW CLIENT PROMO */}
+      <section className='py-24 bg-zinc-950 px-6 border-y border-zinc-900'>
         <div className='max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center'>
           <div
             className='relative h-[400px] rounded-3xl overflow-hidden border border-zinc-800'
@@ -120,23 +120,22 @@ export default function Home() {
               className='object-cover'
             />
             <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-8'>
-              <p className='text-white font-bold italic text-xl'>
+              <p className='text-white font-bold text-xl'>
                 Precision care, naturally enhanced.
               </p>
             </div>
           </div>
-          {/* NEW CLIENT PROMO - Editorial Split */}
-          <div
-            data-aos='fade-left'
-            id='new-client-promo'
-          >
-            <h2 className='text-pink-500 font-black text-sm uppercase tracking-[0.3em] mb-4'>
+
+          <div data-aos='fade-left'>
+            <h2 className='text-pink-500 font-bold text-sm uppercase tracking-[0.3em] mb-4'>
               First-Time Visit
             </h2>
-            <h3 className='text-4xl md:text-5xl text-white font-bold leading-tight'>
+
+            <h3 className='text-4xl md:text-5xl text-white font-black leading-tight tracking-tight'>
               Refresh your look <br />
               for just <span className='text-pink-600'>$6/unit.</span>
             </h3>
+
             <p className='text-gray-400 mt-6 text-lg leading-relaxed'>
               We believe everyone deserves to feel confident. Our new client
               special allows you to experience Shelby's expert injection
@@ -146,10 +145,11 @@ export default function Home() {
             <div className='mt-10 flex flex-col sm:flex-row gap-4'>
               <Link
                 href='/booking'
-                className='bg-white text-black px-8 py-4 rounded-full font-bold text-center hover:bg-pink-600 hover:text-white transition'
+                className='bg-white text-black hover:bg-pink-600 hover:text-white px-8 py-4 rounded-full font-bold transition-all duration-300'
               >
                 Book Appointment
               </Link>
+
               <div className='flex items-center justify-center px-6 py-4 border border-zinc-700 rounded-full text-zinc-400 text-sm'>
                 Recommended min 20 units
               </div>
@@ -157,73 +157,65 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       {/* SERVICES */}
-      <section className='py-20 bg-zinc-950 px-6'>
+      <section className='py-24 bg-zinc-950 px-6 border-y border-zinc-900'>
         <div className='max-w-7xl mx-auto'>
           <div
             className='text-center mb-12'
             data-aos='fade-up'
           >
-            <h2 className='text-3xl md:text-5xl text-white uppercase italic'>
+            <h2 className='text-3xl md:text-5xl text-white font-black tracking-tight'>
               Expert Aesthetics
             </h2>
             <div className='w-20 h-1 bg-pink-500 mx-auto mt-4'></div>
           </div>
 
           <div className='grid md:grid-cols-3 gap-10'>
-            <div className='group'>
-              <div className='relative h-72 mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                <Image
-                  src='/images/jump1987-botox-10084507.jpg'
-                  alt='Botox'
-                  fill
-                  className='object-cover group-hover:scale-110 transition'
-                />
-              </div>
-              <h3 className='text-xl text-white font-bold'>Botox</h3>
-              <p className='text-gray-400'>
-                Precision treatments to enhance your natural beauty
-              </p>
-            </div>
+            {[
+              {
+                img: "/images/jump1987-botox-10084507.jpg",
+                title: "Botox",
+                desc: "Precision treatments to enhance your natural beauty",
+              },
+              {
+                img: "/images/1000020714.jpg",
+                title: "Lip Flip",
+                desc: "Create a fuller, natural-looking upper lip",
+              },
+              {
+                img: "/images/1000020715.jpg",
+                title: "Professional Care",
+                desc: "Experience aesthetic excellence in a luxury setting",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className='group transition-all duration-300 hover:-translate-y-1'
+              >
+                <div className='relative h-72 mb-6 overflow-hidden rounded-3xl border border-zinc-800 group-hover:border-pink-500/30 transition'>
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    fill
+                    className='object-cover group-hover:scale-110 transition'
+                  />
+                </div>
 
-            <div className='group'>
-              <div className='relative h-72 mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                <Image
-                  src='/images/1000020714.jpg'
-                  alt='Lip Flip'
-                  fill
-                  className='object-cover group-hover:scale-110 transition'
-                />
-              </div>
-              <h3 className='text-xl text-white font-bold'>Lip Flip</h3>
-              <p className='text-gray-400'>
-                Create a fuller, natural-looking upper lip
-              </p>
-            </div>
+                <h3 className='text-xl text-white font-bold tracking-tight'>
+                  {item.title}
+                </h3>
 
-            <div className='group'>
-              <div className='relative h-72 mb-6 overflow-hidden rounded-3xl border border-zinc-800'>
-                <Image
-                  src='/images/1000020715.jpg'
-                  alt='Care'
-                  fill
-                  className='object-cover group-hover:scale-110 transition'
-                />
+                <p className='text-gray-400'>{item.desc}</p>
               </div>
-              <h3 className='text-xl text-white font-bold'>
-                Professional Care
-              </h3>
-              <p className='text-gray-400'>
-                Experience aesthetic excellence in a luxury setting
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* REVIEWS */}
       <section
-        className='py-20 bg-black px-6'
+        className='py-24 bg-black px-6'
         id='reviews'
       >
         <div className='max-w-5xl mx-auto text-center'>
@@ -231,96 +223,53 @@ export default function Home() {
             className='mb-12'
             data-aos='fade-up'
           >
-            <h2 className='text-3xl md:text-5xl text-white uppercase italic'>
+            <h2 className='text-3xl md:text-5xl text-white font-black tracking-tight'>
               Client Love
             </h2>
             <div className='w-20 h-1 bg-pink-500 mx-auto mt-4'></div>
           </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12'>
-            {/* REVIEW 1 */}
-            <div className='bg-zinc-900 p-5 rounded-2xl border border-zinc-800 text-left h-full flex flex-col'>
-              <div className='flex justify-between mb-2'>
-                <h3 className='text-white font-semibold tracking-[-0.075em]'>
-                  Mia Harris
-                </h3>
-                <a
-                  href='https://maps.app.goo.gl/ngtRg8KpaRbXFNxGA'
-                  target='_blank'
-                  className='text-pink-500 text-xs underline'
-                >
-                  2 reviews
-                </a>
+          <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12'>
+            {[
+              {
+                name: "Mia Harris",
+                text: "My experience was professional and results were amazing.",
+                link: "https://maps.app.goo.gl/ngtRg8KpaRbXFNxGA",
+              },
+              {
+                name: "Kate Hall",
+                text: "Natural results and very knowledgeable injector.",
+                link: "https://maps.app.goo.gl/mSdd9eLg74yxRzxU8",
+              },
+              {
+                name: "Tammy Harper",
+                text: "Flexible, professional, and excellent results.",
+                link: "https://maps.app.goo.gl/mSdd9eLg74yxRzxU8",
+              },
+            ].map((r) => (
+              <div
+                key={r.name}
+                className='bg-zinc-900/40 p-6 rounded-2xl border border-zinc-800 hover:border-pink-500/30 transition flex flex-col'
+              >
+                <div className='flex justify-between mb-2'>
+                  <h3 className='text-white font-semibold'>{r.name}</h3>
+                  <a
+                    href={r.link}
+                    target='_blank'
+                    className='text-pink-500 text-xs underline'
+                  >
+                    Google
+                  </a>
+                </div>
+
+                <p className='text-gray-300 text-sm mt-auto'>{r.text}</p>
               </div>
-
-              <div className='flex items-center gap-3 mb-4'>
-                <div className='text-yellow-500'>★★★★★</div>
-              </div>
-
-              <p className='mt-auto text-gray-300 text-sm'>
-                My experience with Smooth N Simple was nothing but informative
-                and professional. I was extremely happy with my results and will
-                continue to use Shelby’s expertise.
-              </p>
-            </div>
-
-            {/* REVIEW 2 */}
-            <div className='bg-zinc-900 p-5 rounded-2xl border border-zinc-800 text-left h-full flex flex-col'>
-              <div className='flex justify-between mb-2'>
-                <h3 className='text-white font-semibold tracking-[-0.075em]'>
-                  Kate Hall
-                </h3>
-                <a
-                  href='https://maps.app.goo.gl/mSdd9eLg74yxRzxU8'
-                  target='_blank'
-                  className='text-pink-500 text-xs underline'
-                >
-                  7 reviews
-                </a>
-              </div>
-
-              <div className='flex items-center gap-3 mb-4'>
-                <div className='text-yellow-500'>★★★★★</div>
-              </div>
-
-              <p className='mt-auto text-gray-300 text-sm'>
-                Shelby is knowledgeable, takes time to understand your goals,
-                and delivers natural, balanced results. Highly recommend!
-              </p>
-            </div>
-
-            {/* REVIEW 3 */}
-            <div className='bg-zinc-900 p-5 rounded-2xl border border-zinc-800 text-left h-full flex flex-col'>
-              <div className='flex justify-between mb-2'>
-                <h3 className='text-white font-semibold tracking-[-0.075em]'>
-                  Tammy Harper
-                </h3>
-                <a
-                  href='https://maps.app.goo.gl/mSdd9eLg74yxRzxU8'
-                  target='_blank'
-                  className='text-pink-500 text-xs underline'
-                >
-                  8 reviews
-                </a>
-              </div>
-
-              <div className='flex items-center gap-3 mb-4'>
-                <div className='text-yellow-500'>★★★★★</div>
-              </div>
-
-              <p className='mt-auto text-gray-300 text-sm'>
-                Five-star experience at Smooth N Simple! Shelby was
-                professional, friendly, and did a great job explaining the
-                treatment. She was also incredibly flexible with my schedule,
-                which I truly appreciated. Highly recommend!
-              </p>
-            </div>
+            ))}
           </div>
 
           <a
             href='https://g.page/r/CUd7qwLJY0OWEAE/review'
-            target='_blank'
-            className='bg-pink-600 text-white px-10 py-4 rounded-full font-bold'
+            className='bg-pink-600 hover:bg-pink-500 text-white px-10 py-4 rounded-full font-bold transition-all duration-300'
           >
             Leave a Google Review
           </a>
@@ -328,14 +277,14 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className='py-24 bg-pink-600 text-white text-center'>
-        <h2 className='text-4xl md:text-6xl font-black mb-8 italic'>
+      <section className='py-28 bg-gradient-to-r from-pink-600 to-pink-500 text-white text-center'>
+        <h2 className='text-4xl md:text-6xl font-black mb-8 tracking-tight'>
           Your transformation awaits
         </h2>
 
         <Link
           href='/booking'
-          className='bg-black px-12 py-4 rounded-full font-bold'
+          className='bg-black hover:bg-white hover:text-black px-12 py-4 rounded-full font-bold transition-all duration-300'
         >
           Book Now
         </Link>
