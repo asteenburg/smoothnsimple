@@ -3,33 +3,37 @@ import Footer from "../../components/Footer";
 
 export default function About() {
   return (
-    <div className='flex flex-col min-h-screen overflow-x-hidden'>
+    <div className='flex flex-col min-h-screen overflow-x-hidden bg-black text-white'>
       <Header />
 
-      <main className='flex-1 px-6 py-12 bg-gray-50 text-black dark:bg-black dark:text-white flex flex-col items-center'>
-        <div className='mt-20 max-w-4xl w-full md:text-left text-left'>
-          {/* Heading */}
+      <main className='flex-1 px-6 py-14 md:py-20 flex flex-col items-center'>
+        <div className='mt-16 md:mt-24 max-w-4xl w-full text-left'>
+          {/* HEADING */}
           <div data-aos='fade-down'>
-            <h1 className='md:text-5xl text-3xl tracking-tighter uppercase italic font-bold mb-4 md:text-left text-left text-black dark:text-gray-300'>
-              <span className='md:text-6xl'>About</span>
-              <br />
+            <p className='text-pink-500 uppercase tracking-[0.35em] text-xs md:text-sm font-bold mb-4'>
+              About
+            </p>
+
+            <h1 className='text-4xl md:text-6xl font-black tracking-tight leading-tight'>
               Smooth <span className='text-pink-600'>N</span> Simple
             </h1>
-            <div className='h-1 w-24 bg-pink-600  rounded-full mb-10'></div>
+
+            <div className='h-1 w-20 bg-pink-600 rounded-full mt-6 mb-8'></div>
           </div>
+
           <p
-            className='text-lg text-gray-600 dark:text-gray-300 mb-10'
+            className='text-zinc-400 text-base md:text-lg max-w-2xl mb-12 leading-relaxed'
             data-aos='fade-in'
           >
             Personalized, natural-looking results in a safe and professional
-            environment.
+            aesthetic environment.
           </p>
 
-          {/* Profile + Content */}
+          {/* PROFILE CARD */}
           <div data-aos='fade-up'>
-            <div className='bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 flex flex-col md:flex-row items-center md:items-start gap-8 text-left'>
-              {/* 👇 Profile Image Placeholder */}
-              <div className='w-40 h-40 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center'>
+            <div className='bg-gradient-to-b from-zinc-950 to-black border border-zinc-800 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center md:items-start gap-8'>
+              {/* IMAGE */}
+              <div className='w-36 h-36 md:w-44 md:h-44 rounded-full overflow-hidden border border-zinc-800 flex-shrink-0'>
                 <img
                   src='../../images/logo.jpeg'
                   alt='Shelby - Nurse Injector'
@@ -37,32 +41,33 @@ export default function About() {
                 />
               </div>
 
-              {/* Text Content */}
+              {/* TEXT */}
               <div className='space-y-5'>
-                <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-                  Hi, I’m <span className='font-semibold'>Shelby</span>, a
-                  certified cosmetic nurse injector spcializing in Botox.
+                <p className='text-zinc-300 leading-relaxed'>
+                  Hi, I’m{" "}
+                  <span className='text-white font-semibold'>Shelby</span>, a
+                  certified cosmetic nurse injector specializing in Botox and
+                  aesthetic treatments.
                 </p>
 
-                <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-                  I’m passionate about helping my clients feel confident and
-                  refreshed with natural-looking results through personalized
-                  treatment plans tailored to each individual.
+                <p className='text-zinc-400 leading-relaxed'>
+                  My focus is on enhancing natural features with subtle,
+                  balanced results tailored specifically to each client.
                 </p>
 
-                <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-                  Whether you’re looking to smooth fine lines or prevent deeper
-                  wrinkles, I provide safe, effective, and professional Botox
-                  treatments in a comfortable and welcoming environment.
+                <p className='text-zinc-400 leading-relaxed'>
+                  Every treatment is delivered in a calm, professional
+                  environment with an emphasis on safety, precision, and
+                  long-term confidence.
                 </p>
               </div>
             </div>
 
             {/* CTA */}
-            <div className='mt-10'>
+            <div className='mt-10 text-left'>
               <a
                 href='https://smoothnsimple.janeapp.com/'
-                className='inline-block bg-black text-white dark:bg-pink-600 dark:text-white px-6 py-3 rounded-xl hover:opacity-90 transition'
+                className='inline-block bg-white text-black hover:bg-pink-600 hover:text-white px-8 py-4 rounded-full font-bold transition'
               >
                 Book a Consultation
               </a>

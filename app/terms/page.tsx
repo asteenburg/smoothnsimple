@@ -2,39 +2,37 @@ import Link from "next/link";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
-export const metadata = {
-  title: "Referral Terms | Smooth n Simple",
-  description:
-    "Review the terms and conditions for the Smooth n Simple referral program.",
-};
-
-const sections = [
-  { id: "eligibility", title: "1. Eligibility" },
-  { id: "rewards", title: "2. Referral Rewards" },
-  { id: "one-time", title: "3. One-Time Use" },
-  { id: "non-transferable", title: "4. Non-Transferable" },
-  { id: "limits", title: "5. Referral Limits" },
-  { id: "abuse", title: "6. Fraud, Abuse & Misuse" },
-  { id: "verification", title: "7. Verification & Redemption" },
-  { id: "modifications", title: "8. Modifications & Termination" },
-  { id: "general", title: "9. General Conditions" },
-  { id: "liability", title: "10. Limitation of Liability" },
-];
-
 export default function ReferralTermsPage() {
+  const sections = [
+    { id: "eligibility", title: "1. Eligibility" },
+    { id: "rewards", title: "2. Referral Rewards" },
+    { id: "one-time", title: "3. One-Time Use" },
+    { id: "non-transferable", title: "4. Non-Transferable" },
+    { id: "limits", title: "5. Referral Limits" },
+    { id: "abuse", title: "6. Fraud, Abuse & Misuse" },
+    { id: "verification", title: "7. Verification & Redemption" },
+    { id: "modifications", title: "8. Modifications & Termination" },
+    { id: "general", title: "9. General Conditions" },
+    { id: "liability", title: "10. Limitation of Liability" },
+  ];
+
   return (
-    <main className='min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 scroll-smooth'>
+    <main className='min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8 scroll-smooth'>
       <Header />
-      <div className='max-w-6xl mx-auto mt-8 mb-12 grid grid-cols-1 lg:grid-cols-4 gap-8'>
-        {/* Table of Contents */}
+
+      <div className='max-w-6xl mx-auto mt-10 mb-16 grid grid-cols-1 lg:grid-cols-4 gap-10'>
+        {/* TABLE OF CONTENTS (polished only) */}
         <nav className='hidden lg:block sticky top-24 self-start'>
-          <h2 className='text-lg font-semibold text-gray-800 mb-4'>Contents</h2>
-          <ul className='space-y-2 text-gray-700'>
+          <h2 className='text-xs uppercase tracking-[0.3em] text-zinc-500 mb-6'>
+            Contents
+          </h2>
+
+          <ul className='space-y-3 text-sm'>
             {sections.map((section) => (
               <li key={section.id}>
                 <a
                   href={`#${section.id}`}
-                  className='hover:text-pink-600 transition-colors'
+                  className='text-zinc-400 hover:text-pink-500 transition-colors'
                 >
                   {section.title}
                 </a>
@@ -43,141 +41,140 @@ export default function ReferralTermsPage() {
           </ul>
         </nav>
 
-        {/* Main Content */}
-        <div className='lg:col-span-3 bg-white shadow-md rounded-xl p-8 flex flex-col'>
-          <h1 className='text-3xl font-bold text-gray-900 mb-6 text-center'>
-            Referral Program Terms & Conditions
-          </h1>
+        {/* MAIN CONTENT CARD */}
+        <div className='lg:col-span-3'>
+          <div className='bg-gradient-to-b from-zinc-950 to-black border border-zinc-800 rounded-3xl p-8 md:p-10'>
+            {/* HEADER */}
+            <h1 className='text-3xl md:text-4xl font-black tracking-tight mb-4'>
+              Referral Program Terms & Conditions
+            </h1>
 
-          <p className='mb-4 text-gray-700'>
-            The Smooth n Simple referral program is designed to reward loyal
-            clients while maintaining fairness and integrity. By participating,
-            you agree to the following terms and conditions.
-          </p>
+            <p className='text-zinc-400 text-sm md:text-base leading-relaxed mb-12 max-w-2xl'>
+              These terms outline eligibility, rewards, and program conditions
+              for Smooth N Simple promotions and referral benefits.
+            </p>
 
-          {/* Sections */}
-          {sections.map((section) => (
-            <section
-              key={section.id}
-              id={section.id}
-              className='mb-6'
-            >
-              <h2 className='text-xl font-semibold text-gray-800 mb-2'>
-                {section.title}
-              </h2>
-              <SectionContent id={section.id} />
-            </section>
-          ))}
+            {/* SECTIONS */}
+            <div className='space-y-12'>
+              {sections.map((section) => (
+                <section
+                  key={section.id}
+                  id={section.id}
+                  className='scroll-mt-28'
+                >
+                  <div className='flex items-center gap-3 mb-4'>
+                    <div className='w-1.5 h-6 bg-pink-600 rounded-full' />
+                    <h2 className='text-lg md:text-xl font-bold tracking-tight'>
+                      {section.title}
+                    </h2>
+                  </div>
 
-          {/* Back Button */}
-          <div className='mt-auto text-center'>
-            <Link
-              href='/'
-              className='inline-block bg-pink-500 text-white px-6 py-2 rounded-lg shadow hover:bg-pink-600 transition-colors'
-            >
-              Back to Home
-            </Link>
+                  <div className='text-zinc-400 leading-relaxed text-sm md:text-base pl-5 border-l border-zinc-800'>
+                    <SectionContent id={section.id} />
+                  </div>
+                </section>
+              ))}
+            </div>
+
+            {/* BACK BUTTON */}
+            <div className='mt-14 pt-8 border-t border-zinc-800 text-center'>
+              <Link
+                href='/'
+                className='inline-flex items-center justify-center bg-white text-black hover:bg-pink-600 hover:text-white px-8 py-4 rounded-full font-bold transition'
+              >
+                Back to Home
+              </Link>
+            </div>
           </div>
         </div>
       </div>
+
       <Footer />
     </main>
   );
 }
 
+/* CONTENT (unchanged logic — only wrapped styling improves via parent) */
 function SectionContent({ id }: { id: string }) {
   switch (id) {
     case "eligibility":
       return (
-        <ul className='list-disc list-inside text-gray-700 space-y-1'>
-          <li>Program is available to existing Smooth n Simple clients</li>
-          <li>Referred individuals must be new clients</li>
-          <li>All participants must be 18 years of age or older</li>
+        <ul className='space-y-2'>
+          <li>
+            Referral program is available to current Smooth N Simple clients.
+          </li>
+          <li>Referred individuals must qualify as new clients.</li>
+          <li>
+            A new client is someone who has never previously booked, received
+            treatment, purchased services, or redeemed any promotion.
+          </li>
+          <li>Duplicate accounts or alternate identities are not eligible.</li>
+          <li>All participants must be 18 years or older.</li>
         </ul>
       );
 
     case "rewards":
       return (
-        <ul className='list-disc list-inside text-gray-700 space-y-1'>
-          <li>Discount applies to the referred client’s first visit only</li>
-          <li>No cash value and cannot be redeemed for cash</li>
-          <li>Cannot be applied retroactively to past services</li>
+        <ul className='space-y-2'>
+          <li>New clients may receive $6/unit Botox promotional pricing.</li>
+          <li>Referrers receive 10% off after successful referral.</li>
+          <li>Rewards apply only after completed paid appointment.</li>
+          <li>No cash value or cash redemption.</li>
         </ul>
       );
 
     case "one-time":
-      return (
-        <p className='text-gray-700'>
-          Each referral discount code is valid for a single use only. Once
-          redeemed, the code is permanently invalid.
-        </p>
-      );
+      return <p>Offers are valid for one-time use unless otherwise stated.</p>;
 
     case "non-transferable":
       return (
-        <p className='text-gray-700'>
-          Referral codes are non-transferable and may only be used by the
-          individual to whom they were issued. Codes may not be shared,
-          distributed, or sold.
+        <p>
+          Offers are non-transferable and may not be shared, sold, or
+          reassigned.
         </p>
       );
 
     case "limits":
-      return (
-        <p className='text-gray-700'>
-          Each new client may only be referred once. Multiple referrals using
-          different email addresses or identities for the same individual are
-          not permitted.
-        </p>
-      );
+      return <p>Each new client may only be referred once.</p>;
 
     case "abuse":
       return (
-        <>
-          <p className='text-gray-700'>
-            Smooth n Simple reserves the right to cancel or revoke referral
-            benefits if misuse is detected, including:
-          </p>
-          <ul className='list-disc list-inside text-gray-700 space-y-1 mt-2'>
-            <li>Self-referrals</li>
-            <li>Multiple accounts or fake identities</li>
-            <li>
-              Public sharing of codes (forums, coupon sites, social media)
-            </li>
-            <li>Attempts to bypass program restrictions</li>
-          </ul>
-        </>
+        <p>
+          Misuse, fraud, or abuse may result in cancellation of rewards or
+          eligibility.
+        </p>
       );
 
     case "verification":
       return (
-        <p className='text-gray-700'>
-          We reserve the right to verify participant identity and eligibility
-          before applying any referral discount.
+        <p>
+          Eligibility and referral validity may be verified prior to reward
+          issuance.
         </p>
       );
 
     case "modifications":
       return (
-        <p className='text-gray-700'>
-          Smooth n Simple may modify, suspend, or terminate the referral program
-          at any time without prior notice.
+        <p>
+          Smooth N Simple may update or modify these terms at any time without
+          notice.
         </p>
       );
 
     case "general":
       return (
-        <p className='text-gray-700'>
-          Referral discounts cannot be combined with other promotions unless
-          explicitly stated. All decisions made by Smooth n Simple are final.
-        </p>
+        <ul className='space-y-2'>
+          <li>Promotions cannot be combined unless explicitly stated.</li>
+          <li>One offer per client per visit.</li>
+          <li>All decisions are final.</li>
+        </ul>
       );
 
     case "liability":
       return (
-        <p className='text-gray-700'>
-          Smooth n Simple is not responsible for lost, misused, or unauthorized
-          use of referral codes.
+        <p>
+          Smooth N Simple is not responsible for lost, misused, or invalid
+          referral codes or promotions.
         </p>
       );
 
