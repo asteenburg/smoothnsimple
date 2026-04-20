@@ -190,7 +190,7 @@ export default function Header() {
               className='flex items-center justify-between group'
             >
               <span className='text-xl italic uppercase tracking-tighter text-pink-600'>
-                Book Now
+                Book Now.
               </span>
 
               <ChevronRight
