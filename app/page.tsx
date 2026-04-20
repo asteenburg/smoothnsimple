@@ -6,7 +6,7 @@ import "aos/dist/aos.css";
 import Image from "next/image";
 import Link from "next/link";
 
-import ReferralModal from "@/components/ReferralModal";
+//import ReferralModal from "@/components/ReferralModal";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -51,7 +51,7 @@ export default function Home() {
 
   return (
     <div className='relative w-full bg-black overflow-x-hidden'>
-      <ReferralModal />
+      {/*<ReferralModal />*/}
       <Header />
 
       {/* HERO */}
