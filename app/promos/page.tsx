@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+import Image from "next/image";
 import Link from "next/link";
 
 export default function PromosPage() {
@@ -48,8 +50,17 @@ export default function PromosPage() {
 
       <main className='flex-grow'>
         {/* HERO */}
-        <section className='relative border-b border-zinc-900 overflow-hidden'>
-          <div className='absolute inset-0 bg-gradient-to-b from-pink-600/10 to-transparent' />
+        <section className='relative h-[60vh] min-h-[420px] w-full flex items-center overflow-hidden border-b border-zinc-900'>
+          <div className='absolute inset-0 z-0 pointer-events-none'>
+            <Image
+              src='/images/joe-woods-4Zaq5xY5M_c-unsplash.jpg'
+              alt='Smooth N Simple Services'
+              fill
+              className='object-cover opacity-35 brightness-50'
+              priority
+            />
+            <div className='absolute inset-0 bg-gradient-to-b from-pink-600/10 via-black/40 to-black' />
+          </div>
 
           <div className='relative max-w-7xl mx-auto px-4 py-16 md:py-28 text-center'>
             <p className='text-pink-500 uppercase tracking-[0.32em] text-xs md:text-sm font-bold mb-4'>
