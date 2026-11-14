@@ -13,7 +13,7 @@ export default function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   // Reusable link for JaneApp
-  const BOOKING_URL = "https://smoothnsimple.janeapp.com";
+  const BOOKING_URL = "https://smoothnsimple.janeapp.com/#/staff_member/1";
 
   return (
     <header className='fixed top-0 left-0 right-0 z-[9999] bg-black/90 backdrop-blur-md border-b border-white/5'>
