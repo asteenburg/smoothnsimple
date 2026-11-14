@@ -7,7 +7,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 export default function Booking() {
-  const JANE_URL = "https://smoothnsimple.janeapp.com";
+  const JANE_URL = "https://smoothnsimple.janeapp.com/#/staff_member/1";
 
   return (
     <div className='flex flex-col min-h-screen bg-black'>
