@@ -66,7 +66,7 @@ export default function About() {
             {/* CTA */}
             <div className='mt-10 text-left'>
               <a
-                href='https://smoothnsimple.janeapp.com/'
+                href='https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/8'
                 className='inline-block bg-white text-black hover:bg-pink-600 hover:text-white px-8 py-4 rounded-full font-bold transition'
               >
                 Book a Consultation
