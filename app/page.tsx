@@ -171,7 +171,7 @@ export default function Home() {
             <div className='w-20 h-1 bg-pink-500 mx-auto mt-4'></div>
           </div>
 
-          <div className='grid md:grid-cols-3 gap-10'>
+          <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-10'>
             {[
               {
                 img: "/images/jump1987-botox-10084507.jpg",
@@ -187,6 +187,11 @@ export default function Home() {
                 img: "/images/1000020715.jpg",
                 title: "Professional Care",
                 desc: "Experience aesthetic excellence in a luxury setting",
+              },
+              {
+                img: "/images/female-doctor-making-injection-woman-chin.jpg",
+                title: "PRP Treatment",
+                desc: "Harness your body's natural healing for rejuvenation",
               },
             ].map((item) => (
               <div
