@@ -19,46 +19,73 @@ import {
 
 const TREATMENTS = [
   {
-    id: 1,
-    title: "PRP Facial Injections",
-    subtitle: "Natural Skin Rejuvenation",
-    image: "/images/prp-facial-injections.jpg",
-    icon: Syringe,
+    id: "treatment-1",
+    title: "Microneedling",
+    subtitle: "Natural Skin Renewal",
+    image: "/images/microneedle.jpeg",
+    icon: Sparkles,
     description:
-      "PRP facial injections use platelet-rich plasma prepared from your own blood and administered to targeted areas of the face. This treatment aims to support skin renewal and improve the overall appearance of skin texture and tone.",
+      "Microneedling uses ultra-fine needles to create controlled micro-channels in the skin, triggering your body's natural renewal process to refresh the skin's surface and improve overall texture and tone.",
     benefits: [
       "Supports natural skin renewal",
-      "Targets areas of concern",
-      "Personalized facial treatment",
+      "Refines uneven skin texture and tone",
+      "Minimizes the appearance of pores",
     ],
+    bookingUrl:
+      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/10",
+    ctaText: "Book Microneedling",
   },
   {
-    id: 2,
-    title: "PRP Microneedling",
-    subtitle: "Enhance Your Skin's Appearance",
-    image: "/images/prp-microneedling.jpg",
-    icon: ScanFace,
+    id: "treatment-2",
+    title: "PRP with Microneedling",
+    subtitle: "Advanced Skin Rejuvenation",
+    image: "/images/prp-with-microneedle.jpeg",
+    icon: Sparkles,
     description:
-      "PRP microneedling combines controlled microneedling with platelet-rich plasma. Microneedling creates tiny channels in the skin, allowing PRP to be applied as part of a treatment designed to improve the appearance of skin texture and support collagen production.",
+      "Combining microneedling with platelet-rich plasma prepared from your own blood, this treatment applies your natural growth factors directly to the skin to support deeper rejuvenation, radiance, and smoother texture.",
     benefits: [
-      "Improves the appearance of skin texture",
-      "Supports collagen production",
-      "Targets uneven-looking skin",
+      "Uses your body's own platelet-rich plasma",
+      "Supports deeper skin renewal and radiance",
+      "Improves overall skin tone and texture",
     ],
+    bookingUrl:
+      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/11",
+    ctaText: "Book PRP Microneedling",
   },
   {
-    id: 3,
-    title: "PRP Hair Restoration",
-    subtitle: "Support Healthier-Looking Hair",
-    image: "/images/prp-hair-restoration.jpg",
-    icon: Sprout,
+    id: "treatment-3",
+    title: "PRP Under-Eye",
+    subtitle: "Delicate Area Revival",
+    image:
+      "/images/D6_S8jfKkJNZhYlE6yinH3fCX_wjq_X_OCIbQ6Xxyvjw2i_J9H7bEW2G6nwcvy1N9-nehwt3OQCbF_qxMt0lQIycLlVPYcdZNO9pDSNj7NYTjWfOoa8yiAWEH6YscNU8lxUy4yr0A1maj6Z1OkNlT8VjHAtzHZcpfb1ty1Wsjwy2zchZZyDzVbL4CVRo00CI.jpeg",
+    icon: Syringe,
     description:
-      "PRP hair restoration involves delivering platelet-rich plasma to targeted areas of the scalp. It is designed to support the hair follicles and may help improve hair density and growth in suitable candidates.",
+      "PRP under-eye injections use platelet-rich plasma prepared from your own blood and administered to the delicate under-eye area. This treatment aims to support natural skin renewal and improve the overall appearance of dark circles, fine lines, and under-eye texture.",
     benefits: [
-      "Targets areas of hair thinning",
-      "Supports hair follicle health",
-      "Personalized scalp treatment",
+      "Supports under-eye skin renewal",
+      "Targets dark circles and fine lines",
+      "Personalized under-eye treatment",
     ],
+    bookingUrl:
+      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/6",
+    ctaText: "Book PRP Under-Eye",
+  },
+  {
+    id: "treatment-4",
+    title: "PRP Hair Treatment",
+    subtitle: "Scalp & Follicle Restoration",
+    image: "/images/high-angle-man-getting-prp-injection-alopecia.jpg",
+    icon: Syringe,
+    description:
+      "PRP hair restoration uses concentrated platelets from your own blood administered to targeted areas of the scalp. This treatment aims to nourish hair follicles, support healthier hair growth, and improve overall hair density.",
+    benefits: [
+      "Nourishes targeted hair follicles",
+      "Supports thicker, fuller-looking hair",
+      "Non-surgical, personalized scalp care",
+    ],
+    bookingUrl:
+      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/9",
+    ctaText: "Book PRP Hair Treatment",
   },
 ];
 
@@ -134,7 +161,7 @@ export default function PRPPage() {
         <div className='max-w-7xl mx-auto grid md:grid-cols-2 gap-14 md:gap-20 items-center'>
           <div className='relative h-[380px] md:h-[540px] rounded-3xl overflow-hidden border border-zinc-800'>
             <Image
-              src='/images/prp-preparation.jpg'
+              src='/images/female-doctor-making-injection-woman-chin.jpg'
               alt='Platelet-rich plasma preparation'
               fill
               sizes='(max-width: 768px) 100vw, 50vw'
@@ -198,7 +225,7 @@ export default function PRPPage() {
             </p>
 
             <h2 className='text-4xl md:text-6xl font-black tracking-tight'>
-              Three Treatments.
+              Four Treatments.
               <span className='block text-pink-600'>Personalized Care.</span>
             </h2>
 
@@ -208,7 +235,7 @@ export default function PRPPage() {
             </p>
           </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7'>
             {TREATMENTS.map((treatment) => {
               const Icon = treatment.icon;
 
@@ -275,11 +302,13 @@ export default function PRPPage() {
                     </div>
 
                     <Link
-                      href='/book'
+                      href={treatment.bookingUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
                       className='w-full py-4 bg-white text-black rounded-full font-bold flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all duration-300'
                     >
                       <Calendar size={15} />
-                      Book Consultation
+                      {treatment.ctaText || "Book Consultation"}
                       <ArrowRight
                         size={15}
                         className='group-hover:translate-x-1 transition-transform'
@@ -402,7 +431,7 @@ export default function PRPPage() {
 
           <div className='relative h-[400px] md:h-[520px] rounded-3xl overflow-hidden border border-zinc-800'>
             <Image
-              src='/images/prp-skin-results.jpg'
+              src='/images/OsXT0jOGeMViv5iI6JooovCW-iqX5qoxPvtDEpGurdpTHVx1NMMXkmKd9Ej9yIQ_56fltZHz9Zd3TJlFqbFyQ0lS4Rbqd6nO73G7jnRHahCR25Ve0XcAH3s9P9uirOP_dGf7BwcjMsPM0bhn4euTgpD_iDcCw2anKXdGciPhhwtBndki00TveMcmNAB8_oux.jpeg'
               alt='Healthy-looking skin and facial rejuvenation'
               fill
               sizes='(max-width: 768px) 100vw, 50vw'
@@ -481,7 +510,7 @@ export default function PRPPage() {
             </p>
 
             <Link
-              href='/book'
+              href='https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/8'
               className='inline-flex items-center justify-center gap-3 px-10 py-5 bg-pink-600 text-white rounded-full font-bold hover:bg-pink-500 transition-all duration-300'
             >
               <Calendar size={17} />
