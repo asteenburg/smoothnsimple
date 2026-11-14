@@ -138,6 +138,7 @@ export default function Header() {
                 { label: "Home", href: "/" },
                 { label: "Shop", href: "/shop" },
                 { label: "Services", href: "/services" },
+                { label: "PRP", href: "/prp" },
                 { label: "Promotions", href: "/promos" },
               ].map((item) => (
                 <Link
