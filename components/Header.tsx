@@ -54,7 +54,15 @@ export default function Header() {
               {item}
             </Link>
           ))}
-
+          <Link
+            href='/prp'
+            onClick={() => setIsMenuOpen(false)}
+            className='flex justify-between items-center group pointer-events-auto'
+          >
+            <span className='text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-pink-600 transition-colors pointer-events-auto'>
+              <span className='text-pink-600'>NEW</span> PRP
+            </span>
+          </Link>
           <Link
             href='/promos'
             onClick={() => setIsMenuOpen(false)}
