@@ -109,7 +109,8 @@ export default function PromosPage() {
             </p>
 
             <h2 className='text-3xl sm:text-4xl md:text-6xl font-black leading-tight'>
-              Botox from <span className='text-pink-600'>$6/unit</span>
+              Botox From <br />
+              <span className='text-pink-600'>$6/unit</span>
             </h2>
 
             <p className='text-zinc-400 mt-4 text-base md:text-lg leading-relaxed'>
@@ -131,7 +132,7 @@ export default function PromosPage() {
             </div>
 
             <h2 className='mt-6 text-3xl sm:text-4xl md:text-6xl font-black leading-tight'>
-              PRP Under Eye
+              PRP Under Eye <br />
               <span className='text-pink-600'>$1000</span>
             </h2>
 
