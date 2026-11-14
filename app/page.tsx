@@ -189,7 +189,7 @@ export default function Home() {
                 desc: "Experience aesthetic excellence in a luxury setting",
               },
               {
-                img: "/images/female-doctor-making-injection-woman-chin.jpg",
+                img: "/images/1000029606.jpg",
                 title: "PRP Treatment",
                 desc: "Harness your body's natural healing for rejuvenation",
               },
