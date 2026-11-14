@@ -7,37 +7,59 @@ import Link from "next/link";
 import { Sparkles, ArrowRight, Calendar } from "lucide-react";
 
 interface Package {
-  id: number;
+  id: string;
   title: string;
   price: string;
   description: string;
   image: string;
+  bookingUrl: string;
+  ctaText?: string;
 }
 
 const SERVICE_PACKAGES: Package[] = [
   {
-    id: 1,
+    id: "service-1",
     title: "Botox",
     price: "$8.00 / Unit",
     image: "/images/jump1987-botox-10084507.jpg",
     description:
       "Smooth fine lines and soften wrinkles in the forehead, frown lines, and crow’s feet. Results typically last 3–4 months with a quick, 30-minute treatment.",
+    bookingUrl:
+      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/1",
+    ctaText: "Book Botox",
   },
   {
-    id: 2,
+    id: "service-2",
     title: "Lip Flip",
     price: "$60.00",
     image: "/images/1000020714.jpg",
     description:
       "A subtle enhancement using Botox to gently roll the upper lip for a naturally fuller, more balanced appearance.",
+    bookingUrl:
+      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/4",
+    ctaText: "Book Lip Flip",
   },
   {
-    id: 3,
+    id: "service-3",
     title: "B12 Injections",
     price: "$50.00",
     image: "/images/10000207242.PNG",
     description:
       "Support energy, mood, and overall wellness with a quick intramuscular B12 injection tailored to your needs.",
+    bookingUrl:
+      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/5",
+    ctaText: "Book B12 Injections",
+  },
+  {
+    id: "service-4",
+    title: "PRP Treatment",
+    price: "$50.00",
+    image: "/images/1000029606.jpg",
+    description:
+      "Support energy, mood, and overall wellness with a quick intramuscular B12 injection tailored to your needs.",
+    bookingUrl:
+      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/4",
+    ctaText: "Book PRP Treatment",
   },
 ];
 
@@ -78,7 +100,7 @@ export default function ServicesPage() {
       {/* MAIN */}
       <main className='flex-1 max-w-7xl mx-auto px-4 md:px-6 py-14 md:py-20 w-full'>
         {/* GRID */}
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto'>
           {SERVICE_PACKAGES.map((pkg) => (
             <div
               key={pkg.id}
@@ -90,6 +112,7 @@ export default function ServicesPage() {
                   src={pkg.image}
                   alt={pkg.title}
                   fill
+                  sizes='(max-width: 768px) 100vw, 50vw'
                   className='object-cover transition-transform duration-700 group-hover:scale-105'
                 />
                 <div className='absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent' />
@@ -118,11 +141,13 @@ export default function ServicesPage() {
                 </p>
 
                 <Link
-                  href='/book'
+                  href={pkg.bookingUrl}
+                  target='_blank'
+                  rel='noopener noreferrer'
                   className='w-full py-4 bg-white text-black rounded-full font-bold flex items-center justify-center gap-3 hover:bg-pink-600 hover:text-white transition-all duration-300'
                 >
                   <Calendar size={14} />
-                  Book Appointment
+                  {pkg.ctaText || "Book Appointment"}
                   <ArrowRight
                     size={14}
                     className='group-hover:translate-x-1 transition-transform'
@@ -144,7 +169,7 @@ export default function ServicesPage() {
           </p>
 
           <Link
-            href='/book'
+            href='https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/8'
             className='inline-block text-pink-500 font-bold uppercase tracking-widest text-xs hover:text-white transition-colors border-b border-pink-500/30 pb-2'
           >
             Schedule a Consultation
