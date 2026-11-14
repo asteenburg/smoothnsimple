@@ -84,7 +84,7 @@ export default function PromosPage() {
 
             <div className='mt-8 flex flex-col sm:flex-row justify-center gap-3'>
               <Link
-                href='/booking'
+                href='https://smoothnsimple.janeapp.com/#/staff_member/1'
                 className='bg-pink-600 hover:bg-pink-500 px-8 py-4 rounded-full font-bold transition w-full sm:w-auto'
               >
                 Book Appointment
@@ -119,7 +119,30 @@ export default function PromosPage() {
 
             <div className='mt-6 space-y-3'>
               <Link
-                href='/booking'
+                href='https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/1'
+                className='block w-full text-center bg-white text-black hover:bg-pink-600 hover:text-white px-8 py-4 rounded-full font-bold transition'
+              >
+                Claim Offer
+              </Link>
+
+              <div className='text-center border border-zinc-800 rounded-full px-6 py-3 text-zinc-400 text-sm'>
+                New clients only
+              </div>
+            </div>
+
+            <h2 className='mt-6 text-3xl sm:text-4xl md:text-6xl font-black leading-tight'>
+              PRP Under Eye
+              <span className='text-pink-600'>$1000</span>
+            </h2>
+
+            <p className='text-zinc-400 mt-4 text-base md:text-lg leading-relaxed'>
+              First-time clients receive exclusive introductory pricing with
+              Shelby for natural, refreshed results.
+            </p>
+
+            <div className='mt-6 space-y-3'>
+              <Link
+                href='https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/1'
                 className='block w-full text-center bg-white text-black hover:bg-pink-600 hover:text-white px-8 py-4 rounded-full font-bold transition'
               >
                 Claim Offer

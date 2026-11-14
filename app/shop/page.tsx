@@ -69,6 +69,14 @@ const PRODUCTS = {
       description: "Wellness support for energy, mood, and metabolism.",
       category: "Wellness",
     },
+    {
+      id: "prp-01",
+      title: "PRP Treatment",
+      price: 1200,
+      description:
+        "Platelet-rich plasma therapy for skin rejuvenation and hair restoration.",
+      category: "Clinical",
+    },
   ],
   giftcards: [
     {
