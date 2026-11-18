@@ -42,7 +42,7 @@ const SERVICE_PACKAGES: Package[] = [
   {
     id: "service-3",
     title: "B12 Injections",
-    price: "$450.00",
+    price: "$50.00",
     image: "/images/10000207242.PNG",
     description:
       "Support energy, mood, and overall wellness with a quick intramuscular B12 injection tailored to your needs.",
@@ -53,7 +53,7 @@ const SERVICE_PACKAGES: Package[] = [
   {
     id: "service-4",
     title: "PRP Treatment",
-    price: "$50.00",
+    price: "$450.00",
     image: "/images/1000029606.jpg",
     description:
       "Support energy, mood, and overall wellness with a quick intramuscular B12 injection tailored to your needs.",
