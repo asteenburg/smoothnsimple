@@ -20,7 +20,7 @@ export default function Home() {
     },
     {
       src: "/videos/mixkit-adult-woman-in-the-mirror-frustrated-by-her-wrinkles-4515-hd-ready.mp4",
-      subtitle: "Professional Botox & filler treatments tailored for you.",
+      subtitle: "Professional treatments tailored for you.",
     },
   ];
 
@@ -75,6 +75,9 @@ export default function Home() {
         >
           <h1 className='text-4xl md:text-6xl font-black text-white tracking-tight'>
             SMOOTH <span className='text-pink-500'>N</span> SIMPLE
+          </h1>
+          <h1 className='text-4xl md:text-6xl font-black text-white tracking-tight'>
+            BOTOX & PRP
           </h1>
 
           <p className='text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 mt-4'>
