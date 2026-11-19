@@ -3,7 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/app/context/CartContext";
-import { ShoppingBag, Menu, X, Zap, ChevronRight } from "lucide-react";
+import {
+  ShoppingBag,
+  Menu,
+  X,
+  Zap,
+  ChevronRight,
+  ChevronDown,
+} from "lucide-react";
 
 export default function Header() {
   const { cart } = useCart();
@@ -54,15 +61,42 @@ export default function Header() {
               {item}
             </Link>
           ))}
-          <Link
-            href='/prp'
-            onClick={() => setIsMenuOpen(false)}
-            className='flex justify-between items-center group pointer-events-auto'
-          >
-            <span className='text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-pink-600 transition-colors pointer-events-auto'>
-              <span className='text-pink-600'>NEW</span> PRP
-            </span>
-          </Link>
+          {/* PRP DROPDOWN MENU */}
+          <div className='relative group pointer-events-auto'>
+            <button
+              type='button'
+              className='flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-pink-600 transition-colors'
+            >
+              <span>
+                <span className='text-pink-600'>NEW</span> PRP
+              </span>
+              <ChevronDown
+                size={12}
+                className='transition-transform duration-200 group-hover:rotate-180'
+              />
+            </button>
+
+            {/* Dropdown */}
+            <div className='absolute top-full left-0 pt-4 w-56 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200'>
+              <div className='bg-zinc-950 border border-white/10 rounded-xl shadow-2xl overflow-hidden'>
+                <Link
+                  href='/prp'
+                  className='block px-5 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300 hover:text-pink-600 hover:bg-white/5 transition-all'
+                >
+                  PRP Treatments
+                </Link>
+
+                <div className='h-px bg-white/5 mx-4' />
+
+                <Link
+                  href='/microneedle'
+                  className='block px-5 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300 hover:text-pink-600 hover:bg-white/5 transition-all'
+                >
+                  Microneedling
+                </Link>
+              </div>
+            </div>
+          </div>
           <Link
             href='/promos'
             onClick={() => setIsMenuOpen(false)}
@@ -138,7 +172,8 @@ export default function Header() {
                 { label: "Home", href: "/" },
                 { label: "Shop", href: "/shop" },
                 { label: "Services", href: "/services" },
-                { label: "PRP", href: "/prp" },
+                { label: "PRP Treatments", href: "/prp" },
+                { label: "Microneedling", href: "/microneedle" },
                 { label: "Promotions", href: "/promos" },
               ].map((item) => (
                 <Link
