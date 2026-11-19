@@ -4,7 +4,7 @@ import { CartProvider } from "./context/CartContext"; // 1. Import your provider
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Smooth N Simple | Medical Aesthetics",
+  title: "Smooth N Simple | Botox Medical Aesthetics",
   description: "Professional Medical Aesthetics in Brantford, ON",
 };
 
