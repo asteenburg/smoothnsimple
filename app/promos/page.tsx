@@ -48,7 +48,7 @@ export default function PromosPage() {
     <div className='bg-black text-white min-h-screen flex flex-col selection:bg-pink-600/30'>
       <Header />
 
-      <main className='flex-grow'>
+      <main className='flex-grow mt-24'>
         {/* HERO */}
         <section className='relative h-[60vh] min-h-[420px] w-full flex items-center overflow-hidden border-b border-zinc-900'>
           <div className='absolute inset-0 z-0 pointer-events-none'>
