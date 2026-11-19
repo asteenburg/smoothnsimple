@@ -61,6 +61,17 @@ const SERVICE_PACKAGES: Package[] = [
       "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/4",
     ctaText: "Book PRP Treatment",
   },
+  {
+    id: "service-5",
+    title: "Microneedling",
+    price: "$350.00",
+    image: "/images/prp-with-microneedle.jpeg",
+    description:
+      "Supports natural collagen production, improves the appearance of skin texture and tone, helps minimize the appearance of pores, and targets the appearance of fine lines",
+    bookingUrl:
+      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/10",
+    ctaText: "Book Microneedling",
+  },
 ];
 
 export default function ServicesPage() {

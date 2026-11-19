@@ -184,14 +184,14 @@ export default function Home() {
                 desc: "Create a fuller, natural-looking upper lip",
               },
               {
-                img: "/images/1000020715.jpg",
-                title: "Professional Care",
-                desc: "Experience aesthetic excellence in a luxury setting",
-              },
-              {
                 img: "/images/1000029606.jpg",
                 title: "PRP Treatment",
                 desc: "Harness your body's natural healing for rejuvenation",
+              },
+              {
+                img: "/images/prp-with-microneedle.jpeg",
+                title: "Microneedling",
+                desc: "Renew Your Skin. Restore Your Glow",
               },
             ].map((item) => (
               <div
