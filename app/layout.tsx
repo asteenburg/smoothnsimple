@@ -5,7 +5,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Smooth N Simple | Botox Medical Aesthetics",
-  description: "Professional Medical Aesthetics in Brantford, ON",
+  description:
+    "Professional Medical Aesthetics Providing Botox and PRP Injections in Brantford, ON",
 };
 
 export default function RootLayout({
