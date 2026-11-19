@@ -19,40 +19,6 @@ import {
 
 const TREATMENTS = [
   {
-    id: "treatment-1",
-    title: "Microneedling",
-    subtitle: "Natural Skin Renewal",
-    image: "/images/microneedle.jpeg",
-    icon: Sparkles,
-    description:
-      "Microneedling uses ultra-fine needles to create controlled micro-channels in the skin, triggering your body's natural renewal process to refresh the skin's surface and improve overall texture and tone.",
-    benefits: [
-      "Supports natural skin renewal",
-      "Refines uneven skin texture and tone",
-      "Minimizes the appearance of pores",
-    ],
-    bookingUrl:
-      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/10",
-    ctaText: "Book Microneedling",
-  },
-  {
-    id: "treatment-2",
-    title: "PRP with Microneedling",
-    subtitle: "Advanced Skin Rejuvenation",
-    image: "/images/prp-with-microneedle.jpeg",
-    icon: Sparkles,
-    description:
-      "Combining microneedling with platelet-rich plasma prepared from your own blood, this treatment applies your natural growth factors directly to the skin to support deeper rejuvenation, radiance, and smoother texture.",
-    benefits: [
-      "Uses your body's own platelet-rich plasma",
-      "Supports deeper skin renewal and radiance",
-      "Improves overall skin tone and texture",
-    ],
-    bookingUrl:
-      "https://smoothnsimple.janeapp.com/#/staff_member/1/treatment/11",
-    ctaText: "Book PRP Microneedling",
-  },
-  {
     id: "treatment-3",
     title: "PRP Under-Eye",
     subtitle: "Delicate Area Revival",
@@ -225,7 +191,7 @@ export default function PRPPage() {
             </p>
 
             <h2 className='text-4xl md:text-6xl font-black tracking-tight'>
-              Four Treatments.
+              Two Treatments.
               <span className='block text-pink-600'>Personalized Care.</span>
             </h2>
 
